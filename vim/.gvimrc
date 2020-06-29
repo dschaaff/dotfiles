@@ -1,0 +1,2 @@
+colorscheme OceanicNext
+set guifont=HackNerdFontCompleteM-Regular:h12
