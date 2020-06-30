@@ -21,6 +21,28 @@ zinit light-mode for \
 
 ### End of Zinit's installer chunk
 
+###########
+# PLUGINS #
+###########
+PS1="READY > "
+## https://github.com/zsh-users/zsh-history-substring-search
+zinit ice wait
+zinit light zsh-users/zsh-history-substring-search
+## fish like syntax highlighting
+zinit light zdharma/fast-syntax-highlighting
+## https://github.com/zsh-users/zsh-autosuggestions fish like suggestions
+export ZSH_AUTOSUGGEST_USE_ASYNC=true
+zinit ice wait lucid atload'_zsh_autosuggest_start'
+zinit light zsh-users/zsh-autosuggestions
+# jq repl to help figure out expressions
+zinit light reegnz/jq-zsh-plugin
+zinit ice depth=1 # optional, but avoids downloading the full history
+zinit light 3v1n0/zsh-bash-completions-fallback
+
+###############
+# END PLUGINS #
+###############
+
 ######################
 # Shell Opt SETTINGS #
 ######################
@@ -39,25 +61,6 @@ setopt HIST_VERIFY
 # END Shell Opt SETTINGS #
 ##########################
 
-###########
-# PLUGINS #
-###########
-
-## https://github.com/zsh-users/zsh-history-substring-search
-zinit light zsh-users/zsh-history-substring-search
-## fish like syntax highlighting
-zinit light zdharma/fast-syntax-highlighting
-## https://github.com/zsh-users/zsh-autosuggestions fish like suggestions
-export ZSH_AUTOSUGGEST_USE_ASYNC=true
-zinit light zsh-users/zsh-autosuggestions
-# jq repl to help figure out expressions
-zinit light reegnz/jq-zsh-plugin
-zinit ice depth=1 # optional, but avoids downloading the full history
-zinit light 3v1n0/zsh-bash-completions-fallback
-
-###############
-# END PLUGINS #
-###############
 
 ###########
 # ALIASES #
@@ -200,6 +203,7 @@ function install_powerline_precmd() {
 if [ "$TERM" != "linux" ]; then
     install_powerline_precmd
 fi
+
 #######################
 # END PROMPT SETTINGS #
 ######################## The following lines were added by compinstall
