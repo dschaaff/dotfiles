@@ -8,8 +8,8 @@ if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
 fi
 
 source "$HOME/.zinit/bin/zinit.zsh"
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
+# autoload -Uz _zinit
+# (( ${+_comps} )) && _comps[zinit]=_zinit
 autoload -Uz compinit && compinit
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
@@ -26,18 +26,17 @@ zinit light-mode for \
 ###########
 PS1="READY > "
 ## https://github.com/zsh-users/zsh-history-substring-search
-zinit ice wait
-zinit light zsh-users/zsh-history-substring-search
+zinit ice wait; zinit light zsh-users/zsh-history-substring-search
 ## fish like syntax highlighting
-zinit light zdharma/fast-syntax-highlighting
+zinit ice wait; zinit light zdharma/fast-syntax-highlighting
 ## https://github.com/zsh-users/zsh-autosuggestions fish like suggestions
 export ZSH_AUTOSUGGEST_USE_ASYNC=true
-zinit ice wait lucid atload'_zsh_autosuggest_start'
-zinit light zsh-users/zsh-autosuggestions
+zinit ice wait lucid atload'_zsh_autosuggest_start'; zinit light zsh-users/zsh-autosuggestions
 # jq repl to help figure out expressions
-zinit light reegnz/jq-zsh-plugin
-zinit ice depth=1 # optional, but avoids downloading the full history
-zinit light 3v1n0/zsh-bash-completions-fallback
+zinit ice wait; zinit light reegnz/jq-zsh-plugin
+zinit ice depth=1; zinit ice wait; zinit light 3v1n0/zsh-bash-completions-fallback
+zinit ice wait; zinit light zsh-users/zsh-completions
+zinit ice depth=1; zinit light romkatv/powerlevel10k
 
 ###############
 # END PLUGINS #
@@ -187,22 +186,22 @@ export PATH=$HOME/bin:$PATH
 ###################
 # PROMPT SETTINGS #
 ###################
-function powerline_precmd() {
-    eval "$($GOPATH/bin/powerline-go -error $?  -theme ~/.profile.d/powerline-theme/default.json -shell zsh -modules "aws,kube,newline,venv,ssh,cwd,perms,jobs,newline,exit,root" -eval -modules-right git,time)"
-}
+# function powerline_precmd() {
+#     eval "$($GOPATH/bin/powerline-go -error $?  -theme ~/.profile.d/powerline-theme/default.json -shell zsh -modules "aws,kube,newline,venv,ssh,cwd,perms,jobs,newline,exit,root" -eval -modules-right git,time)"
+# }
 
-function install_powerline_precmd() {
-  for s in "${precmd_functions[@]}"; do
-    if [ "$s" = "powerline_precmd" ]; then
-      return
-    fi
-  done
-  precmd_functions+=(powerline_precmd)
-}
+# function install_powerline_precmd() {
+#   for s in "${precmd_functions[@]}"; do
+#     if [ "$s" = "powerline_precmd" ]; then
+#       return
+#     fi
+#   done
+#   precmd_functions+=(powerline_precmd)
+# }
 
-if [ "$TERM" != "linux" ]; then
-    install_powerline_precmd
-fi
+# if [ "$TERM" != "linux" ]; then
+#     install_powerline_precmd
+# fi
 
 #######################
 # END PROMPT SETTINGS #
@@ -210,11 +209,6 @@ fi
 ###############
 # COMPLETIONS #
 ###############
-
-# homebrew install of zsh-completions
-if type brew &>/dev/null; then
-FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
-fi
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle :compinstall filename '/Users/danielschaaff/.zshrc'
 
