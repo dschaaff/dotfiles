@@ -44,6 +44,7 @@ zinit ice wait; zinit light reegnz/jq-zsh-plugin
 zinit ice depth=1; zinit ice wait; zinit light 3v1n0/zsh-bash-completions-fallback
 zinit ice wait; zinit light zsh-users/zsh-completions
 zinit ice depth=1; zinit light romkatv/powerlevel10k
+zinit light mroth/evalcache
 
 ###############
 # END PLUGINS #
@@ -227,5 +228,6 @@ zinit cdreplay -q
 # END COMPLETIONS #
 ###################
 
+_evalcache rbenv init -
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
