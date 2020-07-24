@@ -32,6 +32,8 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 " Git support
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-dispatch'
+Plug 'radenling/vim-dispatch-neovim'
 " Ansible
 Plug 'pearofducks/ansible-vim'
 " ctags
