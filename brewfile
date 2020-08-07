@@ -1,5 +1,5 @@
 brew "bash"
-brew "bash"-completion
+brew "bash-completion"
 brew "bat"
 brew "bats-core"
 brew "colordiff"
@@ -13,7 +13,7 @@ brew "gettext"
 brew "git"
 brew "gitui"
 brew "gnu-sed"
-brew helm
+brew "helm"
 brew "highlight"
 brew "hugo"
 brew "jq"
