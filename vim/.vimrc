@@ -13,11 +13,9 @@ filetype off
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/AnsiEsc.vim'
-" ale linter
-Plug 'w0rp/ale', { 'tag': 'v2.7.0' }
-" support lots of languages
-Plug 'sheerun/vim-polyglot'
-" git marks in gutter
+Plug 'mhinz/vim-startify'
+Plug 'w0rp/ale', { 'tag': 'v2.7.0' } " ale linter
+Plug 'sheerun/vim-polyglot' " language support, do I really need this?
 Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
 " Hashicorp stuff
@@ -26,40 +24,37 @@ Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-vagrant'
 Plug 'hashivim/vim-consul'
 Plug 'hashivim/vim-vaultproject'
-" vim easymotion for moving around
 Plug 'easymotion/vim-easymotion'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
-" Git support
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-dispatch'
-Plug 'radenling/vim-dispatch-neovim'
-" Ansible
+Plug 'radenling/vim-dispatch-neovim' " needed for fugitive in vim
 Plug 'pearofducks/ansible-vim'
 " ctags
 Plug 'majutsushi/tagbar'
 " Plug 'ludovicchabant/vim-gutentags'
 " tpope goodness
+Plug 'tpope/vim-fugitive' " git commands in vim
+Plug 'tpope/vim-dispatch' " needed for ^ in neovim
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sensible'
-" easily comment stuff in/out
-Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary' " easily comment stuff in/out
+Plug 'tpope/vim-eunuch' " Unix file action sugar 
 " nerdtree stuff
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-" ablity to toggle indent guides
-Plug 'Yggdroot/indentLine'
+Plug 'Yggdroot/indentLine' " ablity to toggle indent guides
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " ruby and rails
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-endwise', { 'for': 'ruby' }
 " themes
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'romainl/flattened'
+Plug 'romainl/flattened' " solarized variant
 Plug 'iCyMind/NeoSolarized'
 Plug 'joshdick/onedark.vim'
 Plug 'mhartington/oceanic-next'
@@ -67,7 +62,6 @@ Plug 'mhartington/oceanic-next'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'tpope/vim-endwise'
 Plug 'martinda/Jenkinsfile-vim-syntax'
 Plug 'edkolev/tmuxline.vim'
 " undotree to make undo history easier
@@ -82,47 +76,29 @@ if exists('g:loaded_polyglot')
 endif
 " Patched font for file icons
 set guifont=HackNerdFontCompleteM-Regular:h12
-" show line numbering
-set number
-" Set to auto read when is changed outside vim
-set autoread
-" number of visual spaces per tab
-set tabstop=4
-" use smart tabs http://vim.wikia.com/wiki/Indent_with_tabs,_align_with_spaces
-set smarttab
-" number of spaces when editing
-set softtabstop=2
-" spaces are better then tabs ;)
-set expandtab
-" highlight current line
-set cursorline
-" visual autocomplete for command menu
-set wildmenu
-" redraw only when we need to
-set lazyredraw
-" highlight matching brackets
-set showmatch
-" highlight search matches, use :nohlsearch to turn off
-set hlsearch
-" search as characters entered
-set incsearch
-" ignore case when searching
-set ignorecase
-" autowrap lines http://vim.wikia.com/wiki/Automatically_wrap_left_and_right
-set whichwrap+=<,>,h,l,[,]
-" turn on wild menu completions
-set wildmenu
-" show matching brackets
-set showmatch
-" syntax highlighting
-syntax on
+set number " show line numbers
+set autoread " Set to auto read when is changed outside vim
+set tabstop=4 " 4 spaces per tab
+set colorcolumn=120 " highlight 120 character limit
+set smarttab " use smart tabs http://vim.wikia.com/wiki/Indent_with_tabs,_align_with_spaces
+set softtabstop=4 " number of spaces when editing
+set expandtab " spaces are better then tabs ;)
+set cursorline " highlight current line
+set wildmenu " visual autocomplete for command menu
+set lazyredraw " redraw only when we need to
+set showmatch " highlight matching brackets
+set hlsearch " highlight search matches, use :nohlsearch to turn off
+set incsearch " search as characters entered
+set ignorecase " ignore case when searching
+set whichwrap+=<,>,h,l,[,] " autowrap lines http://vim.wikia.com/wiki/Automatically_wrap_left_and_right
+set wildmenu " turn on wild menu completions
+set showmatch " show matching brackets
+syntax on " syntax highlighting
 " load file type specific indent files
 filetype plugin on
-" fold code based on syntax by default
-set foldmethod=syntax
-set foldlevel=99
-" stop hiding quotes in json
-let g:vim_json_syntax_conceal = 0
+set foldmethod=syntax " fold code based on syntax by default
+set foldlevel=99 " code unfoled by default
+let g:vim_json_syntax_conceal = 0 " stop hiding quotes in json
 " set Vim-specific sequences for RGB colors
 set t_8f=[38;2;%lu;%lu;%lum
 set t_8b=[48;2;%lu;%lu;%lum
@@ -138,8 +114,7 @@ endtry
 set background=dark
 set encoding=utf8
 set mouse=a
-" always show status bar
-set laststatus=2
+set laststatus=2 " always show status bar
 " set leader
 :let mapleader = ","
 
@@ -159,6 +134,7 @@ let g:vim_markdown_conceal = 0
 let g:vim_markdown_frontmatter = 1  " for YAML format
 let g:vim_markdown_toml_frontmatter = 1  " for TOML format
 let g:vim_markdown_json_frontmatter = 1  " for JSON format
+" end markdown "
 " airline status bar
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#ale#enabled = 1
@@ -168,12 +144,20 @@ endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#gutentags#enabled = 1
 let g:airline_theme='oceanicnext'
-" don't use ale's lsp since I have coc running
-let g:ale_ignore_lsp = 1
+" end airline "
 "NerdTREE settings
 let NERDTreeShowHidden=1
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" coc.vim
+"""""""""""""""""""""""""""
+"       ale settings       "
+""""""""""""""""""""""""""""
+let g:ale_ignore_lsp = 1 " don't use ale's lsp since I have coc running
+let g:ale_fix_on_save = 1
+" end ale "
+
+"""""""""""
+" coc.vim "
+"""""""""""
 set cmdheight=2
 set hidden
 set nobackup
@@ -226,11 +210,8 @@ nmap <leader>f  <Plug>(coc-format-selected)
 command! -nargs=0 Format :call CocAction('format')
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+" end coc"
 
-"""""""""""""""""""""""""""
-"       ale settings       "
-""""""""""""""""""""""""""""
-let g:ale_fix_on_save = 1
 """"""""""""""""""""""""""""
 "        mappings          "
 """"""""""""""""""""""""""""
