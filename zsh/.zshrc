@@ -180,7 +180,7 @@ export PATH=$PATH:$GOROOT/bin
 JAVA_HOME=$(/usr/libexec/java_home)
 export JAVA_HOME
 # Python
-export PATH=$(brew --prefix python)/bin:$PATH
+export PATH=/usr/local/opt/python/libexec/bin:$PATH
 # Sublime Text
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 # Sublime Merge
