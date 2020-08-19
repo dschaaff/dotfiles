@@ -227,7 +227,14 @@ com! FormatJSON %!jq .
 """"""""""""""""""""""""""""
 
 autocmd FileType jenkinsfile setlocal commentstring=#\ %s
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    keepp %s/\s\+$//e
+    call cursor(l, c)
+endfun
 
+autocmd FileType c,cpp,java,php,ruby,python,yaml autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 silent! helptags ALL

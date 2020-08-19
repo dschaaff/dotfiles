@@ -46,6 +46,7 @@ brew "python@3.8", link: false
 brew "macvim"
 brew "maven"
 brew "minikube"
+brew "mosh"
 brew "neovim"
 brew "nmap"
 brew "nvm"
