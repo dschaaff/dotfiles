@@ -56,6 +56,7 @@ Plug 'tpope/vim-endwise', { 'for': 'ruby' }
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'romainl/flattened' " solarized variant
 Plug 'iCyMind/NeoSolarized'
+Plug 'lifepillar/vim-solarized8'
 Plug 'joshdick/onedark.vim'
 Plug 'mhartington/oceanic-next'
 " Search Stuff
