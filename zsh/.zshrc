@@ -64,6 +64,9 @@ setopt HIST_FIND_NO_DUPS
 # removes blank lines from history
 setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
+
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
 ##########################
 # END Shell Opt SETTINGS #
 ##########################
@@ -231,3 +234,6 @@ zinit cdreplay -q
 _evalcache rbenv init -
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/.dotfiles/zsh/.p10k.zsh.
+[[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
