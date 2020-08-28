@@ -59,6 +59,7 @@ Plug 'romainl/flattened' " solarized variant
 Plug 'iCyMind/NeoSolarized'
 Plug 'lifepillar/vim-solarized8'
 Plug 'joshdick/onedark.vim'
+Plug 'KeitaNakamura/neodark.vim'
 Plug 'mhartington/oceanic-next'
 " Search Stuff
 Plug '/usr/local/opt/fzf'
@@ -116,7 +117,6 @@ try
   colorscheme solarized8
 catch
 endtry
-" colorscheme solarized8
 set background=dark
 set encoding=utf8
 set mouse=a
