@@ -1,4 +1,5 @@
 {
+ "intelephense.licenceKey": "000R1LK5YBUM5D5",
   "yaml.schemas": {
     "kubernetes": "/*.yaml"
   },

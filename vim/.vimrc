@@ -15,7 +15,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'mhinz/vim-startify'
 Plug 'w0rp/ale', { 'tag': 'v2.7.0' } " ale linter
-Plug 'sheerun/vim-polyglot' " language support, do I really need this?
+Plug 'sheerun/vim-polyglot', { 'tag': 'v4.16.0'} " language support, do I really need this?
 Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
 " Hashicorp stuff
@@ -24,6 +24,7 @@ Plug 'hashivim/vim-packer'
 Plug 'hashivim/vim-vagrant'
 Plug 'hashivim/vim-consul'
 Plug 'hashivim/vim-vaultproject'
+Plug 'google/vim-jsonnet'
 Plug 'easymotion/vim-easymotion'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -31,7 +32,7 @@ Plug 'radenling/vim-dispatch-neovim' " needed for fugitive in vim
 Plug 'pearofducks/ansible-vim'
 " ctags
 Plug 'majutsushi/tagbar'
-" Plug 'ludovicchabant/vim-gutentags'
+"Plug 'ludovicchabant/vim-gutentags'
 " tpope goodness
 Plug 'tpope/vim-fugitive' " git commands in vim
 Plug 'tpope/vim-dispatch' " needed for ^ in neovim
@@ -112,9 +113,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 try
-  let g:oceanic_next_terminal_bold = 1
-  let g:oceanic_next_terminal_italic = 1
-  colorscheme solarized8
+  colorscheme neodark
 catch
 endtry
 set background=dark
@@ -160,7 +159,7 @@ if !exists('g:airline_symbols')
 endif
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#gutentags#enabled = 1
-let g:airline_theme='solarized'
+let g:airline_theme='neodark'
 " end airline "
 "NerdTREE settings
 let NERDTreeShowHidden=1

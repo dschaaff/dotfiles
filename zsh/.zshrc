@@ -100,6 +100,7 @@ alias consul-prd='CONSUL_HTTP_ADDR=https://consul-ui.ops.cordial.io consul'
 alias vault-dev='VAULT_ADDR=https://vault.dev.cordialdev.com:8200 VAULT_CACERT=~/.vault-cli/dev/ca.crt vault'
 alias vault-stg='VAULT_ADDR=https://vault.stg.cordialdev.com:8200 VAULT_CACERT=~/.vault-cli/stg/ca.crt vault'
 alias vault-prd='VAULT_ADDR=https://vault.ops.cordial.io:8200 VAULT_CACERT=~/.vault-cli/prd/ca.crt vault'
+alias vault-prd-usw2='VAULT_ADDR=https://vault.us-west-2.cordial.io:8200 VAULT_CACERT=~/.vault-cli/prd/us-west-2/ca.crt vault'
 ###############
 # END ALIASES #
 ###############
@@ -183,7 +184,7 @@ export PATH=$PATH:$GOROOT/bin
 JAVA_HOME=$(/usr/libexec/java_home)
 export JAVA_HOME
 # Python
-export PATH=/usr/local/opt/python/libexec/bin:$PATH
+export PATH=$(brew --prefix python)/bin:$PATH
 # Sublime Text
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 # Sublime Merge
@@ -237,3 +238,6 @@ _evalcache rbenv init -
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/zsh/.p10k.zsh.
 [[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
+
+autoload -U +X bashcompinit && bashcompinit
+complete -o nospace -C /usr/local/bin/vault vault
