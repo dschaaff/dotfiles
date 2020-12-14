@@ -175,6 +175,7 @@ export GPG_TTY=$(tty)
 export NVM_DIR="$HOME/.nvm"
   . "/usr/local/opt/nvm/nvm.sh"
 export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
+export PATH="/usr/local/sbin:$PATH"
 # go
 export GOPATH=$HOME/go
 export GOROOT=/usr/local/opt/go/libexec
