@@ -219,6 +219,9 @@ autoload -Uz compinit && compinit
 zinit cdreplay -q
 # End of lines added by compinstall
 source <(kubectl completion zsh)
+complete -F __start_kubectl kcl
+complete -F __start_kubectl ktl
+
 complete -C '/usr/local/bin/aws_completer' aws
 complete -o nospace -C /usr/local/bin/vault vault
 ###################
