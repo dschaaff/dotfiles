@@ -200,22 +200,6 @@ export PATH=$HOME/bin:$PATH
 ###################
 # PROMPT SETTINGS #
 ###################
-# function powerline_precmd() {
-#     eval "$($GOPATH/bin/powerline-go -error $?  -theme ~/.profile.d/powerline-theme/default.json -shell zsh -modules "aws,kube,newline,venv,ssh,cwd,perms,jobs,newline,exit,root" -eval -modules-right git,time)"
-# }
-
-# function install_powerline_precmd() {
-#   for s in "${precmd_functions[@]}"; do
-#     if [ "$s" = "powerline_precmd" ]; then
-#       return
-#     fi
-#   done
-#   precmd_functions+=(powerline_precmd)
-# }
-
-# if [ "$TERM" != "linux" ]; then
-#     install_powerline_precmd
-# fi
 
 #######################
 # END PROMPT SETTINGS #
@@ -225,11 +209,18 @@ export PATH=$HOME/bin:$PATH
 ###############
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle :compinstall filename '/Users/danielschaaff/.zshrc'
+# case insensitive path-completion 
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 
+# partial completion suggestions
+zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
 
-autoload -Uz compinit
-compinit
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
 zinit cdreplay -q
 # End of lines added by compinstall
+source <(kubectl completion zsh)
+complete -C '/usr/local/bin/aws_completer' aws
+complete -o nospace -C /usr/local/bin/vault vault
 ###################
 # END COMPLETIONS #
 ###################
@@ -242,4 +233,3 @@ _evalcache rbenv init -
 [[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
 
 autoload -U +X bashcompinit && bashcompinit
-complete -o nospace -C /usr/local/bin/vault vault
