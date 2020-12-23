@@ -96,6 +96,7 @@ alias ktl='kubectl'
 alias consul-dev='CONSUL_HTTP_ADDR=https://consul-ui.dev.cordialdev.com  consul'
 alias consul-stg='CONSUL_HTTP_ADDR=https://consul-ui.stg.cordialdev.com consul'
 alias consul-prd='CONSUL_HTTP_ADDR=https://consul-ui.ops.cordial.io consul'
+alias consul-prd-usw-2='CONSUL_HTTP_ADDR=https://consul-ui.us-west-2.cordial.io'
 
 alias vault-dev='VAULT_ADDR=https://vault.dev.cordialdev.com:8200 VAULT_CACERT=~/.vault-cli/dev/ca.crt vault'
 alias vault-stg='VAULT_ADDR=https://vault.stg.cordialdev.com:8200 VAULT_CACERT=~/.vault-cli/stg/ca.crt vault'
@@ -156,7 +157,7 @@ too_many_open_files() {
 }
 
 getec2ip() {
-    aws ec2 describe-instances --instance-ids $1 | jq [.Reservations[0].Instances[0].PrivateIpAddress] | jq --raw-output .[]
+    aws ec2 describe-instances --instance-ids $1 | jq -r '.Reservations[0].Instances[0].PrivateIpAddress'
 }
 
 assh() {
