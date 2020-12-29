@@ -14,7 +14,7 @@ filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'mhinz/vim-startify'
-Plug 'w0rp/ale', { 'tag': 'v2.7.0' } " ale linter
+Plug 'w0rp/ale', { 'tag': 'v3.0.0' } " ale linter
 Plug 'sheerun/vim-polyglot', { 'tag': 'v4.16.0'} " language support, do I really need this?
 Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
