@@ -14,7 +14,7 @@ filetype off
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'mhinz/vim-startify'
-Plug 'w0rp/ale', { 'tag': 'v3.0.0' } " ale linter
+Plug 'w0rp/ale', { 'tag': 'v3.1.0' } " ale linter
 Plug 'sheerun/vim-polyglot', { 'tag': 'v4.16.0'} " language support, do I really need this?
 Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
@@ -62,6 +62,7 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'mhartington/oceanic-next'
+Plug 'arcticicestudio/nord-vim'
 " Search Stuff
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
@@ -71,15 +72,13 @@ Plug 'edkolev/tmuxline.vim'
 " undotree to make undo history easier
  Plug 'mbbill/undotree', {'tag': 'rel_6.1'}
 " file icons
-Plug 'ryanoasis/vim-devicons'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 "disable polygot for golang
 if exists('g:loaded_polyglot')
     let g:polyglot_disabled = ['go']
 endif
-" Patched font for file icons
-set guifont=HackNerdFontCompleteM-Regular:h12
 set number " show line numbers
 set autoread " Set to auto read when is changed outside vim
 set tabstop=4 " 4 spaces per tab
@@ -113,7 +112,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 try
-  colorscheme neodark
+  colorscheme onedark
 catch
 endtry
 set background=dark
@@ -237,6 +236,7 @@ map <leader>nts :NERDTreeFind<CR>
 "        commands          "
 """"""""""""""""""""""""""""
 com! FormatJSON %!jq .
+:command! OpenInVSCode exe "silent !code --goto '" . expand("%") . ":" . line(".") . ":" . col(".") . "'" | redraw!
 
 """"""""""""""""""""""""""""
 "     autocmd stuff        "

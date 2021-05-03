@@ -1,9 +1,9 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# fi
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
@@ -43,7 +43,7 @@ zinit ice wait lucid atload'_zsh_autosuggest_start'; zinit light zsh-users/zsh-a
 zinit ice wait; zinit light reegnz/jq-zsh-plugin
 zinit ice depth=1; zinit ice wait; zinit light 3v1n0/zsh-bash-completions-fallback
 zinit ice wait; zinit light zsh-users/zsh-completions
-zinit ice depth=1; zinit light romkatv/powerlevel10k
+# zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit light mroth/evalcache
 
 ###############
@@ -96,7 +96,7 @@ alias ktl='kubectl'
 alias consul-dev='CONSUL_HTTP_ADDR=https://consul-ui.dev.cordialdev.com  consul'
 alias consul-stg='CONSUL_HTTP_ADDR=https://consul-ui.stg.cordialdev.com consul'
 alias consul-prd='CONSUL_HTTP_ADDR=https://consul-ui.ops.cordial.io consul'
-alias consul-prd-usw-2='CONSUL_HTTP_ADDR=https://consul-ui.us-west-2.cordial.io'
+alias consul-prd-usw2='CONSUL_HTTP_ADDR=https://consul-ui.us-west-2.cordial.io consul'
 
 alias vault-dev='VAULT_ADDR=https://vault.dev.cordialdev.com:8200 VAULT_CACERT=~/.vault-cli/dev/ca.crt vault'
 alias vault-stg='VAULT_ADDR=https://vault.stg.cordialdev.com:8200 VAULT_CACERT=~/.vault-cli/stg/ca.crt vault'
@@ -230,9 +230,13 @@ complete -o nospace -C /usr/local/bin/vault vault
 
 _evalcache rbenv init -
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.dotfiles/zsh/.p10k.zsh.
-[[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
+#[[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
 
 autoload -U +X bashcompinit && bashcompinit
+POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
+eval "$(starship init zsh)"
+
+

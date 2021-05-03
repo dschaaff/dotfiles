@@ -1,2 +1,2 @@
-colorscheme neodark
-set guifont=HackNerdFontCompleteM-Regular:h12
+colorscheme nord
+set guifont=InputMono-Regular:h12

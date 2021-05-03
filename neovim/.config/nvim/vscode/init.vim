@@ -9,6 +9,7 @@ let mapleader = ","
 call plug#begin('~/.config/nvim/vscode/plugged')
 Plug 'tpope/vim-surround'
 Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-commentary' " easily comment stuff in/out
 call plug#end()
 " Run PlugInstall if there are missing plugins
 autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
