@@ -7,6 +7,7 @@ set backspace=indent,eol,start
 " no need filetype to load plugins
 filetype off
 
+let g:ale_disable_lsp = 1
 " plugins
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
