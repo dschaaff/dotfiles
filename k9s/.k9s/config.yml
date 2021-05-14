@@ -1,0 +1,111 @@
+k9s:
+  refreshRate: 2
+  maxConnRetry: 5
+  enableMouse: false
+  headless: false
+  logoless: false
+  crumbsless: false
+  readOnly: false
+  noIcons: false
+  logger:
+    tail: 100
+    buffer: 5000
+    sinceSeconds: -1
+    fullScreenLogs: false
+    textWrap: false
+    showTime: false
+  currentContext: prd
+  currentCluster: arn:aws:eks:us-west-1:063772531253:cluster/prd
+  clusters:
+    arn:aws:eks:us-west-1:063772531253:cluster/prd:
+      namespace:
+        active: logging
+        favorites:
+        - logging
+        - monitoring
+        - all
+        - gitlab
+        - default
+      view:
+        active: po logging
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    arn:aws:eks:us-west-2:063772531253:cluster/prd-usw2a:
+      namespace:
+        active: gitlab
+        favorites:
+        - gitlab
+        - default
+      view:
+        active: po gitlab
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    dev:
+      namespace:
+        active: monitoring
+        favorites:
+        - gitlab
+        - monitoring
+        - cordial-core-master
+        - external-dns
+        - all
+        - default
+      view:
+        active: po monitoring
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+    stg:
+      namespace:
+        active: monitoring
+        favorites:
+        - monitoring
+        - logging
+        - external-dns
+        - default
+      view:
+        active: po monitoring
+      featureGates:
+        nodeShell: false
+      shellPod:
+        image: busybox:1.31
+        command: []
+        args: []
+        namespace: default
+        limits:
+          cpu: 100m
+          memory: 100Mi
+      portForwardAddress: localhost
+  thresholds:
+    cpu:
+      critical: 90
+      warn: 70
+    memory:
+      critical: 90
+      warn: 70

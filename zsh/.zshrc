@@ -236,7 +236,6 @@ _evalcache rbenv init -
 #[[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
 
 autoload -U +X bashcompinit && bashcompinit
-POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD=true
 eval "$(starship init zsh)"
 
 
