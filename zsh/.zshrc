@@ -1,9 +1,5 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-# if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-#   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-# fi
+# uncomment to load profiler
+# zmodload zsh/zprof
 
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
@@ -15,8 +11,8 @@ if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
 fi
 
 source "$HOME/.zinit/bin/zinit.zsh"
-# autoload -Uz _zinit
-# (( ${+_comps} )) && _comps[zinit]=_zinit
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
 autoload -Uz compinit && compinit
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
@@ -31,19 +27,20 @@ zinit light-mode for \
 ###########
 # PLUGINS #
 ###########
-PS1="READY > "
-## https://github.com/zsh-users/zsh-history-substring-search
-zinit ice wait; zinit light zsh-users/zsh-history-substring-search
-## fish like syntax highlighting
-zinit ice wait; zinit light zdharma/fast-syntax-highlighting
 ## https://github.com/zsh-users/zsh-autosuggestions fish like suggestions
 export ZSH_AUTOSUGGEST_USE_ASYNC=true
+PS1="READY > "
+eval "$(starship init zsh)"
+
+# https://github.com/zsh-users/zsh-history-substring-search
+zinit ice wait; zinit light zsh-users/zsh-history-substring-search
+# fish like syntax highlighting
+zinit ice wait; zinit light zdharma/fast-syntax-highlighting
+# https://github.com/zsh-users/zsh-autosuggestions fish like suggestions
+export ZSH_AUTOSUGGEST_USE_ASYNC=true
 zinit ice wait lucid atload'_zsh_autosuggest_start'; zinit light zsh-users/zsh-autosuggestions
-# jq repl to help figure out expressions
-zinit ice wait; zinit light reegnz/jq-zsh-plugin
-zinit ice depth=1; zinit ice wait; zinit light 3v1n0/zsh-bash-completions-fallback
+zinit ice wait; zinit light 3v1n0/zsh-bash-completions-fallback
 zinit ice wait; zinit light zsh-users/zsh-completions
-# zinit ice depth=1; zinit light romkatv/powerlevel10k
 zinit light mroth/evalcache
 
 ###############
@@ -65,6 +62,7 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 
+# home and end keys
 bindkey "^[[1~" beginning-of-line
 bindkey "^[[4~" end-of-line
 ##########################
@@ -78,13 +76,13 @@ bindkey "^[[4~" end-of-line
 # Add some colors to grep
 alias grep='grep --color=auto'
 # terraform switcher
-cdtfswitch(){
-  builtin cd "$@";
-  cdir=$PWD;
-  if [ -f "$cdir/.tfswitchrc" ]; then
-    tfswitch
-  fi
-}
+# cdtfswitch(){
+#   builtin cd "$@";
+#   cdir=$PWD;
+#   if [ -f "$cdir/.tfswitchrc" ]; then
+#     tfswitch
+#   fi
+# }
 alias cd='cdtfswitch'
 alias ls='ls -G'
 alias ll='ls -l'
@@ -173,8 +171,6 @@ assh() {
 #############
 export EDITOR="nvim"
 export GPG_TTY=$(tty)
-export NVM_DIR="$HOME/.nvm"
-  . "/usr/local/opt/nvm/nvm.sh"
 export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
 export PATH="/usr/local/sbin:$PATH"
 # go
@@ -193,6 +189,14 @@ export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 export PATH=/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin:$PATH
 # home directory bin path
 export PATH=$HOME/bin:$PATH
+# nvm
+# export NVM_DIR="$HOME/.nvm"
+#   . "/usr/local/opt/nvm/nvm.sh"
+# Add default node to path
+export PATH=/Users/danielschaaff/.nvm/versions/node/v14.17.0/bin:$PATH
+# Load NVM
+export NVM_DIR=/usr/local/opt/nvm/nvm.sh
+[[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
 #################
 # END VARIABLES #
 #################
@@ -209,10 +213,10 @@ export PATH=$HOME/bin:$PATH
 ###############
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle :compinstall filename '/Users/danielschaaff/.zshrc'
-# case insensitive path-completion 
-zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 
+# case insensitive path-completion
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
 # partial completion suggestions
-zstyle ':completion:*' list-suffixes zstyle ':completion:*' expand prefix suffix 
+zstyle ':completion:*' list-suffixeszstyle ':completion:*' expand prefix suffix
 
 autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
@@ -236,6 +240,3 @@ _evalcache rbenv init -
 #[[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
 
 autoload -U +X bashcompinit && bashcompinit
-eval "$(starship init zsh)"
-
-
