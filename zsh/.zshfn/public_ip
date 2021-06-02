@@ -1,0 +1,10 @@
+# Figure out my public IP
+public_ip () {
+    if command_exists lynx ; then
+        lynx -dump -hiddenlinks=ignore -nolist http://checkip.dyndns.org:8245/ | awk '{ print $4 }' | sed '/^$/d; s/^[ ]*//g; s/[ ]*$//g'
+    elif command_exists wget ; then
+        wget -qO- http://checkip.dyndns.org:8245/ | sed 's/[^0-9.]//g;'
+    else
+        curl -s http://checkip.dyndns.org:8245/ | sed 's/[^0-9.]//g;'
+    fi
+}

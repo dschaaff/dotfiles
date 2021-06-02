@@ -1,0 +1,4 @@
+# Figure out what's got open files... takes a while to run
+too_many_open_files() {
+  lsof | awk '{ print $1 }' | sort | uniq -c | sort -n
+}

@@ -104,68 +104,6 @@ alias vault-prd-usw2='VAULT_ADDR=https://vault.us-west-2.cordial.io:8200 VAULT_C
 # END ALIASES #
 ###############
 
-#############
-# FUNCTIONS #
-#############
-# NOTE: consider moving these to separate files in the fpath
-# Tests if a command is available within the PATH
-command_exists () {
-    type "$1" &> /dev/null ;
-}
-
-# Figure out my public IP
-public_ip () {
-    if command_exists lynx ; then
-        lynx -dump -hiddenlinks=ignore -nolist http://checkip.dyndns.org:8245/ | awk '{ print $4 }' | sed '/^$/d; s/^[ ]*//g; s/[ ]*$//g'
-    elif command_exists wget ; then
-        wget -qO- http://checkip.dyndns.org:8245/ | sed 's/[^0-9.]//g;'
-    else
-        curl -s http://checkip.dyndns.org:8245/ | sed 's/[^0-9.]//g;'
-    fi
-}
-
-# Regular Date to Unix Timestamp
-if command_exists ruby ; then
-    date2unix() {
-        local raw_date="$@"
-        ruby -e "require 'time'; puts Time.parse(\"$raw_date\").to_i"
-    }
-fi
-
-# Define a word
-if command_exists curl ; then
-    define() {
-        curl dict://dict.org/d:"$@"
-    }
-fi
-
-# Funny Stuff
-look_busy () {
-    cat /dev/urandom | hexdump -C | grep --color=auto "ca fe"
-}
-
-# Flush DNS cache
-flush_dns() {
-    sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
-}
-
-# Figure out what's got open files... takes a while to run
-too_many_open_files() {
-  lsof | awk '{ print $1 }' | sort | uniq -c | sort -n
-}
-
-getec2ip() {
-    aws ec2 describe-instances --instance-ids $1 | jq -r '.Reservations[0].Instances[0].PrivateIpAddress'
-}
-
-assh() {
-    host=$(getec2ip ${1})
-    ssh ${host}
-}
-#################
-# END FUNCTIONS #
-#################
-
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
 
 ###############
@@ -200,3 +138,13 @@ _evalcache rbenv init -
 #[[ ! -f ~/.dotfiles/zsh/.p10k.zsh ]] || source ~/.dotfiles/zsh/.p10k.zsh
 
 autoload -U +X bashcompinit && bashcompinit
+
+#############
+# FUNCTIONS #
+#############
+# autoload function files
+fpath=( ~/.zshfn "${fpath[@]}" )
+autoload -Uz $fpath[1]/*(.:t)
+#################
+# END FUNCTIONS #
+#################
