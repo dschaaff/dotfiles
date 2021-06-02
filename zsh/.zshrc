@@ -83,7 +83,7 @@ alias grep='grep --color=auto'
 #     tfswitch
 #   fi
 # }
-alias cd='cdtfswitch'
+# alias cd='cdtfswitch'
 alias ls='ls -G'
 alias ll='ls -l'
 alias vim='nvim'
@@ -166,48 +166,8 @@ assh() {
 # END FUNCTIONS #
 #################
 
-#############
-# VARIABLES #
-#############
-export EDITOR="nvim"
-export GPG_TTY=$(tty)
-export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
-export PATH="/usr/local/sbin:$PATH"
-# go
-export GOPATH=$HOME/go
-export GOROOT=/usr/local/opt/go/libexec
-export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
-
-JAVA_HOME=$(/usr/libexec/java_home)
-export JAVA_HOME
-# Python
-export PATH=$(brew --prefix python)/bin:$PATH
-# Sublime Text
-export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
-# Sublime Merge
-export PATH=/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin:$PATH
-# home directory bin path
-export PATH=$HOME/bin:$PATH
-# nvm
-# export NVM_DIR="$HOME/.nvm"
-#   . "/usr/local/opt/nvm/nvm.sh"
-# Add default node to path
-export PATH=/Users/danielschaaff/.nvm/versions/node/v14.17.0/bin:$PATH
-# Load NVM
-export NVM_DIR=/usr/local/opt/nvm/nvm.sh
 [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
-#################
-# END VARIABLES #
-#################
 
-###################
-# PROMPT SETTINGS #
-###################
-
-#######################
-# END PROMPT SETTINGS #
-######################## The following lines were added by compinstall
 ###############
 # COMPLETIONS #
 ###############
