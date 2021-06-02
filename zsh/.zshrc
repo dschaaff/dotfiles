@@ -109,12 +109,22 @@ alias vault-prd-usw2='VAULT_ADDR=https://vault.us-west-2.cordial.io:8200 VAULT_C
 ###############
 # COMPLETIONS #
 ###############
-zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
+zstyle ':completion:*' completer _extensions _expand _complete _ignored _correct _approximate
 zstyle :compinstall filename '/Users/danielschaaff/.zshrc'
+
 # case insensitive path-completion
 zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+
 # partial completion suggestions
 zstyle ':completion:*' list-suffixeszstyle ':completion:*' expand prefix suffix
+
+# Allow you to select in a menu
+zstyle ':completion:*' menu select
+
+# Autocomplete options for cd instead of directory stack
+zstyle ':completion:*' complete-options true
+
+zstyle ':completion:*' file-sort modification
 
 autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
