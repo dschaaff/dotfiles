@@ -31,6 +31,7 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'radenling/vim-dispatch-neovim' " needed for fugitive in vim
 Plug 'pearofducks/ansible-vim'
+Plug 'towolf/vim-helm'
 " ctags
 Plug 'majutsushi/tagbar'
 "Plug 'ludovicchabant/vim-gutentags'
