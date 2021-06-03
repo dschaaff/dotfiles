@@ -126,6 +126,9 @@ zstyle ':completion:*' complete-options true
 
 zstyle ':completion:*' file-sort modification
 
+# color output
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
 autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 zinit cdreplay -q
