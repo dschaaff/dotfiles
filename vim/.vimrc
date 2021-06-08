@@ -252,6 +252,9 @@ fun! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
+" vim-dockerfile not correctly setting filetype
+autocmd FileType dockerfile set ft=Dockerfile
+
 autocmd FileType c,cpp,java,php,ruby,python,yaml autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
