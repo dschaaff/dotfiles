@@ -50,6 +50,7 @@ zinit light mroth/evalcache
 ######################
 # Shell Opt SETTINGS #
 ######################
+bindkey -e
 # save history between terminal closes
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 # adds commands as they are typed, not at shell exit

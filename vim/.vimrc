@@ -1,22 +1,52 @@
-" in case I'm not running neovim
-"
-set nocompatible
-" normal backspace
-set backspace=indent,eol,start
-
 " no need filetype to load plugins
 filetype off
 
-let g:ale_disable_lsp = 1
+set number " show line numbers
+set relativenumber " use relative line numbers
+set ruler " show line number and column is status bar
+set autoread " Set to auto read when is changed outside vim
+set tabstop=4 " 4 spaces per tab
+set colorcolumn=120 " highlight 120 character limit
+set smarttab " use smart tabs http://vim.wikia.com/wiki/Indent_with_tabs,_align_with_spaces
+set smartindent
+set softtabstop=4 " number of spaces when editing
+set expandtab " spaces are better then tabs ;)
+set cursorline " highlight current line
+set wildmenu " visual autocomplete for command menu
+set lazyredraw " redraw only when we need to
+set showmatch " highlight matching brackets
+set hlsearch " highlight search matches, use :nohlsearch to turn off
+set incsearch " search as characters entered
+set ignorecase " ignore case when searching
+set whichwrap+=<,>,h,l,[,] " autowrap lines http://vim.wikia.com/wiki/Automatically_wrap_left_and_right
+set wildmenu " turn on wild menu completions
+set showmatch " show matching brackets
+set splitright " splits go to the right by default
+set splitbelow " splits go to bottom by default
+set signcolumn=yes " extra column for linters, lsp, etc.
+" Backup settings
+set noswapfile
+set nobackup
+set scrolloff=8 " start scrolling when 8 lines from bottom of file
+syntax on " syntax highlighting
+set encoding=utf8
+set mouse=a
+set laststatus=2 " always show status bar
+
 " plugins
+" auto-install vim-plug
+if empty(glob('~/.config/nvim/autoload/plug.vim'))
+  silent !curl -fLo ~/.config/nvim/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
+endif
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
-call plug#begin('~/.vim/plugged')
+call plug#begin()
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'mhinz/vim-startify'
 Plug 'w0rp/ale', { 'tag': 'v3.1.0' } " ale linter
-Plug 'sheerun/vim-polyglot', { 'tag': 'v4.16.0'} " language support, do I really need this?
 Plug 'airblade/vim-gitgutter'
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
 " Hashicorp stuff
@@ -42,7 +72,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary' " easily comment stuff in/out
-Plug 'tpope/vim-eunuch' " Unix file action sugar 
+Plug 'tpope/vim-eunuch' " Unix file action sugar
 " nerdtree stuff
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -81,24 +111,11 @@ call plug#end()
 if exists('g:loaded_polyglot')
     let g:polyglot_disabled = ['go']
 endif
-set number " show line numbers
-set autoread " Set to auto read when is changed outside vim
-set tabstop=4 " 4 spaces per tab
-set colorcolumn=120 " highlight 120 character limit
-set smarttab " use smart tabs http://vim.wikia.com/wiki/Indent_with_tabs,_align_with_spaces
-set softtabstop=4 " number of spaces when editing
-set expandtab " spaces are better then tabs ;)
-set cursorline " highlight current line
-set wildmenu " visual autocomplete for command menu
-set lazyredraw " redraw only when we need to
-set showmatch " highlight matching brackets
-set hlsearch " highlight search matches, use :nohlsearch to turn off
-set incsearch " search as characters entered
-set ignorecase " ignore case when searching
-set whichwrap+=<,>,h,l,[,] " autowrap lines http://vim.wikia.com/wiki/Automatically_wrap_left_and_right
-set wildmenu " turn on wild menu completions
-set showmatch " show matching brackets
-syntax on " syntax highlighting
+
+" set leader
+let mapleader = " "
+
+
 " load file type specific indent files
 filetype plugin on
 set foldmethod=syntax " fold code based on syntax by default
@@ -118,11 +135,17 @@ try
 catch
 endtry
 set background=dark
-set encoding=utf8
-set mouse=a
-set laststatus=2 " always show status bar
-" set leader
-:let mapleader = ","
+
+" vim hardcodes background color erase even if the terminfo file does
+" not contain bce (not to mention that libvte based terminals
+" incorrectly contain bce in their terminfo files). This causes
+" incorrect background rendering when using a color theme with a
+" background color.
+  let &t_ut=''
+
+
+
+ set guifont=Hack\ Nerd\ Font\ Mono\ Regular:h12
 
 """"""""""""""""""""""""""""
 " plugin specific settings "
@@ -177,10 +200,7 @@ let g:ale_fix_on_save = 1
 """""""""""
 set cmdheight=2
 set hidden
-set nobackup
-set nowritebackup
 set shortmess+=c
-set signcolumn=yes
 set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
@@ -199,6 +219,12 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+
+if has('nvim')
+  " We have to do this to fix a bug with Neovim on OS X where C-h
+  " is sent as backspace for some reason.
+  nnoremap <BS> <C-W>h
+endif
 
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
@@ -244,7 +270,7 @@ com! FormatJSON %!jq .
 "     autocmd stuff        "
 """"""""""""""""""""""""""""
 
-autocmd FileType jenkinsfile setlocal commentstring=#\ %s
+
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
@@ -252,10 +278,15 @@ fun! <SID>StripTrailingWhitespaces()
     call cursor(l, c)
 endfun
 
-" vim-dockerfile not correctly setting filetype
-autocmd FileType dockerfile set ft=Dockerfile
+" keep auto commands grouped to avoid sourcing multiple times
+augroup MY_STUFF
+  autocmd FileType jenkinsfile setlocal commentstring=#\ %s
+  " vim-dockerfile not correctly setting filetype
+  autocmd FileType dockerfile set ft=Dockerfile
+  autocmd BufWritePre * :call StripTrailingWhitespaces()
+augroup END
 
-autocmd FileType c,cpp,java,php,ruby,python,yaml autocmd BufWritePre <buffer> :call <SID>StripTrailingWhitespaces()
+
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 silent! helptags ALL

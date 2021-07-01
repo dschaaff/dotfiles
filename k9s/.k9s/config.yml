@@ -14,8 +14,8 @@ k9s:
     fullScreenLogs: false
     textWrap: false
     showTime: false
-  currentContext: prd
-  currentCluster: arn:aws:eks:us-west-1:063772531253:cluster/prd
+  currentContext: stg
+  currentCluster: stg
   clusters:
     arn:aws:eks:us-west-1:063772531253:cluster/prd:
       namespace:
@@ -60,8 +60,9 @@ k9s:
       portForwardAddress: localhost
     dev:
       namespace:
-        active: monitoring
+        active: cordial-core-sr-807-ct-sidecar
         favorites:
+        - cordial-core-sr-807-ct-sidecar
         - gitlab
         - monitoring
         - cordial-core-master
@@ -69,7 +70,7 @@ k9s:
         - all
         - default
       view:
-        active: po monitoring
+        active: po cordial-core-sr-807-ct-sidecar
       featureGates:
         nodeShell: false
       shellPod:
@@ -83,14 +84,15 @@ k9s:
       portForwardAddress: localhost
     stg:
       namespace:
-        active: monitoring
+        active: core-internal
         favorites:
+        - core-internal
         - monitoring
         - logging
         - external-dns
         - default
       view:
-        active: po monitoring
+        active: po core-internal
       featureGates:
         nodeShell: false
       shellPod:

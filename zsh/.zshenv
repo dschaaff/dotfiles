@@ -10,6 +10,10 @@ export PATH=$PATH:$GOROOT/bin
 
 JAVA_HOME=$(/usr/libexec/java_home)
 export JAVA_HOME
+
+# helm
+export HELM_EXPERIMENTAL_OCI=1
+
 # Python
 export PATH=$(/usr/local/bin/brew --prefix python)/bin:$PATH
 # Sublime Text
