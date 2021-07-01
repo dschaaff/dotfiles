@@ -45,6 +45,9 @@ endif
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin()
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'akinsho/nvim-toggleterm.lua'
+
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'mhinz/vim-startify'
 Plug 'airblade/vim-gitgutter'
