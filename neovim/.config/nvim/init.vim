@@ -48,9 +48,17 @@ call plug#begin()
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'akinsho/nvim-toggleterm.lua'
 
+Plug 'neovim/nvim-lspconfig'
+
+Plug 'hrsh7th/nvim-compe'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+
 Plug 'vim-scripts/AnsiEsc.vim'
 Plug 'mhinz/vim-startify'
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
+Plug 'mhinz/vim-signify'
+
 Plug 'ekalinin/Dockerfile.vim', { 'for': 'Dockerfile' }
 " Hashicorp stuff
 Plug 'hashivim/vim-terraform', { 'for': 'terraform' }
@@ -178,3 +186,8 @@ augroup END
 " Load all of the helptags now, after plugins have been loaded.
 " All messages and errors will be ignored.
 silent! helptags ALL
+
+if has("nvim")
+    lua require("lsp-config")
+    lua require("compe-config")
+endif
