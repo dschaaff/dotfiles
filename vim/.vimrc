@@ -283,7 +283,7 @@ augroup MY_STUFF
   autocmd FileType jenkinsfile setlocal commentstring=#\ %s
   " vim-dockerfile not correctly setting filetype
   autocmd FileType dockerfile set ft=Dockerfile
-  autocmd BufWritePre * :call StripTrailingWhitespaces()
+  autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 augroup END
 
 

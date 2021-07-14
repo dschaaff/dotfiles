@@ -49,8 +49,9 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend upda
 Plug 'akinsho/nvim-toggleterm.lua'
 
 Plug 'neovim/nvim-lspconfig'
-
+" compe provides autocompletion
 Plug 'hrsh7th/nvim-compe'
+" vnsip for lsp snippet completions
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 
@@ -191,3 +192,16 @@ if has("nvim")
     lua require("lsp-config")
     lua require("compe-config")
 endif
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "javascript" }, -- List of parsers to ignore installing
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+  indent = {
+    enable = true,
+  },
+}
+EOF

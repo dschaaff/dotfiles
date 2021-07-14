@@ -1,2 +1,2 @@
 colorscheme nord
-set guifont=InputMono-Regular:h12
+set guifont=HackNerdFontCompleteM
