@@ -15,7 +15,7 @@ export JAVA_HOME
 export HELM_EXPERIMENTAL_OCI=1
 
 # Python
-export PATH=$(/usr/local/bin/brew --prefix python)/bin:$PATH
+export PATH=/usr/local/opt/python@3.9/bin:$PATH
 # Sublime Text
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 # Sublime Merge
