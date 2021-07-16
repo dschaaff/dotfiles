@@ -110,6 +110,12 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'edkolev/tmuxline.vim'
+
+" trying out telescope
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 " undotree to make undo history easier
  Plug 'mbbill/undotree', {'tag': 'rel_6.1'}
 " file icons
@@ -155,6 +161,11 @@ let &t_ut=''
 
 " show hidden files in fzf
 let $FZF_DEFAULT_COMMAND = 'rg --hidden --glob ''!.git'' -l ""'
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --hidden --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   fzf#vim#with_preview(), <bang>0)
+
 " ctrp settings
 let g:ctrlp_show_hidden=1
 let g:terraform_fmt_on_save=1
