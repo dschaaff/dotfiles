@@ -45,7 +45,7 @@ endif
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin()
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'akinsho/nvim-toggleterm.lua'
 
 Plug 'neovim/nvim-lspconfig'
@@ -192,6 +192,8 @@ augroup MY_STUFF
   " vim-dockerfile not correctly setting filetype
   autocmd FileType dockerfile set ft=Dockerfile
   autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType yaml setlocal indentkeys-=<:>
 augroup END
 
 
