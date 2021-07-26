@@ -41,6 +41,8 @@ if empty(glob('~/.config/nvim/autoload/plug.vim'))
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall
 endif
+" don't use lsp in ale
+let g:ale_disable_lsp = 1
 " Specify a directory for plugins
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
@@ -48,7 +50,8 @@ call plug#begin()
 Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}  " We recommend updating the parsers on update
 Plug 'akinsho/nvim-toggleterm.lua'
 
-Plug 'neovim/nvim-lspconfig'
+" Plug 'neovim/nvim-lspconfig'
+
 " compe provides autocompletion
 Plug 'hrsh7th/nvim-compe'
 " vnsip for lsp snippet completions
@@ -85,6 +88,12 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary' " easily comment stuff in/out
 Plug 'tpope/vim-eunuch' " Unix file action sugar
+" better git commit window
+Plug 'rhysd/committia.vim'
+
+" linting support
+Plug 'dense-analysis/ale', { 'tag': 'v3.1.0' }
+
 " nerdtree stuff
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
@@ -92,7 +101,6 @@ Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'Yggdroot/indentLine' " ablity to toggle indent guides
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-" Plug 'itchyny/lightline.vim'
 " ruby and rails
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
@@ -120,6 +128,7 @@ Plug 'nvim-telescope/telescope.nvim'
  Plug 'mbbill/undotree', {'tag': 'rel_6.1'}
 " file icons
 Plug 'ryanoasis/vim-devicons'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 "disable polygot for golang
 if exists('g:loaded_polyglot')
@@ -176,6 +185,12 @@ if has('nvim')
   nnoremap <BS> <C-W>h
 endif
 
+"""""""""""""""""""""""""""
+"       ale settings       "
+""""""""""""""""""""""""""""
+let g:ale_fix_on_save = 1
+" end ale "
+
 """"""""""""""""""""""""""""
 "     autocmd stuff        "
 """"""""""""""""""""""""""""
@@ -194,7 +209,26 @@ augroup MY_STUFF
   autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
   autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
   autocmd FileType yaml setlocal indentkeys-=<:>
+  autocmd FileType helm setlocal ts=2 sts=2 sw=2 expandtab
+  autocmd FileType helm setlocal indentkeys-=<:>
 augroup END
+
+" using plugin committia in place of this for now
+" autocmd VimEnter COMMIT_EDITMSG call OpenCommitMessageDiff()
+" function OpenCommitMessageDiff()
+"   try
+"     " Remove 'vert' if you want it horizontally split.
+"     :vert Git diff --cached
+
+"     " Fix-up tmp buffer
+"     set filetype=diff noswapfile nomodified readonly
+"     silent file [Changes\ to\ be\ committed]
+
+"   endtry
+
+"   " Get back to the commit message
+"   wincmd p
+" endfunction
 
 
 " Load all of the helptags now, after plugins have been loaded.
@@ -202,7 +236,7 @@ augroup END
 silent! helptags ALL
 
 if has("nvim")
-    lua require("lsp-config")
+    " lua require("lsp-config")
     lua require("compe-config")
 endif
 
