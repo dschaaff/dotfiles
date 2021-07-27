@@ -92,15 +92,7 @@ alias vi='nvim'
 alias kcl='kubectl'
 alias ktl='kubectl'
 
-alias consul-dev='CONSUL_HTTP_ADDR=https://consul-ui.dev.cordialdev.com  consul'
-alias consul-stg='CONSUL_HTTP_ADDR=https://consul-ui.stg.cordialdev.com consul'
-alias consul-prd='CONSUL_HTTP_ADDR=https://consul-ui.ops.cordial.io consul'
-alias consul-prd-usw2='CONSUL_HTTP_ADDR=https://consul-ui.us-west-2.cordial.io consul'
-
-alias vault-dev='VAULT_ADDR=https://vault.dev.cordialdev.com:8200 vault'
-alias vault-stg='VAULT_ADDR=https://vault.stg.cordialdev.com:8200 VAULT_CACERT=~/.vault-cli/stg/ca.crt vault'
-alias vault-prd='VAULT_ADDR=https://vault.ops.cordial.io:8200 VAULT_CACERT=~/.vault-cli/prd/ca.crt vault'
-alias vault-prd-usw2='VAULT_ADDR=https://vault.us-west-2.cordial.io:8200 VAULT_CACERT=~/.vault-cli/prd/us-west-2/ca.crt vault'
+source .cordial.sh
 ###############
 # END ALIASES #
 ###############
