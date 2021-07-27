@@ -1,21 +1,32 @@
 {
- "diagnostic.displayByAle": true,
- "intelephense.licenceKey": "000R1LK5YBUM5D5",
-  "yaml.schemas": {
-    "kubernetes": "/*.yaml"
-  },
-  "languageserver": {
-    "terraform": {
-      "command": "terraform-ls",
-      "args": [
-        "serve"
-      ],
-      "filetypes": [
-        "terraform",
-        "tf"
-      ],
-      "initializationOptions": {},
-      "settings": {}
+    "diagnostic.displayByAle": true,
+    "intelephense.licenceKey": "000R1LK5YBUM5D5",
+    "yaml.customTags": [
+        "!reference sequence"
+    ],
+    "yaml.schemas": {
+        "kubernetes": "/*.yaml"
+    },
+    "languageserver": {
+        "terraform": {
+            "command": "terraform-ls",
+            "args": [
+                "serve"
+            ],
+            "filetypes": [
+                "terraform",
+                "tf"
+            ],
+            "initializationOptions": {},
+            "settings": {}
+        }
+    },
+    "explorer": {
+        "file": {
+            "showHiddenFiles": true
+        },
+        "icon": {
+            "enableNerdfont": true
+        }
     }
-  }
 }
