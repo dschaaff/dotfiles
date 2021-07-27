@@ -98,7 +98,8 @@ Plug 'dense-analysis/ale', { 'tag': 'v3.1.0' }
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'Yggdroot/indentLine' " ablity to toggle indent guides
+" Plug 'Yggdroot/indentLine' " ablity to toggle indent guides
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 " ruby and rails
