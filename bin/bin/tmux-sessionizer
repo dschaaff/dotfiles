@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+if [[ $# -eq 1 ]]; then
+    selected=$1
+else
+    items=`find ~/development -maxdepth 1 -mindepth 1 -type d`
+    items+=`find ~/development/cordial -maxdepth 1 -mindepth 1 -type d`
+    items+=`find ~/development/cordial/ansible-roles -maxdepth 1 -mindepth 1 -type d`
+    items+=`find ~/development/cordial/docker-images -maxdepth 1 -mindepth 1 -type d`
+    items+=`find ~/development/cordial/helm -maxdepth 1 -mindepth 1 -type d`
+    items+=`find ~/development/cordial/packer -maxdepth 1 -mindepth 1 -type d`
+    items+=`find ~/development/terraform/environments -maxdepth 1 -mindepth 1 -type d`
+    items+=`find ~/development/terraform/modules -maxdepth 1 -mindepth 1 -type d`
+    items+=("$HOME/development")
+    items+=("$HOME/development/cordial")
+    items+=("$HOME/.dotfiles")
+    selected=`echo "$items" | fzf`
+fi
+
+tmux_session_name=`basename $selected | tr . _`
+
+tmux switch-client -t $tmux_session_name
+if [[ $? -eq 0 ]]; then
+    exit 0
+fi
+
+tmux new-session -c $selected -d -s $tmux_session_name && tmux switch-client -t $tmux_session_name || tmux new -c $selected -A -s $tmux_session_name
+
+

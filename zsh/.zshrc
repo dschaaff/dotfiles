@@ -70,6 +70,8 @@ bindkey "^[[4~" end-of-line
 # END Shell Opt SETTINGS #
 ##########################
 
+# use ctrl f to jump into tmux sessions
+bindkey -s ^f "tmux-sessionizer\n"
 
 ###########
 # ALIASES #
