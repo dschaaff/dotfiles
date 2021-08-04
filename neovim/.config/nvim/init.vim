@@ -53,7 +53,7 @@ Plug 'akinsho/nvim-toggleterm.lua'
 " Plug 'neovim/nvim-lspconfig'
 
 " compe provides autocompletion
-Plug 'hrsh7th/nvim-compe'
+" Plug 'hrsh7th/nvim-compe'
 " vnsip for lsp snippet completions
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
@@ -117,7 +117,6 @@ Plug 'arcticicestudio/nord-vim'
 " Search Stuff
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'edkolev/tmuxline.vim'
 
 " trying out telescope
@@ -178,6 +177,7 @@ command! -bang -nargs=* Rg
 
 " ctrp settings
 let g:ctrlp_show_hidden=1
+
 let g:terraform_fmt_on_save=1
 
 if has('nvim')
@@ -192,6 +192,10 @@ endif
 let g:ale_fix_on_save = 1
 " end ale "
 
+""""""""""""""""""""""
+"     mappings       "
+""""""""""""""""""""""
+nnoremap <silent> <C-p> :Files<CR>
 """"""""""""""""""""""""""""
 "     autocmd stuff        "
 """"""""""""""""""""""""""""
@@ -238,7 +242,7 @@ silent! helptags ALL
 
 if has("nvim")
     " lua require("lsp-config")
-    lua require("compe-config")
+    " lua require("compe-config")
 endif
 
 lua <<EOF
