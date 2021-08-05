@@ -94,7 +94,7 @@ alias vi='nvim'
 alias kcl='kubectl'
 alias ktl='kubectl'
 
-source .cordial.sh
+source $HOME/.cordial.sh
 ###############
 # END ALIASES #
 ###############
