@@ -24,7 +24,7 @@ set wildmenu " turn on wild menu completions
 set showmatch " show matching brackets
 set splitright " splits go to the right by default
 set splitbelow " splits go to bottom by default
-set signcolumn=yes " extra column for linters, lsp, etc.
+set signcolumn=auto " extra column for linters, lsp, etc.
 " Backup settings
 set noswapfile
 set nobackup
