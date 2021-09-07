@@ -88,6 +88,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary' " easily comment stuff in/out
 Plug 'tpope/vim-eunuch' " Unix file action sugar
+Plug 'tpope/vim-rsi' " readline shortcut keys in insert mode
 " better git commit window
 Plug 'rhysd/committia.vim'
 

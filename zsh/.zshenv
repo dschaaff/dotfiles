@@ -13,7 +13,7 @@ export JAVA_HOME
 
 # helm
 export HELM_EXPERIMENTAL_OCI=1
-
+export KUBEVAL_SCHEMA_LOCATION=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 # Python
 export PATH=/usr/local/opt/python@3.9/bin:$PATH
 # Sublime Text
