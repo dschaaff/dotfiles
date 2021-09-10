@@ -2,6 +2,8 @@ export EDITOR="nvim"
 export GPG_TTY=$(tty)
 export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
 export PATH="/usr/local/sbin:$PATH"
+# homebrew m1 mac
+export PATH="/opt/homebrew/bin:$PATH"
 # go
 export GOPATH=$HOME/go
 export GOROOT=/usr/local/opt/go/libexec
