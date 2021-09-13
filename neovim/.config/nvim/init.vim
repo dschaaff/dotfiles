@@ -59,7 +59,6 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 
 Plug 'vim-scripts/AnsiEsc.vim'
-Plug 'mhinz/vim-startify'
 " Plug 'airblade/vim-gitgutter'
 Plug 'mhinz/vim-signify'
 
@@ -154,7 +153,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 try
-  colorscheme onedark
+  colorscheme nord
 catch
 endtry
 
@@ -197,6 +196,7 @@ let g:ale_fix_on_save = 1
 "     mappings       "
 """"""""""""""""""""""
 nnoremap <silent> <C-p> :Files<CR>
+nnoremap <silent> <C-b> :Buffers<CR>
 """"""""""""""""""""""""""""
 "     autocmd stuff        "
 """"""""""""""""""""""""""""
@@ -213,10 +213,9 @@ augroup MY_STUFF
   " vim-dockerfile not correctly setting filetype
   autocmd FileType dockerfile set ft=Dockerfile
   autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
-  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType yaml setlocal indentkeys-=<:>
-  autocmd FileType helm setlocal ts=2 sts=2 sw=2 expandtab
-  autocmd FileType helm setlocal indentkeys-=<:>
+  au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=<:> indentkeys-=0# indentkeys-=<:>
+  autocmd FileType helm setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=<:> indentkeys-=0# indentkeys-=<:>
 augroup END
 
 " using plugin committia in place of this for now

@@ -4,6 +4,7 @@ let NERDTreeShowHidden=1
 " Nerdtree specific mappings
 map <leader>ntt :NERDTreeToggle<CR>
 map <leader>nts :NERDTreeFind<CR>
+map <leader>ntf :NERDTreeFocus<CR>
 
 " keep auto commands grouped to avoid sourcing multiple times
 augroup my_nerdtree

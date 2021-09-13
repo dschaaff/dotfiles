@@ -12,4 +12,4 @@ let g:airline#extensions#gutentags#enabled = 1
 " straight separators
 let g:airline_left_sep=' '
 let g:airline_right_sep=' '
-let g:airline_theme='onedark'
+let g:airline_theme='nord'
