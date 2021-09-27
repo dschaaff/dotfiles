@@ -75,7 +75,6 @@ Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'radenling/vim-dispatch-neovim' " needed for fugitive in neovim
 Plug 'pearofducks/ansible-vim'
-Plug 'towolf/vim-helm'
 " ctags
 Plug 'majutsushi/tagbar'
 "Plug 'ludovicchabant/vim-gutentags'
@@ -124,6 +123,7 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
+Plug 'towolf/vim-helm'
 " undotree to make undo history easier
  Plug 'mbbill/undotree', {'tag': 'rel_6.1'}
 " file icons
@@ -172,7 +172,7 @@ let &t_ut=''
 let $FZF_DEFAULT_COMMAND = 'rg --hidden --glob ''!.git'' -l ""'
 command! -bang -nargs=* Rg
   \ call fzf#vim#grep(
-  \   'rg --hidden --column --line-number --no-heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
+  \   'rg --hidden --column --line-number --no-heading --color=always --smart-case --glob ''!.git/*'' -- '.shellescape(<q-args>), 1,
   \   fzf#vim#with_preview(), <bang>0)
 
 " ctrp settings
@@ -257,3 +257,6 @@ require'nvim-treesitter.configs'.setup {
   },
 }
 EOF
+
+
+set signcolumn=auto " extra column for linters, lsp, etc.
