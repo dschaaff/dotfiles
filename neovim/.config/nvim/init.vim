@@ -105,6 +105,7 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-endwise', { 'for': 'ruby' }
+
 " themes
 Plug 'romainl/flattened' " solarized variant
 Plug 'iCyMind/NeoSolarized'
@@ -214,6 +215,7 @@ augroup MY_STUFF
   autocmd FileType dockerfile set ft=Dockerfile
   autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
   au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+  autocmd BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl set ft=helm
   autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=<:> indentkeys-=0# indentkeys-=<:>
   autocmd FileType helm setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=<:> indentkeys-=0# indentkeys-=<:>
 augroup END
@@ -258,5 +260,3 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-
-set signcolumn=auto " extra column for linters, lsp, etc.
