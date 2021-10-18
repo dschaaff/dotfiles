@@ -41,6 +41,7 @@ export ZSH_AUTOSUGGEST_USE_ASYNC=true
 zinit ice wait lucid atload'_zsh_autosuggest_start'; zinit light zsh-users/zsh-autosuggestions
 zinit ice wait; zinit light 3v1n0/zsh-bash-completions-fallback
 zinit ice wait; zinit light zsh-users/zsh-completions
+zinit ice wait; zinit light agkozak/zsh-z
 zinit light mroth/evalcache
 
 ###############
