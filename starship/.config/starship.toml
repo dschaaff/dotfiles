@@ -1,0 +1,62 @@
+format = """
+$kubernetes\
+$line_break\
+$gcloud\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$hg_branch\
+$memory_usage\
+$env_var\
+$custom\
+$cmd_duration\
+$line_break\
+$jobs\
+$time\
+$status\
+$character"""
+
+right_format = """
+$aws\
+$docker_context\
+$package\
+$golang\
+$helm\
+$java\
+$nodejs\
+$php\
+$python\
+$ruby\
+$rust\
+$swift\
+$terraform\
+$nix_shell\
+$gcloud"""
+
+[aws]
+format = 'on [$symbol$region$profile]($style) '
+[aws.region_aliases]
+us-west-2 = "usw2"
+us-west-1 = "usw1"
+
+[directory]
+truncation_length = 5
+truncate_to_repo = false
+
+[kubernetes]
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style) '
+style = "blue bold"
+
+[status]
+disabled = false
+
+[terraform]
+disabled = false
+format = "via [$symbol$version]($style) "
+
+[time]
+disabled = false
+format = "[$time]($style) "
