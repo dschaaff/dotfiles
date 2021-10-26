@@ -90,13 +90,16 @@ Plug 'tpope/vim-rsi' " readline shortcut keys in insert mode
 " better git commit window
 Plug 'rhysd/committia.vim'
 
+Plug 'rhysd/conflict-marker.vim' " git conflict marker
+
 " linting support
 Plug 'dense-analysis/ale', { 'tag': 'v3.1.0' }
 
-" nerdtree stuff
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" nvim tree
+Plug 'kyazdani42/nvim-web-devicons' " for file icons
+Plug 'kyazdani42/nvim-tree.lua'
+
+" ofumo/vim-nerdtree-syntax-highlight'
 " Plug 'Yggdroot/indentLine' " ablity to toggle indent guides
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'vim-airline/vim-airline'
