@@ -157,7 +157,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 try
-  colorscheme nord
+  colorscheme onedark
 catch
 endtry
 
