@@ -117,12 +117,11 @@ Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'mhartington/oceanic-next'
 Plug 'arcticicestudio/nord-vim'
-" Search Stuff
-Plug '/usr/local/opt/fzf'
-Plug 'junegunn/fzf.vim'
+
 Plug 'edkolev/tmuxline.vim'
 
 " trying out telescope
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
@@ -199,8 +198,8 @@ let g:ale_fix_on_save = 1
 """"""""""""""""""""""
 "     mappings       "
 """"""""""""""""""""""
-nnoremap <silent> <C-p> :Files<CR>
-nnoremap <silent> <C-b> :Buffers<CR>
+nnoremap <silent> <C-p> :Telescope git_files<CR>
+nnoremap <silent> <C-b> :Telescope buffers<CR>
 """"""""""""""""""""""""""""
 "     autocmd stuff        "
 """"""""""""""""""""""""""""
@@ -248,6 +247,7 @@ silent! helptags ALL
 if has("nvim")
     " lua require("lsp-config")
     " lua require("compe-config")
+    lua require("telescope-config")
 endif
 
 lua <<EOF
