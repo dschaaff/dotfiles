@@ -25,6 +25,8 @@ set showmatch " show matching brackets
 set splitright " splits go to the right by default
 set splitbelow " splits go to bottom by default
 set signcolumn=auto " extra column for linters, lsp, etc.
+set termguicolors
+set guifont=HackNerdFontCompleteM
 " Backup settings
 set noswapfile
 set nobackup
@@ -156,7 +158,7 @@ if (has("termguicolors"))
  set termguicolors
 endif
 try
-  colorscheme onedark
+  colorscheme nord
 catch
 endtry
 
