@@ -68,7 +68,7 @@ brew "k2tf"
 brew "k6"
 brew "k9s"
 brew "kind"
-brew "kubernetes-cli"@1.22
+brew "kubernetes-cli@1.22"
 brew "kops"
 brew "kubectx"
 brew "kubie"
