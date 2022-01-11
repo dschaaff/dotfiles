@@ -105,7 +105,7 @@ complete -o nospace -C /usr/local/bin/vault vault
 # END COMPLETIONS #
 ###################
 
-_evalcache rbenv init -
+# _evalcache rbenv init -
 
 autoload -U +X bashcompinit && bashcompinit
 
