@@ -1,0 +1,50 @@
+[user]
+	email = daniel@danielschaaff.com
+	name = Daniel Schaaff
+	signingkey = D69147D1
+[commit]
+	gpgsign = true
+	verbose = false
+[includeIf "gitdir:~/development/work/"]
+  path = ~/.workGitconfig
+[core]
+	excludesfile = /Users/danielschaaff/.gitignore_global
+	pager = diff-so-fancy | less --tabs=4 -RFX
+
+[interactive]
+	diffFilter = diff-so-fancy --patc
+
+[merge]
+  tool = "Sublime Merge"
+
+[mergetool "Sublime Merge"]
+  cmd = smerge mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
+
+[url "git@gitlab.com:"]
+	insteadOf = https://gitlab.com/
+
+[color]
+	ui = true
+
+[gpg]
+	program = /usr/local/MacGPG2/bin/gpg2
+
+[tag]
+	forceSignAnnotated = true
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[init]
+	defaultBranch = main
