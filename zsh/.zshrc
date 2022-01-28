@@ -29,9 +29,10 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
 
-# home and end keys
-bindkey "^[[1~" beginning-of-line
-bindkey "^[[4~" end-of-line
+# home, end, and delete keys
+bindkey '\e[H' beginning-of-line
+bindkey "^[[F"  end-of-line
+bindkey "^[[3~" delete-char
 ##########################
 # END Shell Opt SETTINGS #
 ##########################
