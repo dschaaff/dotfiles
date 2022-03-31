@@ -82,6 +82,7 @@ brew "mkcert"
 brew "protobuf"
 brew "mitmproxy"
 brew "mosh"
+brew "nss" # used for mkcert to install ca for firefox
 brew "tree-sitter"
 brew "neovim"
 brew "nghttp2"
