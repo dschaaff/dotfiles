@@ -24,19 +24,13 @@ $docker_context\
 $package\
 $golang\
 $helm\
-$java\
-$nodejs\
-$php\
 $python\
-$ruby\
-$rust\
-$swift\
 $terraform\
 $nix_shell\
 $gcloud"""
 
 [aws]
-format = 'on [$symbol$region$profile]($style) '
+format = 'on [$symbol $region $profile]($style) '
 [aws.region_aliases]
 us-west-2 = "usw2"
 us-west-1 = "usw1"

@@ -26,7 +26,7 @@ set splitright " splits go to the right by default
 set splitbelow " splits go to bottom by default
 set signcolumn=auto " extra column for linters, lsp, etc.
 set termguicolors
-set guifont=Hack_Regular_Nerd_Font_Complete_Mono:h13
+set guifont=Hack_Regular_Nerd_Font_Complete_Mono:h12
 " Backup settings
 set noswapfile
 set nobackup
@@ -96,7 +96,7 @@ Plug 'rhysd/committia.vim'
 Plug 'rhysd/conflict-marker.vim' " git conflict marker
 
 " linting support
-Plug 'dense-analysis/ale', { 'tag': 'v3.1.0' }
+Plug 'dense-analysis/ale', { 'tag': 'v3.2.0' }
 
 " nvim tree
 Plug 'kyazdani42/nvim-web-devicons' " for file icons

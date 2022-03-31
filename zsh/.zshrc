@@ -119,3 +119,6 @@ autoload -Uz $fpath[1]/*(.:t)
 #################
 # END FUNCTIONS #
 #################
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
