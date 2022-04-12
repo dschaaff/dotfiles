@@ -123,6 +123,9 @@ Plug 'arcticicestudio/nord-vim'
 
 Plug 'edkolev/tmuxline.vim'
 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 " trying out telescope
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'nvim-lua/popup.nvim'

@@ -24,6 +24,9 @@ export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 export PATH=/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin:$PATH
 # home directory bin path
 export PATH=$HOME/bin:$PATH
+# kubectl krew
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
 # nvm
 # export NVM_DIR="$HOME/.nvm"
 #   . "/usr/local/opt/nvm/nvm.sh"
