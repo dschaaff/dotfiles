@@ -34,3 +34,4 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH=/Users/danielschaaff/.nvm/versions/node/v14.17.0/bin:$PATH
 # Load NVM
 export NVM_DIR=/usr/local/opt/nvm/nvm.sh
+alias assume="source assume"

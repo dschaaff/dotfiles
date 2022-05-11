@@ -60,6 +60,7 @@ alias vim='nvim'
 alias vi='nvim'
 alias kcl='kubectl'
 alias ktl='kubectl'
+alias tflock='terraform providers lock -platform=darwin_arm64 -platform=darwin_amd64 -platform=linux_arm64 -platform=linux_amd64'
 
 if [ -f "$HOME/.cordial.sh" ]; then
     source $HOME/.cordial.sh
@@ -109,6 +110,12 @@ complete -o nospace -C /usr/local/bin/vault vault
 # _evalcache rbenv init -
 
 autoload -U +X bashcompinit && bashcompinit
+
+######################################
+# SET A HIGHER SOFT ULIMIT FOR SHELL #
+######################################
+
+ulimit -Sf unlimited
 
 #############
 # FUNCTIONS #

@@ -83,6 +83,7 @@ Plug 'majutsushi/tagbar'
 "Plug 'ludovicchabant/vim-gutentags'
 " tpope goodness
 Plug 'tpope/vim-fugitive' " git commands in vim
+Plug 'shumphrey/fugitive-gitlab.vim' " fugitive open gitlab repo
 Plug 'tpope/vim-dispatch' " needed for ^ in neovim
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
