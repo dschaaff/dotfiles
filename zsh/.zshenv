@@ -26,7 +26,8 @@ export PATH=/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin:$PATH
 export PATH=$HOME/bin:$PATH
 # kubectl krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-
+# rancher desktop nerdctl
+ export PATH="$HOME/.rd/bin:$PATH"
 # nvm
 # export NVM_DIR="$HOME/.nvm"
 #   . "/usr/local/opt/nvm/nvm.sh"
