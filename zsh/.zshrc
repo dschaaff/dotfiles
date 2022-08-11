@@ -58,6 +58,7 @@ alias ls='ls -G'
 alias ll='ls -l'
 alias vim='nvim'
 alias vi='nvim'
+alias k='kubectl'
 alias kcl='kubectl'
 alias ktl='kubectl'
 alias tflock='terraform providers lock -platform=darwin_arm64 -platform=darwin_amd64 -platform=linux_arm64 -platform=linux_amd64'
@@ -101,7 +102,8 @@ source <(kubectl completion zsh)
 complete -F __start_kubectl kcl
 complete -F __start_kubectl ktl
 
-complete -C '/usr/local/bin/aws_completer' aws
+complete -C '/opt/homebrew/bin/aws_completer' aws
+complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
 ###################
 # END COMPLETIONS #
@@ -170,3 +172,7 @@ export PATH=/Users/danielschaaff/.nvm/versions/node/v14.17.0/bin:$PATH
 # Load NVM
 export NVM_DIR=/usr/local/opt/nvm/nvm.sh
 alias assume="source assume"
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/danielschaaff/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
