@@ -1,3 +1,4 @@
+
 " no need filetype to load plugins
 filetype off
 
@@ -49,13 +50,21 @@ let g:ale_disable_lsp = 1
 " - For Neovim: ~/.local/share/nvim/plugged
 " - Avoid using standard Vim directory names like 'plugin'
 call plug#begin()
-Plug 'nvim-treesitter/nvim-treesitter', {'branch': '0.5-compat', 'do': ':TSUpdate'}  " We recommend updating the parsers on update
+Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }  " We recommend updating the parsers on update
 Plug 'akinsho/nvim-toggleterm.lua'
 
-" Plug 'neovim/nvim-lspconfig'
+Plug 'neovim/nvim-lspconfig'
 
-" compe provides autocompletion
-" Plug 'hrsh7th/nvim-compe'
+" cmp provides autocompletion
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+Plug 'hrsh7th/cmp-nvim-lsp-document-symbol'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'petertriho/cmp-git'
+Plug 'onsails/lspkind.nvim'
+
 " vnsip for lsp snippet completions
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
@@ -97,7 +106,7 @@ Plug 'rhysd/committia.vim'
 Plug 'rhysd/conflict-marker.vim' " git conflict marker
 
 " linting support
-Plug 'dense-analysis/ale', { 'tag': 'v3.2.0' }
+" Plug 'dense-analysis/ale', { 'tag': 'v3.2.0' }
 
 " nvim tree
 Plug 'kyazdani42/nvim-web-devicons' " for file icons
@@ -106,8 +115,9 @@ Plug 'kyazdani42/nvim-tree.lua'
 " ofumo/vim-nerdtree-syntax-highlight'
 " Plug 'Yggdroot/indentLine' " ablity to toggle indent guides
 Plug 'lukas-reineke/indent-blankline.nvim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-lualine/lualine.nvim'
 " ruby and rails
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
@@ -120,7 +130,8 @@ Plug 'lifepillar/vim-solarized8'
 Plug 'joshdick/onedark.vim'
 Plug 'KeitaNakamura/neodark.vim'
 Plug 'mhartington/oceanic-next'
-Plug 'arcticicestudio/nord-vim'
+" Plug 'arcticicestudio/nord-vim'
+Plug 'shaunsingh/nord.nvim'
 
 Plug 'edkolev/tmuxline.vim'
 
@@ -138,7 +149,7 @@ Plug 'towolf/vim-helm'
  Plug 'mbbill/undotree', {'tag': 'rel_6.1'}
 " file icons
 Plug 'ryanoasis/vim-devicons'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 "disable polygot for golang
 if exists('g:loaded_polyglot')
@@ -199,7 +210,7 @@ endif
 """""""""""""""""""""""""""
 "       ale settings       "
 """"""""""""""""""""""""""""
-let g:ale_fix_on_save = 1
+" let g:ale_fix_on_save = 1
 " end ale "
 
 """"""""""""""""""""""
@@ -223,9 +234,9 @@ augroup MY_STUFF
   " vim-dockerfile not correctly setting filetype
   autocmd FileType dockerfile set ft=Dockerfile
   autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
-  au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+  " au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
   autocmd BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl set ft=helm
-  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=<:> indentkeys-=0# indentkeys-=<:>
+  " autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=<:> indentkeys-=0# indentkeys-=<:>
   autocmd FileType helm setlocal ts=2 sts=2 sw=2 expandtab indentkeys-=<:> indentkeys-=0# indentkeys-=<:>
 augroup END
 
@@ -252,20 +263,23 @@ augroup END
 silent! helptags ALL
 
 if has("nvim")
-    " lua require("lsp-config")
-    " lua require("compe-config")
+    lua require("lsp-config")
+    lua require("completion")
     lua require("telescope-config")
+    lua require("lualine-config")
 endif
 
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  ignore_install = { "javascript" }, -- List of parsers to ignore installing
+    ensure_installed = {"comment", "css", "dockerfile", "go", "gomod", "hcl", "html", "json", "lua", "nix", "perl", "php", "python", "regex", "swift", "toml", "typescript", "vue", "vim", "yaml" }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  ignore_install = { "javascript", "php-doc" }, -- List of parsers to ignore installing
+  auto_install = true,
   highlight = {
     enable = true,              -- false will disable the whole extension
   },
   indent = {
     enable = true,
+    disable = { "yaml" },
   },
 }
 EOF

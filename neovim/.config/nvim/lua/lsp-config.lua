@@ -49,15 +49,53 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 --   capabilities = capabilities,
 -- }
 
--- Use a loop to conveniently call 'setup' on multiple servers and
--- map buffer local keybindings when the language server attaches
-local servers = { "bashls", "dockerls", "intelephense", "terraformls", "tflint", "yamlls" }
-for _, lsp in ipairs(servers) do
-  nvim_lsp[lsp].setup {
+require('lspconfig')['ansiblels'].setup{
     on_attach = on_attach,
-    capabilities = capabilities,
-    flags = {
-      debounce_text_changes = 150,
-    }
-  }
-end
+    flags = lsp_flags,
+}
+require('lspconfig')['bashls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+require('lspconfig')['dockerls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+require('lspconfig')['intelephense'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+require('lspconfig')['jsonls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+require('lspconfig')['jsonnet_ls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+require('lspconfig')['terraformls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+require('lspconfig')['tilt_ls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+require('lspconfig')['tflint'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+}
+require('lspconfig')['yamlls'].setup{
+    on_attach = on_attach,
+    flags = lsp_flags,
+    settings = {
+        yaml = {
+           schemaStore = enable,
+           schemas = {
+                ["https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.24.1-standalone-strict/all.json"] = { "**/*.yaml", "**/*.yml" },
+                ["http://json.schemastore.org/kustomization"] = { "**/kustomization.yaml"},
+            },
+      },
+        completion = true,
+    },
+}
