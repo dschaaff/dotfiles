@@ -61,6 +61,8 @@ alias vi='nvim'
 alias k='kubectl'
 alias kcl='kubectl'
 alias ktl='kubectl'
+alias kubectx='switch'
+alias kctx='switch'
 alias tflock='terraform providers lock -platform=darwin_arm64 -platform=darwin_amd64 -platform=linux_arm64 -platform=linux_amd64'
 
 if [ -f "$HOME/.cordial.sh" ]; then
@@ -130,6 +132,12 @@ autoload -Uz $fpath[1]/*(.:t)
 #################
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+##########################################################
+# Kubeswitch https://github.com/danielfoehrKn/kubeswitch #
+##########################################################
+
+INSTALLATION_PATH=$(brew --prefix switch) && source $INSTALLATION_PATH/switch.sh
 
 #################
 # ENV VARIABLES #
