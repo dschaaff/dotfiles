@@ -164,13 +164,7 @@ export PATH=$HOME/bin:$PATH
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 # rancher desktop nerdctl
 export PATH="$HOME/.rd/bin:$PATH"
-# nvm
-# export NVM_DIR="$HOME/.nvm"
-#   . "/usr/local/opt/nvm/nvm.sh"
-# Add default node to path
-export PATH=/Users/danielschaaff/.nvm/versions/node/v14.17.0/bin:$PATH
-# Load NVM
-export NVM_DIR=/usr/local/opt/nvm/nvm.sh
+export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
 alias assume="source assume"
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
