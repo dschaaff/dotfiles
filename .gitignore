@@ -1,3 +1,4 @@
 vim/.vim/plugged
 neovim/.config/nvim/plugged
 zsh/.cordial.sh
+k9s/.k9s/config.yml
