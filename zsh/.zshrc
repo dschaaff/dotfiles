@@ -28,6 +28,9 @@ setopt HIST_FIND_NO_DUPS
 # removes blank lines from history
 setopt HIST_REDUCE_BLANKS
 setopt HIST_VERIFY
+alias history="history 1"
+HISTSIZE=99999
+SAVEHIST=$HISTSIZE
 
 # home, end, and delete keys
 bindkey '\e[H' beginning-of-line
@@ -161,7 +164,7 @@ export JAVA_HOME
 export HELM_EXPERIMENTAL_OCI=1
 export KUBEVAL_SCHEMA_LOCATION=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 # Python
-export PATH=/usr/local/opt/python@3.9/bin:$PATH
+export PATH=/usr/local/opt/python@3.10/bin:$PATH
 # Sublime Text
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 # Sublime Merge
@@ -174,6 +177,7 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$HOME/.rd/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@16/bin:$PATH"
 alias assume="source assume"
+
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/danielschaaff/.rd/bin:$PATH"
