@@ -27,7 +27,6 @@ set splitright " splits go to the right by default
 set splitbelow " splits go to bottom by default
 set signcolumn=auto " extra column for linters, lsp, etc.
 set termguicolors
-set guifont=Hack_Regular_Nerd_Font_Complete_Mono:h12
 " Backup settings
 set noswapfile
 set nobackup
@@ -53,21 +52,22 @@ call plug#begin()
 Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }  " We recommend updating the parsers on update
 Plug 'akinsho/nvim-toggleterm.lua'
 
-Plug 'neovim/nvim-lspconfig'
+" built in lsp
+" Plug 'neovim/nvim-lspconfig'
 
 " cmp provides autocompletion
-Plug 'hrsh7th/nvim-cmp'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
-Plug 'hrsh7th/cmp-nvim-lsp-document-symbol'
-Plug 'hrsh7th/cmp-buffer'
-Plug 'hrsh7th/cmp-path'
-Plug 'petertriho/cmp-git'
-Plug 'onsails/lspkind.nvim'
+" Plug 'hrsh7th/nvim-cmp'
+" Plug 'hrsh7th/cmp-nvim-lsp'
+" Plug 'hrsh7th/cmp-nvim-lsp-signature-help'
+" Plug 'hrsh7th/cmp-nvim-lsp-document-symbol'
+" Plug 'hrsh7th/cmp-buffer'
+" Plug 'hrsh7th/cmp-path'
+" Plug 'petertriho/cmp-git'
+" Plug 'onsails/lspkind.nvim'
 
 " vnsip for lsp snippet completions
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
+" Plug 'hrsh7th/vim-vsnip'
+" Plug 'hrsh7th/vim-vsnip-integ'
 
 Plug 'vim-scripts/AnsiEsc.vim'
 " Plug 'airblade/vim-gitgutter'
@@ -149,7 +149,7 @@ Plug 'towolf/vim-helm'
  Plug 'mbbill/undotree', {'tag': 'rel_6.1'}
 " file icons
 Plug 'ryanoasis/vim-devicons'
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 "disable polygot for golang
 if exists('g:loaded_polyglot')
@@ -178,8 +178,7 @@ try
 catch
 endtry
 
-set guifont=HackNerdFontCompleteM
-
+set guifont=JetBrainsMono\ Nerd\ Font:h12
 set background=dark
 
 " vim hardcodes background color erase even if the terminfo file does
@@ -263,8 +262,6 @@ augroup END
 silent! helptags ALL
 
 if has("nvim")
-    lua require("lsp-config")
-    lua require("completion")
     lua require("telescope-config")
     lua require("lualine-config")
 endif

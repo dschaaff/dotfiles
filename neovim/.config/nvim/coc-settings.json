@@ -8,7 +8,7 @@
         "kubernetes": "/*.yaml"
     },
     "intelliphense": {
-        "environmetn": {
+        "environment": {
             "phpVersion": "7.4"
         },
         "stubs": [
