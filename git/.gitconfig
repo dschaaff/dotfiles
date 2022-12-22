@@ -11,6 +11,9 @@
 	excludesfile = /Users/danielschaaff/.gitignore_global
 	pager = diff-so-fancy | less --tabs=4 -RFX
 
+[url "ssh://git@gitlab.com/"]
+  insteadOf = https://gitlab.com/
+
 [interactive]
 	diffFilter = diff-so-fancy --patc
 
