@@ -9,6 +9,10 @@ PS1="READY > "
 eval "$(starship init zsh)"
 
 source ~/.zsh_plugins.sh
+# import 1password plugins
+if [ -f "$HOME/.config/op/plugins.sh" ]; then
+    source $HOME/.config/op/plugins.sh
+fi
 ###############
 # END PLUGINS #
 ###############
