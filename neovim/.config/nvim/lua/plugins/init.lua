@@ -1,6 +1,7 @@
 return {
 	'j-hui/fidget.nvim',
 	'navarasu/onedark.nvim',
+	'shaunsingh/nord.nvim',
 	'folke/neodev.nvim',
 	'folke/which-key.nvim',
 	'nvim-lua/plenary.nvim',
@@ -14,5 +15,4 @@ return {
 	'towolf/vim-helm',
 	'rhysd/committia.vim' -- better git commit window
 },
-
 vim.api.nvim_command('com! FormatJSON %!jq .')

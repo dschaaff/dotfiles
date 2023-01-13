@@ -5,7 +5,7 @@ require("config.lazy")
 
 -- Set colorscheme
 vim.o.termguicolors = true
-vim.cmd [[colorscheme onedark]]
+vim.cmd [[colorscheme nord]]
 
 require ("config.options")
 

@@ -1,3 +1,8 @@
+local opts = { noremap=true, silent=true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist, opts)
 local M = {
   "neovim/nvim-lspconfig",
   event = "BufReadPre",
@@ -80,7 +85,15 @@ function M.config()
     tflint = {},
     -- tilt_ls = {},
     tsserver = {},
-    yamlls = {},
+    yamlls = {
+      settings = {
+        yaml = {
+          schemaStore = {
+            enable = true
+          }
+        }
+      }
+    },
     sumneko_lua = {
       -- cmd = { "/home/folke/projects/lua-language-server/bin/lua-language-server" },
       single_file_support = true,
