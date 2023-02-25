@@ -94,18 +94,6 @@ function M.config()
         }
       }
     },
-    sumneko_lua = {
-      -- cmd = { "/home/folke/projects/lua-language-server/bin/lua-language-server" },
-      single_file_support = true,
-      settings = {
-        Lua = {
-          workspace = {
-            checkThirdParty = false,
-          },
-          telemetry = { enable = false },
-        },
-      },
-    },
     teal_ls = {},
     vimls = {},
   }

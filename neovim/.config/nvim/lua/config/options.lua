@@ -1,6 +1,8 @@
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
+-- relative line numbers 
+vim.o.relativenumber = true
 -- Set highlight on search
 vim.o.hlsearch = false
 
@@ -30,3 +32,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	group = highlight_group,
 	pattern = '*',
 })
+
+vim.o.guifont = 'JetBrainsMono Nerd Font:h12'
