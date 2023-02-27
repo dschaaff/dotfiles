@@ -1,24 +1,12 @@
+# homebrew m1 mac
+export PATH="/opt/homebrew/bin:$PATH"
 ###########
 # PLUGINS #
 ###########
 # https://getantidote.github.io/
-# Set the name of the static .zsh plugins file antidote will generate.
-zsh_plugins=${ZDOTDIR:-~}/.zsh_plugins.zsh
-
-# Ensure you have a .zsh_plugins.txt file where you can add plugins.
-[[ -f ${zsh_plugins:r}.txt ]] || touch ${zsh_plugins:r}.txt
-
-# Lazy-load antidote.
-fpath+=(${ZDOTDIR:-~}/.antidote)
-autoload -Uz $fpath[-1]/antidote
-
-# Generate static file in a subshell when .zsh_plugins.txt is updated.
-if [[ ! $zsh_plugins -nt ${zsh_plugins:r}.txt ]]; then
-  (antidote bundle <${zsh_plugins:r}.txt >|$zsh_plugins)
-fi
-
-# Source your static plugins file.
-source $zsh_plugins
+# update plugins with antidote bundle < ~/.zsh_plugins.txt > .zsh_plugins.zsh
+source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+source ~/.zsh_plugins.zsh
 
 export ZSH_AUTOSUGGEST_USE_ASYNC=true
 PS1="READY > "
@@ -168,8 +156,6 @@ export EDITOR="nvim"
 export GPG_TTY=$(tty)
 export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
 export PATH="/usr/local/sbin:$PATH"
-# homebrew m1 mac
-export PATH="/opt/homebrew/bin:$PATH"
 # go
 export GOPATH=$HOME/go
 export GOROOT=/opt/homebrew/opt/go/libexec
