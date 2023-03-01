@@ -30,10 +30,10 @@ $nix_shell\
 $gcloud"""
 
 [aws]
-format = 'on [$symbol $region $profile]($style) '
-[aws.region_aliases]
-us-west-2 = "usw2"
-us-west-1 = "usw1"
+format = '[AWS $region $duration $profile]($style) '
+# [aws.region_aliases]
+# us-west-2 = "usw2"
+# us-west-1 = "usw1"
 
 [directory]
 truncation_length = 5
