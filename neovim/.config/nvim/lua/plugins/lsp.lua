@@ -1,4 +1,4 @@
-local opts = { noremap=true, silent=true }
+local opts = { noremap = true, silent = true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, opts)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
@@ -9,18 +9,9 @@ local M = {
   dependencies = {
     "hrsh7th/cmp-nvim-lsp",
     { "folke/neoconf.nvim", cmd = "Neoconf", config = true },
-    {
-      "folke/neodev.nvim",
-      config = {
-        debug = true,
-        experimental = {
-          pathStrict = true,
-        },
-        library = {
-          runtime = "~/projects/neovim/runtime/",
-        },
-      },
-    },
+    { "folke/neodev.nvim",  opts = { experimental = { pathStrict = true } } },
+    "mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
   },
   pin = true,
 }
@@ -33,8 +24,8 @@ function M.config()
 
     local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
+
     -- Mappings.
-    local opts = { noremap = true, silent = true }
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
@@ -53,6 +44,10 @@ function M.config()
     buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    -- Create a command `:Format` local to the LSP buffer
+    vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
+      vim.lsp.buf.format()
+    end, { desc = 'Format current buffer with LSP' })
   end
 
   ---@type lspconfig.options
@@ -65,6 +60,12 @@ function M.config()
     gopls = {},
     html = {},
     intelephense = {},
+    lua_ls = {
+      Lua = {
+        workspace = { checkThirdParty = false },
+        telemetry = { enable = false },
+      },
+    },
     jsonls = {
       on_new_config = function(new_config)
         new_config.settings.json.schemas = new_config.settings.json.schemas or {}
@@ -123,9 +124,11 @@ function M.config()
   require('mason').setup()
   -- Ensure the servers above are installed
   local mason_lspconfig = require 'mason-lspconfig'
+
   mason_lspconfig.setup {
     ensure_installed = vim.tbl_keys(servers),
   }
+
   mason_lspconfig.setup_handlers {
     function(server_name)
       require('lspconfig')[server_name].setup {
@@ -135,9 +138,6 @@ function M.config()
       }
     end,
   }
-
-  -- Turn on lsp status information
-  require('fidget').setup()
 end
 
 return M

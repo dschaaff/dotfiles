@@ -57,6 +57,8 @@ return {
 		})
 		telescope.load_extension("fzf")
 	end,
-	vim.keymap.set('n', '<C-p>', ':Telescope find_files<CR>'),
-	vim.keymap.set('n', '<C-b>', ':Telescope buffers<CR>')
+	vim.keymap.set('n', '<C-p>', ':Telescope find_files<CR>', { desc = 'search files' }),
+	vim.keymap.set('n', '<C-b>', ':Telescope buffers<CR>', { desc = 'search buffers' }),
+	vim.keymap.set('n', '<leader>sg', ':Telescope live_grep<CR>', { desc = '[S]earch by [G]rep' }),
+	vim.keymap.set('n', '<leader>ss', ':Telescope spell_suggest<CR>', { desc = '[S]pell [S]uggest' })
 }

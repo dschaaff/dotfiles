@@ -1,7 +1,7 @@
 -- [[ Setting options ]]
 -- See `:help vim.o`
 
--- relative line numbers 
+-- relative line numbers
 vim.o.relativenumber = true
 -- Set highlight on search
 vim.o.hlsearch = false
@@ -22,6 +22,10 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+-- spellcheck
+vim.opt.spelllang = 'en_us'
+vim.opt.spell = true
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
@@ -34,3 +38,5 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 vim.o.guifont = 'JetBrainsMono Nerd Font:h12'
+
+vim.api.nvim_command('com! FormatJSON %!jq .')
