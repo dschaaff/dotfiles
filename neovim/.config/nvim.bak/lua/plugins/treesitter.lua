@@ -48,7 +48,10 @@ return {
 				sync_install = false,
 				auto_install = true,
 				highlight = { enable = true },
-				indent = { enable = false },
+				indent = { 
+					enable = true,
+					disable = { 'yaml' }
+				},
 				context_commentstring = { enable = true, enable_autocmd = false },
 				incremental_selection = {
 					enable = true,

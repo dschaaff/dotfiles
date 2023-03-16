@@ -184,6 +184,7 @@ export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
 alias assume="source assume"
 
 
+
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/danielschaaff/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
