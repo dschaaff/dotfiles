@@ -125,6 +125,9 @@ complete -o nospace -C /usr/local/bin/vault vault
 
 autoload -U +X bashcompinit && bashcompinit
 
+# setup zoxide https://github.com/ajeetdsouza/zoxide
+eval "$(zoxide init zsh)"
+
 ######################################
 # SET A HIGHER SOFT ULIMIT FOR SHELL #
 ######################################
