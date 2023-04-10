@@ -1,14 +1,21 @@
+# homebrew m1 mac
+export PATH="/opt/homebrew/bin:$PATH"
 ###########
 # PLUGINS #
 ###########
-# https://getantibody.github.io/
-# update plugins with antibody bundle < plugins.txt > .zsh_plugins.sh
-## https://github.com/zsh-users/zsh-autosuggestions fish like suggestions
+# https://getantidote.github.io/
+# update plugins with antidote bundle < ~/.zsh_plugins.txt > .zsh_plugins.zsh
+source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+source ~/.zsh_plugins.zsh
+
 export ZSH_AUTOSUGGEST_USE_ASYNC=true
 PS1="READY > "
 eval "$(starship init zsh)"
 
-source ~/.zsh_plugins.sh
+# import 1password plugins
+if [ -f "$HOME/.config/op/plugins.sh" ]; then
+    source $HOME/.config/op/plugins.sh
+fi
 ###############
 # END PLUGINS #
 ###############
@@ -118,6 +125,9 @@ complete -o nospace -C /usr/local/bin/vault vault
 
 autoload -U +X bashcompinit && bashcompinit
 
+# setup zoxide https://github.com/ajeetdsouza/zoxide
+eval "$(zoxide init zsh)"
+
 ######################################
 # SET A HIGHER SOFT ULIMIT FOR SHELL #
 ######################################
@@ -149,8 +159,6 @@ export EDITOR="nvim"
 export GPG_TTY=$(tty)
 export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
 export PATH="/usr/local/sbin:$PATH"
-# homebrew m1 mac
-export PATH="/opt/homebrew/bin:$PATH"
 # go
 export GOPATH=$HOME/go
 export GOROOT=/opt/homebrew/opt/go/libexec
@@ -177,6 +185,7 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$HOME/.rd/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
 alias assume="source assume"
+
 
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
