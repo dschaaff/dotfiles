@@ -1,5 +1,6 @@
 return {
   "nvim-treesitter/nvim-treesitter",
+  enabled = not vim.g.vscode,
   opts = {
     ensure_installed = {
       "bash",
