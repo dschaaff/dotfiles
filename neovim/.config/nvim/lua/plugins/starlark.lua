@@ -1,4 +1,4 @@
 return {
   "cappyzawa/starlark.vim",
-  enabed = not vim.g.vscode,
+  enabled = not vim.g.vscode,
 }
