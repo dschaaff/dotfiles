@@ -4,4 +4,5 @@ zsh/.cordial.sh
 k9s/.k9s/config.yml
 neovim/.config/nvim/.luarc.json
 neovim/.config/nvim/lazy-lock.json
+en.utf-8.add.spl
 tmux/.tmux/plugins
