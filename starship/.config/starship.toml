@@ -41,7 +41,7 @@ truncate_to_repo = false
 
 [kubernetes]
 disabled = false
-format = '[$symbol$context( \($namespace\))]($style) '
+format = '[$symbol $context( \($namespace\))]($style) '
 style = "blue bold"
 
 [status]
