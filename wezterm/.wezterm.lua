@@ -15,5 +15,6 @@ end
 -- For example, changing the color scheme:
 config.color_scheme = "tokyonight"
 --
+config.use_fancy_tab_bar = true
 -- and finally, return the configuration to wezterm
 return config
