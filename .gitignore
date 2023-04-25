@@ -5,3 +5,12 @@ k9s/.k9s/config.yml
 neovim/.config/nvim/.luarc.json
 en.utf-8.add.spl
 tmux/.tmux/plugins
+bin/bin/docker
+bin/bin/docker-compose
+bin/bin/docker-buildx
+.gitignore
+bin/bin/orb
+.gitignore
+.gitignore
+bin/bin/orbctl
+bin/bin/docker-credential-osxkeychain
