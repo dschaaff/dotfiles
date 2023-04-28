@@ -10,7 +10,7 @@ source ~/.zsh_plugins.zsh
 
 export ZSH_AUTOSUGGEST_USE_ASYNC=true
 PS1="READY > "
-eval "$(starship init zsh)"
+
 
 # import 1password plugins
 if [ -f "$HOME/.config/op/plugins.sh" ]; then
@@ -186,8 +186,15 @@ export PATH="$HOME/.rd/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
 alias assume="source assume"
 
-
-
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/danielschaaff/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+# setup starship rs prompt
+# set tab title to pwd in wezterm
+function set_win_title(){
+    echo -ne "\x1b]0; $(basename "$PWD") \x1b\\"
+}
+precmd_functions+=(set_win_title)
+eval "$(starship init zsh)"
+
