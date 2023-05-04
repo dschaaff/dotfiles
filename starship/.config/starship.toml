@@ -30,7 +30,7 @@ $nix_shell\
 $gcloud"""
 
 [aws]
-format = '[  $region $duration $profile]($style) '
+format = '[ $region $duration $profile]($style) '
 # [aws.region_aliases]
 # us-west-2 = "usw2"
 # us-west-1 = "usw1"
