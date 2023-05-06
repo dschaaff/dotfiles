@@ -33,4 +33,6 @@ return {
   { "neovim/nvim-lspconfig", enabled = not vim.g.vscode },
   { "jose-elias-alvarez/null-ls.nvim", enabled = not vim.g.vscode },
   { "williamboman/mason.nvim", enabled = not vim.g.vscode },
+  { "zbirenbaum/copilot.lua", enabled = not vim.g.vscode },
+  { "zbirenbaum/copilot-cmp", enabled = not vim.g.vscode },
 }
