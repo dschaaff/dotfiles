@@ -4,7 +4,8 @@ return {
     opts = {
       filetypes = {
         yaml = true,
-        markdown = false,
+        terraform = true,
+        markdown = true,
         help = false,
         gitcommit = false,
         gitrebase = false,
