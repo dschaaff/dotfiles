@@ -8,4 +8,18 @@ return {
       require("telescope").load_extension("fzf")
     end,
   },
+  opts = {
+    defaults = {
+      vimgrep_arguments = {
+        "rg",
+        "--hidden",
+        "--color=never",
+        "--no-heading",
+        "--with-filename",
+        "--line-number",
+        "--column",
+        "--smart-case",
+      },
+    },
+  },
 }
