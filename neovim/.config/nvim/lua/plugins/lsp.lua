@@ -12,6 +12,9 @@ return {
       yamlls = {
         settings = {
           yaml = {
+            customTags = {
+              "!reference sequence",
+            },
             schemaStore = {
               enable = true,
             },
