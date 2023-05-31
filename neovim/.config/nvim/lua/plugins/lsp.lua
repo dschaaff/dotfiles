@@ -5,7 +5,6 @@ return {
     servers = {
       ansiblels = {},
       bashls = {},
-      dockerls = {},
       intelephense = {},
       terraformls = {},
       tflint = {},
