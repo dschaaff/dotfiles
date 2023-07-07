@@ -7,7 +7,6 @@ return {
       bashls = {},
       dockerls = {},
       intelephense = {},
-      terraformls = {},
       tflint = {},
       yamlls = {
         settings = {
