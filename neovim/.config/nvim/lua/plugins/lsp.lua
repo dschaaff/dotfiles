@@ -20,6 +20,8 @@ return {
             keyOrdering = {
               enable = false,
             },
+            completion = true,
+            hover = true,
           },
         },
       },
