@@ -9,20 +9,39 @@
   path = ~/.workGitconfig
 [core]
 	excludesfile = /Users/danielschaaff/.gitignore_global
-	pager = diff-so-fancy | less --tabs=4 -RFX
+  pager = delta --color-only
+	; pager = diff-so-fancy | less --tabs=4 -RFX
 
 [url "ssh://git@gitlab.com/"]
   insteadOf = https://gitlab.com/
 
 [interactive]
-	diffFilter = diff-so-fancy --patc
+	; diffFilter = diff-so-fancy --patc
+  diffFilter = delta --color-only
 
 [merge]
   tool = "Sublime Merge"
+  conflictstyle = diff3
 
 [mergetool "Sublime Merge"]
   cmd = smerge mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
 
+[delta]
+  line-numbers = true
+  minus-style                   = syntax "#37222c"
+  minus-non-emph-style          = syntax "#37222c"
+  minus-emph-style              = syntax "#713137"
+  minus-empty-line-marker-style = syntax "#37222c"
+  line-numbers-minus-style      = "#b2555b"
+  plus-style                    = syntax "#20303b"
+  plus-non-emph-style           = syntax "#20303b"
+  plus-emph-style               = syntax "#2c5a66"
+  plus-empty-line-marker-style  = syntax "#20303b"
+  line-numbers-plus-style       = "#266d6a"
+  line-numbers-zero-style       = "#3b4261"
+
+[diff]
+    colorMoved = default
 
 [color]
 	ui = true
