@@ -14,3 +14,4 @@ bin/bin/orb
 .gitignore
 bin/bin/orbctl
 bin/bin/docker-credential-osxkeychain
+bin/bin/kubectl
