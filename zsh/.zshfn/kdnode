@@ -1,0 +1,3 @@
+kdnode () {
+    kubectl debug -it $1 --image=960048260646.dkr.ecr.us-west-2.amazonaws.com/kubectl-debug:main-latest --target $2 -- sh
+}
