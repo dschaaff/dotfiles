@@ -3,4 +3,6 @@
 -- Add any additional keymaps here
 
 -- https://github.com/LazyVim/LazyVim/discussions/534
-vim.cmd.unmap("gw")
+-- if not vim.g.vscode then
+--   vim.cmd.unmap("gw")
+-- end
