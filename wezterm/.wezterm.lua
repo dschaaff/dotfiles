@@ -11,7 +11,9 @@ if wezterm.config_builder then
 end
 
 -- This is where you actually apply your config choices
-config.font_size = 13
+config.font_size = 12.5
+-- config.freetype_load_target = "Light"
+-- config.freetype_render_target = "HorizontalLcd"
 config.color_scheme = "tokyonight"
 config.scrollback_lines = 10000
 config.use_fancy_tab_bar = true
