@@ -8,9 +8,9 @@ return {
     end,
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     opts = function(_, opts)
-      local nls = require("null-ls")
+      local nls = require("none-ls")
       opts.sources = vim.list_extend(opts.sources, {
         nls.builtins.diagnostics.write_good,
         nls.builtins.code_actions.shellcheck,
