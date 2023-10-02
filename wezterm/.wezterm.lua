@@ -11,7 +11,7 @@ if wezterm.config_builder then
 end
 
 -- This is where you actually apply your config choices
-config.font_size = 12.5
+config.font_size = 12.3
 -- config.freetype_load_target = "Light"
 -- config.freetype_render_target = "HorizontalLcd"
 config.color_scheme = "tokyonight"
