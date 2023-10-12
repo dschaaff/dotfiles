@@ -35,6 +35,10 @@ require("lazy").setup({
     -- cond = not vim.g.vscode,
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
+  news = {
+    lazyvim = true,
+    neovim = true,
+  },
   install = { colorscheme = { "tokyonight", "habamax" } },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {
