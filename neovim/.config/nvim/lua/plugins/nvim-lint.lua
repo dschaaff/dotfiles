@@ -13,6 +13,7 @@ return {
       linters_by_ft = {
         markdown = { "vale", "markdownlint" },
         sh = { "shellcheck" },
+        dockerfile = { "hadolint" },
       },
     },
   },
