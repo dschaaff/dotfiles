@@ -11,16 +11,25 @@ if wezterm.config_builder then
 end
 
 -- This is where you actually apply your config choices
-config.font_size = 12.3
--- config.freetype_load_target = "Light"
--- config.freetype_render_target = "HorizontalLcd"
+config.font_size = 12.2
+config.bold_brightens_ansi_colors = true
+config.freetype_load_target = "Light"
+config.freetype_render_target = "HorizontalLcd"
+config.freetype_load_flags = "NO_HINTING" -- seems to help rendering on high dpi screens
+config.cell_width = 0.95
 config.color_scheme = "tokyonight"
 config.scrollback_lines = 10000
 config.use_fancy_tab_bar = true
+config.hide_tab_bar_if_only_one_tab = true
 -- config.window_frame = {
 -- 	font = wezterm.font({ family = "Hack Nerd Font", weight = "Regular" }),
 -- }
 config.keys = {
+	{
+		key = "k",
+		mods = "CMD",
+		action = wezterm.action.ClearScrollback("ScrollbackAndViewport"),
+	},
 	{
 		key = "d",
 		mods = "CMD",
