@@ -187,10 +187,6 @@ export PATH="$HOME/.rd/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
 alias assume="source assume"
 
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/danielschaaff/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
-
 # setup starship rs prompt
 # set tab title to pwd in wezterm
 function set_win_title(){
@@ -199,3 +195,7 @@ function set_win_title(){
 precmd_functions+=(set_win_title)
 eval "$(starship init zsh)"
 
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/danielschaaff/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
