@@ -28,7 +28,8 @@ bindkey -e
 HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history
 # adds commands as they are typed, not at shell exit
 # setopt INC_APPEND_HISTORY
-setopt SHARE_HISTORY
+# setopt SHARE_HISTORY
+setopt APPEND_HISTORY
 # do not store duplications
 setopt HIST_IGNORE_DUPS
 #ignore duplicates when searching
