@@ -191,12 +191,24 @@ alias assume="source assume"
 # setup starship rs prompt
 # set tab title to pwd in wezterm
 function set_win_title(){
+    # set wezterm title
     echo -ne "\x1b]0; $(basename "$PWD") \x1b\\"
 }
 precmd_functions+=(set_win_title)
 eval "$(starship init zsh)"
 
+# fzf setup
+source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
 
+# zsh-history-substring-search configuration
+bindkey '^[[A' history-substring-search-up # or '\eOA'
+bindkey '^[[B' history-substring-search-down # or '\eOB'
+HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+
+# setup wezterm shell integration
+if [[ -f "$HOME/.dotfiles/wezterm/wezterm.sh" ]] && [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
+    source $HOME/.dotfiles/wezterm/wezterm.sh
+fi
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/danielschaaff/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
