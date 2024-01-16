@@ -209,6 +209,7 @@ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 if [[ -f "$HOME/.dotfiles/wezterm/wezterm.sh" ]] && [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
     source $HOME/.dotfiles/wezterm/wezterm.sh
 fi
+
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/danielschaaff/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
