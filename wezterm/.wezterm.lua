@@ -13,7 +13,7 @@ end
 
 -- This is where you actually apply your config choices
 config.front_end = "WebGpu"
-config.font_size = 12.2
+config.font_size = 12.4
 -- config.bold_brightens_ansi_colors = true
 -- config.freetype_load_target = "Light"
 -- config.freetype_render_target = "HorizontalLcd"
@@ -31,7 +31,10 @@ config.keys = {
 	{
 		key = "k",
 		mods = "CMD",
-		action = wezterm.action.ClearScrollback("ScrollbackAndViewport"),
+		action = act.Multiple({
+			act.ClearScrollback("ScrollbackAndViewport"),
+			act.SendKey({ key = "L", mods = "CTRL" }),
+		}),
 	},
 	{
 		key = "d",
