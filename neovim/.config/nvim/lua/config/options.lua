@@ -15,6 +15,8 @@ vim.o.guifont = "JetBrains Mono,Symbols Nerd Font:h13"
 vim.g.neovide_cursor_animation_length = 0
 vim.g.neovide_remember_window_size = true
 if vim.g.neovide then
+  vim.opt.title= true
+  vim.opt.titlestring = "%t - %F"
   vim.keymap.set('n', '<D-s>', ':w<CR>') -- Save
   vim.keymap.set('v', '<D-c>', '"+y') -- Copy
   vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
