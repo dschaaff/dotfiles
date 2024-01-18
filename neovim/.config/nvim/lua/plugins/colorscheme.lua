@@ -1,10 +1,13 @@
 return {
-  -- { "catppuccin/nvim", name = "catppuccin", enabled = not vim.g.vscode },
-
-  -- {
-  --   "LazyVim/LazyVim",
-  --   opts = {
-  --     colorscheme = "catppuccin",
-  --   },
-  -- },
+	-- tokyonight
+	{
+		"folke/tokyonight.nvim",
+		lazy = false,
+		opts = { style = "moon" },
+		priority = 1000,
+		config = function()
+			vim.cmd.colorscheme 'tokyonight'
+		end,
+	},
 }
+-- vim: ts=2 sts=2 sw=2 et
