@@ -42,7 +42,10 @@ return {
 
 			-- Adds a number of user-friendly snippets
 			'rafamadriz/friendly-snippets',
-			'zbirenbaum/copilot-cmp',
+			{
+				'zbirenbaum/copilot-cmp',
+				dependencies = { 'copilot.lua' }
+			}
 		},
 	},
 }
