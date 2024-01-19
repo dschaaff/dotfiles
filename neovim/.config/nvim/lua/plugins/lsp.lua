@@ -4,14 +4,23 @@ return {
 		'neovim/nvim-lspconfig',
 		dependencies = {
 			-- Automatically install LSPs to stdpath for neovim
-			{ 'williamboman/mason.nvim', config = true },
+			{
+				'williamboman/mason.nvim',
+				config = true,
+				cmd = "Mason",
+				keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+			},
 			'williamboman/mason-lspconfig.nvim',
 			'folke/which-key.nvim',
-			"b0o/SchemaStore.nvim",
+			{
+				"b0o/SchemaStore.nvim",
+				lazy = true,
+				version = false,
+			},
 
 			-- Useful status updates for LSP
 			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-			{ 'j-hui/fidget.nvim',       opts = {} },
+			{ 'j-hui/fidget.nvim', opts = {} },
 
 			'folke/neodev.nvim',
 		},
