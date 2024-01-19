@@ -46,7 +46,7 @@ return {
       lualine_y = {},
       lualine_z = {}
     },
-    extensions = { "neo-tree", "lazy" },
+    extensions = { "fugitive", "neo-tree", "lazy" },
   },
 }
 -- vim: ts=2 sts=2 sw=2 et
