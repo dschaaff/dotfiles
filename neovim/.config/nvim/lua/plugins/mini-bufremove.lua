@@ -1,1 +1,5 @@
-return { 'echasnovski/mini.bufremove', version = '*' }
+return {
+  'echasnovski/mini.bufremove',
+  enabled = not vim.g.vscode,
+  version = '*'
+}

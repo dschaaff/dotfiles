@@ -5,6 +5,7 @@ return {
 		lazy = false,
 		opts = { style = "moon" },
 		priority = 10000,
+    enabled = not vim.g.vscode,
 		config = function()
 			vim.cmd.colorscheme 'tokyonight'
 		end,

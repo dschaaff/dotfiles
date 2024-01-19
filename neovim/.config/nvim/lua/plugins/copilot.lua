@@ -2,6 +2,7 @@ return {
 	{
 		"zbirenbaum/copilot.lua",
 		cmd = "Copilot",
+    enabled = not vim.g.vscode,
 		build = ":Copilot auth",
 		opts = {
 			suggestion = { enabled = false },

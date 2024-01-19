@@ -1,5 +1,7 @@
+-- highlight other instances of the word under the cursor
 return {
   "RRethy/vim-illuminate",
+  enabled = not vim.g.vscode,
   opts = {
     delay = 200,
     large_file_cutoff = 2000,

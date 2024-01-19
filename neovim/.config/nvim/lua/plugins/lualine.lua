@@ -2,6 +2,7 @@ return {
   -- Set lualine as statusline
   -- stole some of this from lazyvim
   'nvim-lualine/lualine.nvim',
+  enabled = not vim.g.vscode,
   -- See `:help lualine.txt`
   event = "VeryLazy",
   init = function()

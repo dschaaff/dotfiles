@@ -98,7 +98,7 @@ local servers = {
   tflint = {},
   terraformls = {},
   yamlls = {
-    yaml = { customTags = {'!reference sequence'}},
+    yaml = { customTags = { '!reference sequence' } },
     keyOrdering = false,
     format = {
       enable = true,

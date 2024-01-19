@@ -1,6 +1,7 @@
 return {
   'echasnovski/mini.indentscope',
   version = '*',
+  enabled = not vim.g.vscode,
   opts = {
     -- symbol = "▏",
     symbol = "│",

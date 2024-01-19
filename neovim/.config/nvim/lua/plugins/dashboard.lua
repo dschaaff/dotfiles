@@ -1,5 +1,6 @@
 return {
     "nvimdev/dashboard-nvim",
+    enabled = not vim.g.vscode,
     event = "VimEnter",
     opts = function()
       local logo = [[

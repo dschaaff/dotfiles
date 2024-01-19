@@ -2,6 +2,7 @@ return {
 	{
 		-- LSP Configuration & Plugins
 		'neovim/nvim-lspconfig',
+		enabled = not vim.g.vscode,
 		dependencies = {
 			-- Automatically install LSPs to stdpath for neovim
 			{

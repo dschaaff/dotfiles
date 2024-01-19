@@ -1,8 +1,12 @@
 return {
 	-- Git related plugins
-	'tpope/vim-fugitive',
-	'tpope/vim-rhubarb',
-
+	{
+   'tpope/vim-fugitive',
+    enabled = not vim.g.vscode,
+  },
+	{ 'tpope/vim-rhubarb',
+    enabled = not vim.g.vscode,
+  },
 	-- Detect tabstop and shiftwidth automatically
 	'tpope/vim-sleuth',
 }
