@@ -8,6 +8,9 @@ return {
       require("telescope").load_extension("fzf")
     end,
   },
+  keys = {
+    { "<leader>gb", "<cmd>Telescope git_branches<CR>", desc = "branches" },
+  },
   opts = {
     defaults = {
       vimgrep_arguments = {
