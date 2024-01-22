@@ -1,9 +1,29 @@
 return {
-    -- Highlight, edit, and navigate code
-    'nvim-treesitter/nvim-treesitter',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
-    },
-    build = ':TSUpdate',
-  }
--- vim: ts=2 sts=2 sw=2 et
+  "nvim-treesitter/nvim-treesitter",
+  opts = function(_, opts)
+    vim.list_extend(opts.ensure_installed, {
+      "bash",
+      "c",
+      "go",
+      "gomod",
+      "hcl",
+      "html",
+      "javascript",
+      "json",
+      "jsonnet",
+      "lua",
+      "luap",
+      "markdown",
+      "markdown_inline",
+      "php",
+      "python",
+      "query",
+      "regex",
+      "terraform",
+      "tsx",
+      "typescript",
+      "vim",
+      "yaml",
+    })
+  end,
+}

@@ -1,11 +1,20 @@
-return  {
+return {
+  {
+    "williamboman/mason.nvim",
+    opts = function(_, opts)
+      table.insert(opts.ensure_installed, "vale")
+      table.insert(opts.ensure_installed, "markdownlint")
+      table.insert(opts.ensure_installed, "shellcheck")
+    end,
+  },
+  {
     "mfussenegger/nvim-lint",
-    optional = true,
     opts = {
       linters_by_ft = {
-        markdown = { "markdownlint" },
+        markdown = { "vale", "markdownlint" },
         sh = { "shellcheck" },
         dockerfile = { "hadolint" },
       },
     },
-  }
+  },
+}
