@@ -10,6 +10,12 @@ return {
 				config = true,
 				cmd = "Mason",
 				keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+				opts = {
+					ensure_installed = {
+						"markdownlint",
+						"shellcheck"
+					}
+				}
 			},
 			'williamboman/mason-lspconfig.nvim',
 			'folke/which-key.nvim',
