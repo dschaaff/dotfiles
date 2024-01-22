@@ -4,6 +4,7 @@ return {
     vim.list_extend(opts.ensure_installed, {
       "bash",
       "c",
+      "diff",
       "go",
       "gomod",
       "hcl",

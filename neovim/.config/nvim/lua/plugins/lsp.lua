@@ -19,24 +19,9 @@ return {
           vim.list_extend(new_config.settings.yaml.schemas, require("schemastore").yaml.schemas())
         end,
         settings = {
+          redhat = { telemetry = { enabled = false } },
           yaml = {
-						{ customTags = { '!reference sequence' } },
-            format = {
-              enable = true,
-            },
-            validate = {
-              -- Must disable built-in schemaStore support to use
-              -- schemas from SchemaStore.nvim plugin
-              enable = false,
-            },
-            schemaStore = {
-              enable = true,
-            },
-            keyOrdering = {
-              enable = false,
-            },
-            completion = true,
-            hover = true,
+            { customTags = { "!reference sequence" } },
           },
         },
       },
