@@ -9,6 +9,8 @@ vim.filetype.add({
 -- Add any additional options here
 -- don't hide quotes and other markup in json etc.
 vim.opt.conceallevel = 0
+-- lazyvim's root detection tends to work against me most of the time
+vim.g.root_spec = { "cwd" }
 
 -- set some neovide specific settings
 vim.o.guifont = "JetBrains Mono,Symbols Nerd Font:h13"
