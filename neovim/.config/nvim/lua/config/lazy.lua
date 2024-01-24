@@ -42,7 +42,7 @@ require("lazy").setup({
     lazyvim = true,
     neovim = true,
   },
-  install = { colorscheme = { "tokyonight", "habamax" } },
+  install = { colorscheme = { "tokyonight", "habamax", "catpuccin" } },
   checker = { enabled = true }, -- automatically check for plugin updates
   performance = {
     rtp = {
