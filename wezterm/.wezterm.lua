@@ -13,7 +13,7 @@ end
 
 -- This is where you actually apply your config choices
 config.front_end = "WebGpu"
-config.font_size = 12.4
+config.font_size = 13
 -- config.bold_brightens_ansi_colors = true
 -- config.freetype_load_target = "Light"
 -- config.freetype_render_target = "HorizontalLcd"
