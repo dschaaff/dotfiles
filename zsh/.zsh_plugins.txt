@@ -4,3 +4,4 @@ zsh-users/zsh-autosuggestions
 3v1n0/zsh-bash-completions-fallback
 zsh-users/zsh-completions
 mroth/evalcache
+atuinsh/atuin

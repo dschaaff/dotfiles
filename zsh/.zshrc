@@ -205,6 +205,8 @@ bindkey '^[[A' history-substring-search-up # or '\eOA'
 bindkey '^[[B' history-substring-search-down # or '\eOB'
 HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
+# atuin.sh
+source $HOME/.atuin.zsh
 # setup wezterm shell integration
 if [[ -f "$HOME/.dotfiles/wezterm/wezterm.sh" ]] && [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
     source $HOME/.dotfiles/wezterm/wezterm.sh
