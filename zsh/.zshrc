@@ -207,6 +207,7 @@ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 # atuin.sh
 source $HOME/.atuin.zsh
+source <(atuin gen-completions --shell zsh)
 # setup wezterm shell integration
 if [[ -f "$HOME/.dotfiles/wezterm/wezterm.sh" ]] && [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
     source $HOME/.dotfiles/wezterm/wezterm.sh
