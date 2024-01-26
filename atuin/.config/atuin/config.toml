@@ -125,17 +125,18 @@
 # This applies for new installs. Old installs will keep the old behaviour unless configured otherwise.
 enter_accept = false
 
-#[stats]
-# Set commands where we should consider the subcommand for statistics. Eg, kubectl get vs just kubectl
-#common_subcommands = [
-#  "cargo",
-#  "go",
-#  "git",
-#  "npm",
-#  "yarn",
-#  "pnpm",
-#  "kubectl",
-#]
+#Set commands where we should consider the subcommand for statistics. Eg, kubectl get vs just kubectl
+[stats]
+common_subcommands = [
+ "cargo",
+ "go",
+ "git",
+ "npm",
+ "yarn",
+ "pnpm",
+ "kubectl",
+  "k"
+]
 #
 # Set commands that should be totally stripped and ignored from stats
 #common_prefix = ["sudo"]
