@@ -21,7 +21,7 @@ return {
         settings = {
           redhat = { telemetry = { enabled = false } },
           yaml = {
-            { customTags = { "!reference sequence" } },
+            customTags = { "!reference sequence" },
           },
         },
       },
