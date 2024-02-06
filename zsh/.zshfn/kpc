@@ -1,0 +1,7 @@
+kpc () {
+  if (( ${+1} ));then
+    kubectl get pod "$1" -o jsonpath='{.metadata.name}{"\t"}{"\t"}{range .spec.containers[*]}{.name}{","}{end}'|sort|column -t
+  else
+    kubectl get pods -o jsonpath='{range .items[*]}{"\n"}{.metadata.name}{"\t"}{"\t"}{range .spec.containers[*]}{.name}{","}{end}{end}'|sort|column -t
+  fi
+}

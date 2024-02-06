@@ -71,7 +71,6 @@ alias ll='ls -l'
 alias vim='nvim'
 alias vi='nvim'
 alias k='kubectl'
-alias kpc="kubectl get pods -o jsonpath='{range .items[*]}{\"\n\"}{.metadata.name}{\"\t\"}{\"\t\"}{range .spec.containers[*]}{.name}{end}{end}'|sort|column -t"
 alias kcl='kubectl'
 alias ktl='kubectl'
 alias kubectx='switch'
