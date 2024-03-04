@@ -15,6 +15,11 @@ return {
         sh = { "shellcheck" },
         dockerfile = { "hadolint" },
       },
+      linters = {
+        markdownlint = {
+          args = { "--disable", "MD043", "--" },
+        },
+      },
     },
   },
 }
