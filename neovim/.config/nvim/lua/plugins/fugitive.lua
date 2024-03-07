@@ -2,13 +2,14 @@ return {
   {
     "tpope/vim-fugitive",
     enabled = not vim.g.vscode,
-    lazy = true,
+    lazy = false,
     cmd = "Git",
     keys = { { "<leader>gg", "<cmd>Git<CR>", mode = "n", desc = "Open Fugitive" } },
   },
   {
     "shumphrey/fugitive-gitlab.vim",
-    lazy = true,
+    lazy = false,
+    dependencies = { "tpope/vim-fugitive" },
     enabled = not vim.g.vscode,
   },
   {
