@@ -3,7 +3,7 @@
 -- Add any additional autocmds here
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
   pattern = { "Tiltfile", "config.tilt" },
-  command = "setlocal filetype=starlark",
+  command = "setlocal filetype=starlark shiftwidth=4 tabstop=4 expandtab",
 })
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
