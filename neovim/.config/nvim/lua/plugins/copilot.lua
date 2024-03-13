@@ -3,6 +3,7 @@ return {
     "zbirenbaum/copilot.lua",
     opts = {
       filetypes = {
+        helm = true,
         yaml = true,
         terraform = true,
         markdown = true,
