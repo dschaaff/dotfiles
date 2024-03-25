@@ -11,6 +11,7 @@ return {
       },
       live_grep = {
         additional_args = { "--hidden" },
+        glob_pattern = { "!.git" },
       },
     },
   },
