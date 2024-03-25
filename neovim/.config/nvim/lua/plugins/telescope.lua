@@ -2,6 +2,8 @@ return {
   "telescope.nvim",
   enabled = not vim.g.vscode,
   keys = {
+    { "<leader>ff", "<cmd> Telescope find_files hidden=true no_ignore=true<CR>", desc = "Find Files (root dir)" },
+    { "<leader>fF", "<cmd> Telescope find_files no_ignore=true<CR>", desc = "Find Files (root dir)" },
     { "<leader>gb", "<cmd>Telescope git_branches<CR>", desc = "branches" },
   },
   opts = {
