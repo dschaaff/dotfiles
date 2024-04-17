@@ -26,3 +26,6 @@ if vim.g.neovide then
   vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
   vim.keymap.set('i', '<D-v>', '<ESC>l"+Pli') -- Paste insert mode
 end
+-- The LSP logfile continually grows in size when enabled
+-- only enable when need to debug
+vim.lsp.set_log_level("off")
