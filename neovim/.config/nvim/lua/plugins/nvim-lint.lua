@@ -17,7 +17,7 @@ return {
       },
       linters = {
         markdownlint = {
-          args = { "--disable", "MD043", "--" },
+          args = { "--disable", "MD043", "--disalbe", "MD013", "--" },
         },
       },
     },
