@@ -4,7 +4,7 @@ return {
   keys = {
     {
       "<leader>ff",
-      "<cmd> Telescope find_files hidden=true no_ignore=true find_command=rg,--hidden,--files,--glob,!.git<CR>",
+      "<cmd> Telescope find_files hidden=true no_ignore=true find_command=rg,--hidden,--files,--glob,!.git,--glob,!.terraform<CR>",
       desc = "Find Files (root dir)",
     },
     -- { "<leader>fF", "<cmd> Telescope find_files no_ignore=true<CR>", desc = "Find Files (root dir)" },
