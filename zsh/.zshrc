@@ -160,7 +160,8 @@ INSTALLATION_PATH=$(brew --prefix switch) && source $INSTALLATION_PATH/switch.sh
 export EDITOR="nvim"
 export GPG_TTY=$(tty)
 export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
-export PATH="/usr/local/sbin:$PATH"
+# .local/bin is used by pipx
+export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
 # go
 export GOPATH=$HOME/go
 export GOROOT=/opt/homebrew/opt/go/libexec
@@ -174,7 +175,7 @@ export JAVA_HOME
 export HELM_EXPERIMENTAL_OCI=1
 export KUBEVAL_SCHEMA_LOCATION=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
 # Python
-export PATH=/usr/local/opt/python@3.10/bin:$PATH
+export PATH=/usr/local/opt/python@3.12/bin:$PATH
 # Sublime Text
 export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
 # Sublime Merge
