@@ -2,11 +2,11 @@ return {
   "telescope.nvim",
   enabled = not vim.g.vscode,
   keys = {
-    -- {
-    --   "<leader>ff",
-    --   "<cmd> Telescope find_files hidden=true no_ignore=true find_command=rg,--hidden,--files,--glob,!.git,--glob,!.terraform,--glob,!node_modules,--glob,!.DS_Store<CR>",
-    --   desc = "Find Files (root dir)",
-    -- },
+    {
+      "<leader>fs",
+      "<cmd> Telescope find_files hidden=true no_ignore=true find_command=rg,--hidden,--files,--glob,!.git,--glob,!.terraform,--glob,!node_modules,--glob,!.DS_Store<CR>",
+      desc = "Find Files (root dir)",
+    },
     -- { "<leader>fF", "<cmd> Telescope find_files no_ignore=true<CR>", desc = "Find Files (root dir)" },
     { "<leader>gb", "<cmd>Telescope git_branches<CR>", desc = "branches" },
   },
