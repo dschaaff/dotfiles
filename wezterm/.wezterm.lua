@@ -14,6 +14,11 @@ end
 -- This is where you actually apply your config choices
 config.front_end = "WebGpu"
 config.font_size = 13
+config.font = wezterm.font({
+	family = "JetBrains Mono",
+	-- weight = "DemiBold",
+})
+
 -- config.bold_brightens_ansi_colors = true
 -- config.freetype_load_target = "Light"
 -- config.freetype_render_target = "HorizontalLcd"
