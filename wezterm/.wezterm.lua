@@ -90,6 +90,19 @@ config.keys = {
 		mods = "CMD|SHIFT",
 		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 	},
+	-- Rename current tab
+	{
+		key = "E",
+		mods = "CMD|SHIFT",
+		action = wezterm.action.PromptInputLine({
+			description = "Enter new name for tab",
+			action = wezterm.action_callback(function(window, _, line)
+				if line then
+					window:active_tab():set_title(line)
+				end
+			end),
+		}),
+	},
 	{ key = "[", mods = "CMD", action = wezterm.action.ActivatePaneDirection("Left") },
 	{ key = "]", mods = "CMD", action = wezterm.action.ActivatePaneDirection("Right") },
 }
