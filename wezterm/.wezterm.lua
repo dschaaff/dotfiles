@@ -103,8 +103,29 @@ config.keys = {
 			end),
 		}),
 	},
-	{ key = "[", mods = "CMD", action = wezterm.action.ActivatePaneDirection("Left") },
-	{ key = "]", mods = "CMD", action = wezterm.action.ActivatePaneDirection("Right") },
+	-- Move to a pane (prompt to which one)
+	-- TODO: not sure I like M for this
+	{
+		mods = "CMD",
+		key = "M",
+		action = wezterm.action.PaneSelect,
+	},
+	{
+		key = "[",
+		mods = "CMD",
+		action = wezterm.action.ActivatePaneDirection("Prev"),
+	},
+	{
+		key = "]",
+		mods = "CMD",
+		action = wezterm.action.ActivatePaneDirection("Next"),
+	},
+	-- Use CMD+z to enter zoom state
+	{
+		key = "z",
+		mods = "CMD",
+		action = wezterm.action.TogglePaneZoomState,
+	},
 }
 
 config.mouse_bindings = {
