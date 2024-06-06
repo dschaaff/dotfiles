@@ -58,7 +58,20 @@ config.colors = {
 
 config.enable_scroll_bar = true
 config.hide_tab_bar_if_only_one_tab = true
+
 config.keys = {
+	-- Show tab navigator
+	{
+		key = "p",
+		mods = "CMD",
+		action = wezterm.action.ShowTabNavigator,
+	},
+	-- Show launcher menu
+	{
+		key = "P",
+		mods = "CMD|SHIFT",
+		action = wezterm.action.ShowLauncher,
+	},
 	{
 		key = "k",
 		mods = "CMD",
@@ -90,7 +103,7 @@ config.mouse_bindings = {
 		action = act.CompleteSelection("ClipboardAndPrimarySelection"),
 	},
 
-	-- and make CTRL-Click open hyperlinks
+	-- and make CMD-Click open hyperlinks
 	{
 		event = { Up = { streak = 1, button = "Left" } },
 		mods = "CMD",
