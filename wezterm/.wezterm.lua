@@ -126,6 +126,14 @@ config.keys = {
 		mods = "CMD",
 		action = wezterm.action.TogglePaneZoomState,
 	},
+	-- Launch commands in a new pane
+	{
+		key = "g",
+		mods = "CMD",
+		action = wezterm.action.SplitHorizontal({
+			args = { os.getenv("SHELL"), "-cl", "lazygit" },
+		}),
+	},
 }
 
 config.mouse_bindings = {
