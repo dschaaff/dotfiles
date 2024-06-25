@@ -37,7 +37,7 @@ local function depending_on_appearance(arg)
 	end
 end
 
-config.color_scheme = "Catppuccin Mocha"
+config.color_scheme = "tokyonight"
 -- config.color_scheme = depending_on_appearance({
 -- 	light = "Catppuccin Latte",
 -- 	dark = "Catppuccin Mocha",
