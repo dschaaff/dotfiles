@@ -45,19 +45,20 @@ config.color_scheme = "tokyonight"
 config.scrollback_lines = 10000
 config.native_macos_fullscreen_mode = true
 
-config.use_fancy_tab_bar = false
+config.use_fancy_tab_bar = true
+config.window_decorations = "RESIZE|INTEGRATED_BUTTONS"
 config.tab_max_width = 32
-config.colors = {
-	tab_bar = {
-		active_tab = depending_on_appearance({
-			light = { fg_color = "#f8f8f2", bg_color = "#209fb5" },
-			dark = { fg_color = "#6c7086", bg_color = "#74c7ec" },
-		}),
-	},
-}
+-- config.colors = {
+-- 	tab_bar = {
+-- 		active_tab = depending_on_appearance({
+-- 			light = { fg_color = "#f8f8f2", bg_color = "#209fb5" },
+-- 			dark = { fg_color = "#6c7086", bg_color = "#74c7ec" },
+-- 		}),
+-- 	},
+-- }
 
 config.enable_scroll_bar = true
-config.hide_tab_bar_if_only_one_tab = true
+config.hide_tab_bar_if_only_one_tab = false
 
 config.keys = {
 	-- Show tab navigator
