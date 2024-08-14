@@ -74,7 +74,19 @@ wezterm.on("update-status", function(window)
 	}))
 end)
 
+config.set_environment_variables = {
+	PATH = "/opt/homebrew/bin:" .. os.getenv("PATH"),
+}
+config.leader = { key = "Space", mods = "CTRL", timeout_milliseconds = 1000 }
 config.keys = {
+	{
+		key = ",",
+		mods = "SUPER",
+		action = wezterm.action.SpawnCommandInNewTab({
+			cwd = wezterm.home_dir,
+			args = { "nvim", wezterm.config_file },
+		}),
+	},
 	-- Show tab navigator
 	{
 		key = "p",
@@ -96,13 +108,27 @@ config.keys = {
 		}),
 	},
 	{
+		-- iterm style
 		key = "d",
 		mods = "CMD",
 		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
 	},
 	{
+		-- iterm style
 		key = "d",
 		mods = "CMD|SHIFT",
+		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+	},
+	{
+		-- tmux style
+		key = '"',
+		mods = "LEADER",
+		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+	},
+	{
+		-- tmux style
+		key = "%",
+		mods = "LEADER",
 		action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
 	},
 	-- Rename current tab
@@ -117,6 +143,22 @@ config.keys = {
 				end
 			end),
 		}),
+	},
+	-- Sends ESC + b and ESC + f sequence, which is used
+	-- for telling your shell to jump back/forward.
+	{
+		-- When the left arrow is pressed
+		key = "LeftArrow",
+		-- With the "Option" key modifier held down
+		mods = "OPT",
+		-- Perform this action, in this case - sending ESC + B
+		-- to the terminal
+		action = wezterm.action.SendString("\x1bb"),
+	},
+	{
+		key = "RightArrow",
+		mods = "OPT",
+		action = wezterm.action.SendString("\x1bf"),
 	},
 	-- Move to a pane (prompt to which one)
 	-- TODO: not sure I like M for this
@@ -134,6 +176,27 @@ config.keys = {
 		key = "]",
 		mods = "CMD",
 		action = wezterm.action.ActivatePaneDirection("Next"),
+	},
+	{
+		-- vim style
+		key = "j", -- or DownArrow
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Down"),
+	},
+	{
+		key = "k", -- or UpArrow
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Up"),
+	},
+	{
+		key = "h", -- or LeftArrow
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Left"),
+	},
+	{
+		key = "l", -- or RightArrow
+		mods = "LEADER",
+		action = wezterm.action.ActivatePaneDirection("Right"),
 	},
 	-- Use CMD+z to enter zoom state
 	{
