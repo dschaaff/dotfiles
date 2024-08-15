@@ -45,6 +45,8 @@ SAVEHIST=$HISTSIZE
 bindkey '\e[H' beginning-of-line
 bindkey "^[[F"  end-of-line
 bindkey "^[[3~" delete-char
+# https://github.com/zsh-users/zsh/blob/ac0dcc9a63dc2a0edc62f8f1381b15b0b5ce5da3/NEWS#L37-L42
+zle_highlight+=(paste:none)
 ##########################
 # END Shell Opt SETTINGS #
 ##########################
