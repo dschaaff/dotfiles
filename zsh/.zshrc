@@ -153,9 +153,8 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 ##########################################################
 # Kubeswitch https://github.com/danielfoehrKn/kubeswitch #
 ##########################################################
-
-INSTALLATION_PATH=$(brew --prefix switch) && source $INSTALLATION_PATH/switch.sh
-
+source <(switcher init zsh)
+source <(switch completion zsh)
 #################
 # ENV VARIABLES #
 #################
