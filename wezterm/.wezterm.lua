@@ -13,7 +13,7 @@ end
 
 -- This is where you actually apply your config choices
 config.front_end = "WebGpu"
-config.font_size = 13
+config.font_size = 13.5
 config.font = wezterm.font({
 	family = "JetBrains Mono",
 	-- weight = "DemiBold",
