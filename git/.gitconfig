@@ -2,9 +2,12 @@
 	email = daniel@danielschaaff.com
 	name = Daniel Schaaff
 	signingkey = D69147D1
+
 [commit]
 	gpgsign = true
 	verbose = false
+	template = /Users/danielschaaff/.gitcommittemplate.txt
+
 [includeIf "gitdir:~/development/work/"]
   path = ~/.workGitconfig
 [core]
