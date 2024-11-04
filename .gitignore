@@ -17,3 +17,4 @@ bin/bin/docker-credential-osxkeychain
 bin/bin/kubectl
 bin/bin/release-cli
 bin/bin/linkerd
+warp
