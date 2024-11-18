@@ -6,7 +6,6 @@
 [commit]
 	gpgsign = true
 	verbose = false
-	template = /Users/danielschaaff/.gitcommittemplate.txt
 
 [includeIf "gitdir:~/development/work/"]
   path = ~/.workGitconfig
