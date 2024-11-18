@@ -1,0 +1,59 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run the `open default settings` command
+// from the command palette or from `Zed` application menu.
+{
+  "assistant": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-3-5-sonnet-latest"
+    },
+    "version": "2"
+  },
+  "theme": "Tokyo Night Storm",
+  "autosave": {
+    "after_delay": {
+      "milliseconds": 1000
+    }
+  },
+  "buffer_font_size": 13,
+  "buffer_font_family": "JetBrains Mono",
+  "file_types": {
+    "Dockerfile": [
+      "Dockerfile.*",
+      "Dockerfile",
+      "Dockerfile.dev"
+    ]
+  },
+  "preferred_line_length": 120,
+  "lsp": {
+    "yaml": {
+      "initialization_options": {
+        "yaml": {
+          "keyOrdering": false,
+          "format": {
+            "singleQuote": true
+          },
+          "customTags": [
+            "!reference sequence"
+          ]
+        }
+      }
+    }
+  },
+  // "relative_line_numbers": true,
+  "terminal": {
+    "font_family": "JetBrainsMono Nerd Font",
+    "copy_on_select": true
+  },
+  "vim_mode": true,
+  "vim": {
+    // Use relative line numbers in normal mode, absolute in insert mode
+    // c.f. https://github.com/jeffkreeftmeijer/vim-numbertoggle
+    "toggle_relative_line_numbers": true
+  }
+}
