@@ -46,6 +46,12 @@
    colorMoved = default
   pager = delta --color-only
 
+[pager]
+  blame  = delta
+  diff   = delta
+  reflog = delta
+  show   = delta
+
 [color]
 	ui = true
 
