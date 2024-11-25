@@ -1,14 +1,19 @@
 [user]
 	email = daniel@danielschaaff.com
 	name = Daniel Schaaff
-	signingkey = D69147D1
+	signingKey = /Users/danielschaaff/.ssh/id_ed25519.pub
+
+[includeIf "gitdir:~/development/work/"]
+  path = ~/.workGitconfig
 
 [commit]
 	gpgsign = true
 	verbose = false
 
-[includeIf "gitdir:~/development/work/"]
-  path = ~/.workGitconfig
+[tag]
+	forceSignAnnotated = true
+	gpgsign = true
+
 [core]
 	excludesfile = /Users/danielschaaff/.gitignore_global
   pager = delta --color-only
@@ -56,10 +61,7 @@
 	ui = true
 
 [gpg]
-	program = /usr/local/MacGPG2/bin/gpg2
-
-[tag]
-	forceSignAnnotated = true
+	format = ssh
 
 [color "diff-highlight"]
 	oldNormal = red bold
@@ -85,3 +87,6 @@
 
 [alias]
     mr = !sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -
+
+[format]
+	signoff = true
