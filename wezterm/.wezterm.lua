@@ -18,7 +18,7 @@ config.font = wezterm.font({
 	family = "JetBrains Mono",
 	-- weight = "DemiBold",
 })
-
+config.max_fps = 120
 -- config.bold_brightens_ansi_colors = true
 -- config.freetype_load_target = "Light"
 -- config.freetype_render_target = "HorizontalLcd"
