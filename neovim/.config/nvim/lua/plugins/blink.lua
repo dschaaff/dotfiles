@@ -4,8 +4,9 @@ return {
     "olimorris/codecompanion.nvim",
   },
   opts = {
-    keymap = { preset = "default" },
+    -- keymap = { preset = "default" },
     sources = {
+      default = { "codecompanion" },
       completion = {
         enabled_providers = { "codecompanion" },
       },
