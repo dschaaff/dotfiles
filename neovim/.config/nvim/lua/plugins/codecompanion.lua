@@ -12,6 +12,29 @@ return {
     strategies = {
       chat = {
         adapter = "copilot",
+        slash_commands = {
+          ["buffer"] = {
+            opts = {
+              provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+            },
+          },
+          ["file"] = {
+            opts = {
+              provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+            },
+          },
+          ["help"] = {
+            opts = {
+              provider = "fzf_lua", -- telescope|mini_pick|fzf_lua
+            },
+          },
+          ["symbols"] = {
+            opts = {
+              contains_code = true,
+              provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+            },
+          },
+        },
       },
       inline = {
         adapter = "copilot",
