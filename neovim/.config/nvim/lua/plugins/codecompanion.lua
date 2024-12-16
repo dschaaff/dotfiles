@@ -6,7 +6,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "saghen/blink.cmp", -- Optional: For using slash commands and variables in the chat buffer
-      "nvim-telescope/telescope.nvim", -- Optional: For using slash commands
+      "ibhagwan/fzf-lua",
       { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
     },
     config = true,
@@ -18,6 +18,17 @@ return {
       { "<leader>ai", "<cmd>CodeCompanion<cr>", mode = "n", desc = "Inline prompt (CodeCompanion)" },
     },
     opts = {
+      adapters = {
+        copilot = function()
+          return require("codecompanion.adapters").extend("copilot", {
+            schema = {
+              model = {
+                default = "claude-3.5-sonnet",
+              },
+            },
+          })
+        end,
+      },
       strategies = {
         chat = {
           adapter = "copilot",
@@ -40,9 +51,8 @@ return {
               },
             },
             ["file"] = {
-              opts = {
-                provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
-              },
+              provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+              opts = {},
             },
             ["help"] = {
               opts = {
