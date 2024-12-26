@@ -7,9 +7,6 @@ return {
     -- keymap = { preset = "default" },
     sources = {
       default = { "codecompanion" },
-      completion = {
-        enabled_providers = { "codecompanion" },
-      },
       providers = {
         codecompanion = {
           name = "CodeCompanion",
