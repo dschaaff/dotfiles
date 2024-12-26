@@ -12,3 +12,11 @@ frontend
 iCloud
 SAML
 SHA1
+backend
+SAAS
+opentelemetry
+systemd
+daemonset
+otel
+Grafana's
+statefulset
