@@ -114,7 +114,7 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 autoload bashcompinit && bashcompinit
 autoload -Uz compinit && compinit
 # End of lines added by compinstall
-source <(kubectl completion zsh)
+source <(~/.rd/bin/kubectl completion zsh)
 complete -F __start_kubectl kcl
 complete -F __start_kubectl ktl
 
