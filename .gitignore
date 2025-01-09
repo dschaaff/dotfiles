@@ -18,3 +18,5 @@ bin/bin/kubectl
 bin/bin/release-cli
 bin/bin/linkerd
 warp
+bin/bin/terraform
+zed/.config/zed/prompts
