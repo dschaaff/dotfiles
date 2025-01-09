@@ -1,7 +1,8 @@
-font-family = 'JetBrains Mono'
+font-family = "JetBrains Mono"
 font-size = 13.5
 theme = tokyonight
 font-thicken = true
 
 # https://ghostty.org/docs/config/keybind
 # keybind = trigger=action
+window-save-state = default
