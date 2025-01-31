@@ -29,7 +29,9 @@
       "space b o": "pane::CloseInactiveItems",
       "space e": "workspace::ToggleLeftDock",
       "shift-l": "pane::ActivateNextItem",
-      "shift-h": "pane::ActivatePrevItem"
+      "shift-h": "pane::ActivatePrevItem",
+      "space a": "workspace::ToggleRightDock",
+      "space a a": "assistant::ToggleFocus"
     }
   },
   {

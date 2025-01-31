@@ -23,11 +23,7 @@
   "buffer_font_size": 13,
   "buffer_font_family": "JetBrains Mono",
   "file_types": {
-    "Dockerfile": [
-      "Dockerfile.*",
-      "Dockerfile",
-      "Dockerfile.dev"
-    ]
+    "Dockerfile": ["Dockerfile.*", "Dockerfile", "Dockerfile.dev"]
   },
   "preferred_line_length": 120,
   "lsp": {
@@ -38,16 +34,14 @@
           "format": {
             "singleQuote": true
           },
-          "customTags": [
-            "!reference sequence"
-          ]
+          "customTags": ["!reference sequence"]
         }
       }
     }
   },
   // "relative_line_numbers": true,
   "terminal": {
-    "font_family": "JetBrainsMono Nerd Font",
+    "font_family": "JetBrains Mono",
     "copy_on_select": true
   },
   "vim_mode": true,
