@@ -21,3 +21,4 @@ warp
 bin/bin/terraform
 zed/.config/zed/prompts
 lazygit/Library/Application Support/lazygit/state.yml
+zed/.config/zed/conversations
