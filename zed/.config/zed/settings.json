@@ -20,7 +20,7 @@
       "milliseconds": 1000
     }
   },
-  "buffer_font_size": 13,
+  "buffer_font_size": 13.5,
   "buffer_font_family": "JetBrains Mono",
   "file_types": {
     "Dockerfile": ["Dockerfile.*", "Dockerfile", "Dockerfile.dev"]
@@ -41,7 +41,7 @@
   },
   // "relative_line_numbers": true,
   "terminal": {
-    "font_family": "JetBrains Mono",
+    "font_family": "JetBrainsMono Nerd Font Mono",
     "copy_on_select": true
   },
   "vim_mode": true,
