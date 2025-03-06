@@ -20,3 +20,5 @@ daemonset
 otel
 Grafana's
 statefulset
+Grafana
+Redis
