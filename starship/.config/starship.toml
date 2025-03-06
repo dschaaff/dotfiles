@@ -1,7 +1,6 @@
 format = """
 $kubernetes\
 $line_break\
-$gcloud\
 $directory\
 $git_branch\
 $git_commit\
