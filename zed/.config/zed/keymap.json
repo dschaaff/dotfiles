@@ -27,11 +27,12 @@
       // "g f": "editor::OpenExcerpts",
       "space ,": "tab_switcher::Toggle",
       "space b o": "pane::CloseInactiveItems",
-      "space e": "workspace::ToggleLeftDock",
+      "space e": "project_panel::ToggleFocus",
       "shift-l": "pane::ActivateNextItem",
       "shift-h": "pane::ActivatePrevItem",
       "space a": "workspace::ToggleRightDock",
-      "space a a": "assistant::ToggleFocus"
+      "space a a": "assistant::ToggleFocus",
+      "space g g": "git_panel::ToggleFocus"
     }
   },
   {
