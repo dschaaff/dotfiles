@@ -27,6 +27,12 @@ return {
           exclude = { "node_modules", ".git" },
         },
       },
+      formatters = {
+        file = {
+          filename_first = true,
+          truncate = 100,
+        },
+      },
     },
   },
 }
