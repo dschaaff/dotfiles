@@ -19,12 +19,12 @@ return {
         explorer = {
           hidden = true,
           ignored = true,
-          exclude = { "node_modules", ".git" },
+          exclude = { "node_modules", ".git", ".terraform" },
         },
         files = {
           hidden = true,
           ignored = true,
-          exclude = { "node_modules", ".git" },
+          exclude = { "node_modules", ".git", ".terraform" },
         },
       },
       formatters = {
