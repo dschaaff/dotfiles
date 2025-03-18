@@ -47,22 +47,22 @@ return {
           slash_commands = {
             ["buffer"] = {
               opts = {
-                provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
             ["file"] = {
-              provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+              provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
               opts = {},
             },
             ["help"] = {
               opts = {
-                provider = "fzf_lua", -- telescope|mini_pick|fzf_lua
+                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
             ["symbols"] = {
               opts = {
                 contains_code = true,
-                provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua
+                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
           },
