@@ -47,16 +47,16 @@ return {
           slash_commands = {
             ["buffer"] = {
               opts = {
-                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
             ["file"] = {
-              provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+              provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua|snacks
               opts = {},
             },
             ["help"] = {
               opts = {
-                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
             ["symbols"] = {
