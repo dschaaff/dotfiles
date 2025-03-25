@@ -19,12 +19,10 @@ $character"""
 
 right_format = """
 $aws\
-$docker_context\
 $package\
 $golang\
 $helm\
 $python\
-$terraform\
 $nix_shell\
 $gcloud"""
 
