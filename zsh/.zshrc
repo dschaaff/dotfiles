@@ -188,7 +188,7 @@ export PATH=$HOME/bin:$PATH
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 # rancher desktop nerdctl
 export PATH="$HOME/.rd/bin:$PATH"
-export PATH="/opt/homebrew/opt/node@18/bin:$PATH"
+export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 alias assume="source assume"
 
 # setup starship rs prompt
