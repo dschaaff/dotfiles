@@ -29,6 +29,11 @@ return {
           })
         end,
       },
+      display = {
+        action_palette = {
+          provider = "default",
+        },
+      },
       strategies = {
         chat = {
           adapter = "copilot",
@@ -47,16 +52,17 @@ return {
           slash_commands = {
             ["buffer"] = {
               opts = {
-                provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
             ["file"] = {
-              provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua|snacks
-              opts = {},
+              opts = {
+                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+              },
             },
             ["help"] = {
               opts = {
-                provider = "fzf_lua", -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
             ["symbols"] = {
