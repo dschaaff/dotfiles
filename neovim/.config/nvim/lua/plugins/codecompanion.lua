@@ -7,6 +7,7 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "saghen/blink.cmp", -- Optional: For using slash commands and variables in the chat buffer
       "ibhagwan/fzf-lua",
+      "jellydn/spinner.nvim",
       { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
     },
     config = true,
@@ -17,6 +18,22 @@ return {
       { "<leader>ac", "<cmd>CodeCompanionAdd<cr>", mode = "v", desc = "Add code to CodeCompanion" },
       { "<leader>ai", "<cmd>CodeCompanion<cr>", mode = "n", desc = "Inline prompt (CodeCompanion)" },
     },
+    init = function()
+      local spinner = require("spinner")
+      local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+      vim.api.nvim_create_autocmd({ "User" }, {
+        pattern = "CodeCompanionRequest*",
+        group = group,
+        callback = function(request)
+          if request.match == "CodeCompanionRequestStarted" then
+            spinner.show()
+          end
+          if request.match == "CodeCompanionRequestFinished" then
+            spinner.hide()
+          end
+        end,
+      })
+    end,
     opts = {
       adapters = {
         copilot = function()
@@ -60,6 +77,7 @@ return {
             ["file"] = {
               opts = {
                 provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+                contains_code = true,
               },
             },
             ["help"] = {
@@ -83,6 +101,7 @@ return {
         },
       },
     },
+    prompt_library = {},
   },
   {
     "folke/edgy.nvim",
