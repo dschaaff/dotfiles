@@ -51,8 +51,10 @@ return {
           -- },
           slash_commands = {
             ["buffer"] = {
+              callback = "strategies.chat.slash_commands.buffer",
               opts = {
                 provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+                contains_code = true,
               },
             },
             ["file"] = {
