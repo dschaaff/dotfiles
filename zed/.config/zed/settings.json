@@ -29,9 +29,19 @@
     "Dockerfile": ["Dockerfile.*", "Dockerfile", "Dockerfile.dev"]
   },
   "preferred_line_length": 120,
+  "prettier": {
+    "overrides": [
+       {
+         "files": ["*.yaml", "*.yml"],
+         "options": {
+           "singleQuote": false
+         }
+       }
+     ]
+  },
   "lsp": {
     "yaml": {
-      "initialization_options": {
+      "settings": {
         "yaml": {
           "keyOrdering": false,
           "format": {
