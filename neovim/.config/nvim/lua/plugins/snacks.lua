@@ -27,6 +27,11 @@ return {
           ignored = true,
           exclude = { "node_modules", ".git", ".terraform" },
         },
+        grep = {
+          hidden = true,
+          ignored = true,
+          exclude = { "node_modules", ".git", ".terraform" },
+        },
       },
       formatters = {
         file = {
