@@ -24,3 +24,4 @@ lazygit/Library/Application Support/lazygit/state.yml
 zed/.config/zed/conversations
 bin/bin/tofu
 lazygit/Library/Application Support/lazygit/development.log
+vale/.config/vale/styles
