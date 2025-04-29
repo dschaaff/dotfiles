@@ -314,9 +314,7 @@ return {
 ```diff
 %s
 ```]],
-                  vim.fn.system(
-                    "git diff $(git merge-base $(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@') HEAD) "
-                  )
+                  vim.fn.system("git diff $(git merge-base origin/HEAD HEAD)")
                 )
               end,
               opts = {
