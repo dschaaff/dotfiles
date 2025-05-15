@@ -189,6 +189,8 @@ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 # rancher desktop nerdctl
 export PATH="$HOME/.rd/bin:$PATH"
 export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
+# tofu/terraform
+export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 if [[ -f "$HOME/.krew/bin" ]]; then
   export PATH="$HOME/.krew/bin:$PATH"
 fi
