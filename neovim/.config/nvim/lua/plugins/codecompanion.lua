@@ -111,12 +111,26 @@ return {
     end,
     opts = {
       adapters = {
+        anthropic = function()
+          return require("codecompanion.adapters").extend("anthropic", {
+            env = {
+              api_key = "cmd:op read op://Employee/Anthropic\\ API\\ Key\\ Cordial/credential --no-newline --account team-cordial.1password.com",
+            },
+          })
+        end,
         copilot = function()
           return require("codecompanion.adapters").extend("copilot", {
             schema = {
               model = {
                 default = "claude-3.7-sonnet",
               },
+            },
+          })
+        end,
+        gemini = function()
+          return require("codecompanion.adapters").extend("gemini", {
+            env = {
+              api_key = "cmd:op read op://private/Cordial\\ Google/gemini-api-key --no-newline --account schaaff.1password.com",
             },
           })
         end,
@@ -128,7 +142,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = "copilot",
+          adapter = "anthropic",
           roles = {
             llm = "  CodeCompanion", -- The markdown header content for the LLM's responses
             user = "  Me", -- The markdown header for your questions
@@ -169,10 +183,10 @@ return {
           },
         },
         inline = {
-          adapter = "copilot",
+          adapter = "anthropic",
         },
         agent = {
-          adapter = "copilot",
+          adapter = "anthropic",
         },
       },
       prompt_library = {
