@@ -2,7 +2,7 @@ return {
   "folke/snacks.nvim",
   opts = {
     dashboard = {
-      enabled = false,
+      enabled = true,
       preset = {
         header = [[
 
@@ -20,7 +20,7 @@ return {
         explorer = {
           hidden = true,
           ignored = true,
-          exclude = { "node_modules", ".git", ".terraform" },
+          exclude = { "node_modules", ".git", ".terraform", ".yarn" },
         },
         files = {
           hidden = true,
