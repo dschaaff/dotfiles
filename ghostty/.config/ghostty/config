@@ -6,3 +6,5 @@ font-thicken = true
 # https://ghostty.org/docs/config/keybind
 # keybind = trigger=action
 window-save-state = always
+
+window-inherit-working-directory = true
