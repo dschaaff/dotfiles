@@ -22,3 +22,6 @@ Grafana's
 statefulset
 Grafana
 Redis
+Bottlerocket
+Bottlerocket
+Karpenter
