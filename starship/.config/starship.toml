@@ -22,9 +22,7 @@ $aws\
 $package\
 $golang\
 $helm\
-$python\
-$nix_shell\
-$gcloud"""
+$python"""
 
 [aws]
 format = '[ $region $duration $profile]($style) '
