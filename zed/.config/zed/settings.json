@@ -10,10 +10,11 @@
   "features": {
     "edit_prediction_provider": "zed"
   },
-  "assistant": {
+  "agent": {
+    "play_sound_when_agent_done": true,
     "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-3-7-sonnet-latest"
+      "provider": "anthropic",
+      "model": "claude-sonnet-4-latest"
     },
     "version": "2"
   },
@@ -26,18 +27,25 @@
   "buffer_font_size": 13.5,
   "buffer_font_family": "JetBrains Mono",
   "file_types": {
-    "Dockerfile": ["Dockerfile.*", "Dockerfile", "Dockerfile.dev"]
+    "Dockerfile": [
+      "Dockerfile.*",
+      "Dockerfile",
+      "Dockerfile.dev"
+    ]
   },
   "preferred_line_length": 120,
   "prettier": {
     "overrides": [
-       {
-         "files": ["*.yaml", "*.yml"],
-         "options": {
-           "singleQuote": false
-         }
-       }
-     ]
+      {
+        "files": [
+          "*.yaml",
+          "*.yml"
+        ],
+        "options": {
+          "singleQuote": false
+        }
+      }
+    ]
   },
   "lsp": {
     "yaml": {
@@ -47,7 +55,9 @@
           "format": {
             "singleQuote": true
           },
-          "customTags": ["!reference sequence"]
+          "customTags": [
+            "!reference sequence"
+          ]
         }
       }
     }
