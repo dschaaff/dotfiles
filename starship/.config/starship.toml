@@ -1,31 +1,28 @@
 format = """
 $kubernetes\
 $line_break\
+$hostname\
 $directory\
 $git_branch\
 $git_commit\
 $git_state\
 $git_status\
-$hg_branch\
-$memory_usage\
 $env_var\
 $custom\
 $cmd_duration\
+$fill\
+$aws\
 $line_break\
 $jobs\
 $time\
 $status\
 $character"""
 
-right_format = """
-$aws\
-$package\
-$golang\
-$helm\
-$python"""
+[fill]
+symbol = ' '
 
 [aws]
-format = '[ $region $duration $profile]($style) '
+format = '[ $region $duration $profile]($style)'
 # [aws.region_aliases]
 # us-west-2 = "usw2"
 # us-west-1 = "usw1"
@@ -36,7 +33,7 @@ truncate_to_repo = false
 
 [kubernetes]
 disabled = false
-format = '[$symbol$context( \($namespace\))]($style) '
+format = '[$symbol$context( \($namespace\))]($style)'
 style = "blue bold"
 
 [status]
@@ -49,4 +46,8 @@ format = "via [$symbol$version]($style) "
 [time]
 disabled = false
 format = "[$time]($style) "
+
+[hostname]
+ssh_only = true
+disabled = false
 
