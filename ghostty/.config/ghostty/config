@@ -8,3 +8,4 @@ font-thicken = true
 window-save-state = always
 
 window-inherit-working-directory = true
+keybind = shift+enter=text:\n
