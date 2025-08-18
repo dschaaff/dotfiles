@@ -5,6 +5,7 @@
   {
     "label": "Lazygit",
     "command": "lazygit",
+    "hide": "on_success",
     "args": [],
     "env": {},
     "use_new_terminal": true,
