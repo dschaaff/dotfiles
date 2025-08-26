@@ -13,3 +13,7 @@ stow neovim vim tmux # etc
 ```shell
 sudo launchctl limit maxfiles 10240 $(( 2**63 - 1 ))
 ```
+
+## Neovim Notes
+
+Put plugs in `lua/plugins` adn they will automatically get installed.
