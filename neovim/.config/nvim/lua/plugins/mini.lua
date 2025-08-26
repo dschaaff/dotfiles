@@ -11,7 +11,14 @@ return {
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup({ n_lines = 500 })
 
+      -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-tabline.md
+      require('mini.tabline').setup()
+
       require('mini.pairs').setup()
+
+      require('mini.bracketed').setup()
+
+      require('mini.bufremove').setup()
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
       -- - gsaiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
@@ -49,6 +56,49 @@ return {
       end
 
       wk.add(which_key_mappings)
+
+      -- Buffer navigation using mini.bracketed
+      wk.add({
+        {
+          '<S-h>',
+          function()
+            require('mini.bracketed').buffer('backward')
+          end,
+          desc = 'Prev Buffer',
+        },
+        {
+          '<S-l>',
+          function()
+            require('mini.bracketed').buffer('forward')
+          end,
+          desc = 'Next Buffer',
+        },
+      })
+
+      -- Buffer delete keymaps
+      wk.add({
+        {
+          '<leader>bd',
+          function()
+            require('mini.bufremove').delete()
+          end,
+          desc = 'Delete Buffer',
+        },
+        { '<leader>bD', '<cmd>bd<cr>', desc = 'Delete Buffer and Window' },
+        {
+          '<leader>bo',
+          function()
+            local current_buf = vim.api.nvim_get_current_buf()
+            local buffers = vim.api.nvim_list_bufs()
+            for _, buf in ipairs(buffers) do
+              if buf ~= current_buf and vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
+                require('mini.bufremove').delete(buf)
+              end
+            end
+          end,
+          desc = 'Delete Other Buffers',
+        },
+      })
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
