@@ -159,25 +159,25 @@ return {
             ['buffer'] = {
               callback = 'strategies.chat.slash_commands.buffer',
               opts = {
-                provider = 'snacks', -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = 'fzf_lua', -- default|telescope|mini_pick|fzf_lua|snacks
                 contains_code = true,
               },
             },
             ['file'] = {
               opts = {
-                provider = 'snacks', -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = 'fzf_lua', -- default|telescope|mini_pick|fzf_lua|snacks
                 contains_code = true,
               },
             },
             ['help'] = {
               opts = {
-                provider = 'snacks', -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = 'fzf_lua', -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
             ['symbols'] = {
               opts = {
                 contains_code = true,
-                provider = 'snacks', -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = 'fzf_lua', -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
           },
