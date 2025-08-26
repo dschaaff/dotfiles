@@ -221,6 +221,7 @@ return {
         ansiblels = {},
         bashls = {},
         dockerls = {},
+        helm_ls = {},
         intelephense = {},
         tflint = {},
         gopls = {},
@@ -252,9 +253,9 @@ return {
         ['markdownlint-cli2'] = {},
         ['markdown-toc'] = {},
 
-      vale ={},
-      markdownlint = {},
-      shellcheck = {},
+        vale = {},
+        markdownlint = {},
+        shellcheck = {},
         marksman = {},
         yamlls = {
           -- lazy-load schemastore when needed
