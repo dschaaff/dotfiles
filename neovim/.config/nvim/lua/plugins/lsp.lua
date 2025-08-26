@@ -267,11 +267,12 @@ return {
             },
           },
         },
-        ['ruff-lsp'] = {},
         vale = {},
         markdownlint = {},
         shellcheck = {},
         marksman = {},
+        terraformls = {},
+        tflint = {},
         yamlls = {
           -- lazy-load schemastore when needed
           on_new_config = function(new_config)
