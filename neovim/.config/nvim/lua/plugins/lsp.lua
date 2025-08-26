@@ -79,13 +79,75 @@ return {
             vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
 
-          -- Rename the variable under your cursor.
-          --  Most Language Servers support renaming across files, etc.
-          map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
+          -- LSP Info
+          map('<leader>cl', '<cmd>LspInfo<cr>', 'Lsp Info')
 
-          -- Execute a code action, usually your cursor needs to be on top of an error
-          -- or a suggestion from your LSP for this to activate.
-          map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+          -- Goto Definition
+          map('gd', vim.lsp.buf.definition, 'Goto Definition')
+
+          -- References
+          map('gr', vim.lsp.buf.references, 'References')
+
+          -- Goto Implementation
+          map('gI', vim.lsp.buf.implementation, 'Goto Implementation')
+
+          -- Goto Type Definition
+          map('gy', vim.lsp.buf.type_definition, 'Goto T[y]pe Definition')
+
+          -- Goto Declaration
+          map('gD', vim.lsp.buf.declaration, 'Goto Declaration')
+
+          -- Hover
+          map('K', vim.lsp.buf.hover, 'Hover')
+
+          -- Signature Help
+          map('gK', vim.lsp.buf.signature_help, 'Signature Help')
+          map('<c-k>', vim.lsp.buf.signature_help, 'Signature Help', 'i')
+
+          -- Code Action
+          map('<leader>ca', vim.lsp.buf.code_action, 'Code Action', { 'n', 'v' })
+
+          -- Run Codelens
+          map('<leader>cc', vim.lsp.codelens.run, 'Run Codelens', { 'n', 'v' })
+
+          -- Refresh & Display Codelens
+          map('<leader>cC', vim.lsp.codelens.refresh, 'Refresh & Display Codelens')
+
+          -- Rename File
+          map('<leader>cR', function()
+            local old_name = vim.api.nvim_buf_get_name(0)
+            local new_name = vim.fn.input('New file name: ', old_name)
+            if new_name ~= '' and new_name ~= old_name then
+              vim.lsp.util.rename(old_name, new_name)
+            end
+          end, 'Rename File')
+
+          -- Rename
+          map('<leader>cr', vim.lsp.buf.rename, 'Rename')
+
+          -- Source Action
+          map('<leader>cA', function()
+            vim.lsp.buf.code_action({ context = { only = { 'source' } } })
+          end, 'Source Action')
+
+          -- Next Reference
+          map(']]', function()
+            vim.diagnostic.goto_next({ wrap = false })
+          end, 'Next Reference')
+
+          -- Prev Reference
+          map('[[', function()
+            vim.diagnostic.goto_prev({ wrap = false })
+          end, 'Prev Reference')
+
+          -- Alt + n/p for next/prev reference
+          map('<a-n>', function()
+            vim.diagnostic.goto_next({ wrap = false })
+          end, 'Next Reference')
+
+          map('<a-p>', function()
+            vim.diagnostic.goto_prev({ wrap = false })
+          end, 'Prev Reference')
 
           -- Find references for the word under your cursor.
           -- map('grr', require('fzf.builtin').lsp_references, '[G]oto [R]eferences')
