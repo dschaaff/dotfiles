@@ -122,6 +122,7 @@ complete -F __start_kubectl ktl
 complete -C '/opt/homebrew/bin/aws_completer' aws
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
+eval "$(logcli --completion-script-zsh)"
 ###################
 # END COMPLETIONS #
 ###################
@@ -224,3 +225,5 @@ fi
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/danielschaaff/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
