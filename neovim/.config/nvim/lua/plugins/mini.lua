@@ -11,19 +11,20 @@ return {
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup({ n_lines = 500 })
 
+      require('mini.pairs').setup()
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
       -- - gsaiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - gsd'   - [S]urround [D]elete [']quotes
       -- - gsr)'  - [S]urround [R]eplace [)] [']
       local surround_mappings = {
-        add = "gsa", -- Add surrounding in Normal and Visual modes
-        delete = "gsd", -- Delete surrounding
-        find = "gsf", -- Find surrounding (to the right)
-        find_left = "gsF", -- Find surrounding (to the left)
-        highlight = "gsh", -- Highlight surrounding
-        replace = "gsr", -- Replace surrounding
-        update_n_lines = "gsn", -- Update `n_lines`
+        add = 'gsa', -- Add surrounding in Normal and Visual modes
+        delete = 'gsd', -- Delete surrounding
+        find = 'gsf', -- Find surrounding (to the right)
+        find_left = 'gsF', -- Find surrounding (to the left)
+        highlight = 'gsh', -- Highlight surrounding
+        replace = 'gsr', -- Replace surrounding
+        update_n_lines = 'gsn', -- Update `n_lines`
       }
 
       require('mini.surround').setup({
