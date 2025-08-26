@@ -34,76 +34,76 @@ Identify any issues related to:
 )
 return {
   {
-    "olimorris/codecompanion.nvim",
-    cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionToggle", "CodeCompanionAdd", "CodeCompanionChat" },
+    'olimorris/codecompanion.nvim',
+    cmd = { 'CodeCompanion', 'CodeCompanionActions', 'CodeCompanionToggle', 'CodeCompanionAdd', 'CodeCompanionChat' },
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "saghen/blink.cmp", -- Optional: For using slash commands and variables in the chat buffer
-      "ibhagwan/fzf-lua",
-      "jellydn/spinner.nvim",
-      { "stevearc/dressing.nvim", opts = {} }, -- Optional: Improves `vim.ui.select`
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'saghen/blink.cmp', -- Optional: For using slash commands and variables in the chat buffer
+      'ibhagwan/fzf-lua',
+      'jellydn/spinner.nvim',
+      { 'stevearc/dressing.nvim', opts = {} }, -- Optional: Improves `vim.ui.select`
     },
     config = true,
     keys = {
-      { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
+      { '<leader>a', '', desc = '+ai', mode = { 'n', 'v' } },
       {
-        "<leader>ap",
-        "<cmd>CodeCompanionActions<cr>",
-        mode = { "n", "v" },
-        desc = "Prompt Actions (CodeCompanion)",
+        '<leader>ap',
+        '<cmd>CodeCompanionActions<cr>',
+        mode = { 'n', 'v' },
+        desc = 'Prompt Actions (CodeCompanion)',
       },
-      { "<leader>aa", "<cmd>CodeCompanionChat Toggle<cr>", mode = { "n", "v" }, desc = "Toggle (CodeCompanion)" },
-      { "<leader>ac", "<cmd>CodeCompanionAdd<cr>", mode = "v", desc = "Add code to CodeCompanion" },
+      { '<leader>aa', '<cmd>CodeCompanionChat Toggle<cr>', mode = { 'n', 'v' }, desc = 'Toggle (CodeCompanion)' },
+      { '<leader>ac', '<cmd>CodeCompanionAdd<cr>', mode = 'v', desc = 'Add code to CodeCompanion' },
       {
-        "<leader>ai",
-        "<cmd>CodeCompanion<cr>",
-        mode = "n",
-        desc = "Inline prompt (CodeCompanion)",
-      },
-      {
-        "<leader>ae",
-        "<cmd>CodeCompanion /explain<cr>",
-        mode = "v",
-        desc = "Explain Code (CodeCompanion)",
-      },
-      { "<leader>af", "<cmd>CodeCompanion /fix<cr>", mode = "v", desc = "Fix Code (CodeCompanion)" },
-      {
-        "<leader>al",
-        "<cmd>CodeCompanion /lsp<cr>",
-        mode = { "n", "v" },
-        desc = "Explain LSP Diagnostics (CodeCompanion)",
+        '<leader>ai',
+        '<cmd>CodeCompanion<cr>',
+        mode = 'n',
+        desc = 'Inline prompt (CodeCompanion)',
       },
       {
-        "<leader>at",
-        "<cmd>CodeCompanion /tests<cr>",
-        mode = "v",
-        desc = "Generate Tests (CodeCompanion)",
+        '<leader>ae',
+        '<cmd>CodeCompanion /explain<cr>',
+        mode = 'v',
+        desc = 'Explain Code (CodeCompanion)',
+      },
+      { '<leader>af', '<cmd>CodeCompanion /fix<cr>', mode = 'v', desc = 'Fix Code (CodeCompanion)' },
+      {
+        '<leader>al',
+        '<cmd>CodeCompanion /lsp<cr>',
+        mode = { 'n', 'v' },
+        desc = 'Explain LSP Diagnostics (CodeCompanion)',
       },
       {
-        "<leader>ad",
-        "<cmd>CodeCompanion /inline-doc<cr>",
-        mode = "v",
-        desc = "Document Code Inline (CodeCompanion)",
+        '<leader>at',
+        '<cmd>CodeCompanion /tests<cr>',
+        mode = 'v',
+        desc = 'Generate Tests (CodeCompanion)',
       },
       {
-        "<leader>aD",
-        "<cmd>CodeCompanion /doc<cr>",
-        mode = "v",
-        desc = "Document Code Inline (CodeCompanion)",
+        '<leader>ad',
+        '<cmd>CodeCompanion /inline-doc<cr>',
+        mode = 'v',
+        desc = 'Document Code Inline (CodeCompanion)',
+      },
+      {
+        '<leader>aD',
+        '<cmd>CodeCompanion /doc<cr>',
+        mode = 'v',
+        desc = 'Document Code Inline (CodeCompanion)',
       },
     },
     init = function()
-      local spinner = require("spinner")
-      local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
-      vim.api.nvim_create_autocmd({ "User" }, {
-        pattern = "CodeCompanionRequest*",
+      local spinner = require('spinner')
+      local group = vim.api.nvim_create_augroup('CodeCompanionHooks', {})
+      vim.api.nvim_create_autocmd({ 'User' }, {
+        pattern = 'CodeCompanionRequest*',
         group = group,
         callback = function(request)
-          if request.match == "CodeCompanionRequestStarted" then
+          if request.match == 'CodeCompanionRequestStarted' then
             spinner.show()
           end
-          if request.match == "CodeCompanionRequestFinished" then
+          if request.match == 'CodeCompanionRequestFinished' then
             spinner.hide()
           end
         end,
@@ -112,40 +112,40 @@ return {
     opts = {
       adapters = {
         anthropic = function()
-          return require("codecompanion.adapters").extend("anthropic", {
+          return require('codecompanion.adapters').extend('anthropic', {
             env = {
-              api_key = "cmd:op read op://Employee/Anthropic\\ API\\ Key\\ Cordial/credential --no-newline --account team-cordial.1password.com",
+              api_key = 'cmd:op read op://Employee/Anthropic\\ API\\ Key\\ Cordial/credential --no-newline --account team-cordial.1password.com',
             },
           })
         end,
         copilot = function()
-          return require("codecompanion.adapters").extend("copilot", {
+          return require('codecompanion.adapters').extend('copilot', {
             schema = {
               model = {
-                default = "claude-3.7-sonnet",
+                default = 'claude-3.7-sonnet',
               },
             },
           })
         end,
         gemini = function()
-          return require("codecompanion.adapters").extend("gemini", {
+          return require('codecompanion.adapters').extend('gemini', {
             env = {
-              api_key = "cmd:op read op://private/Cordial\\ Google/gemini-api-key --no-newline --account schaaff.1password.com",
+              api_key = 'cmd:op read op://private/Cordial\\ Google/gemini-api-key --no-newline --account schaaff.1password.com',
             },
           })
         end,
       },
       display = {
         action_palette = {
-          provider = "default",
+          provider = 'default',
         },
       },
       strategies = {
         chat = {
-          adapter = "anthropic",
+          adapter = 'anthropic',
           roles = {
-            llm = "  CodeCompanion", -- The markdown header content for the LLM's responses
-            user = "  Me", -- The markdown header for your questions
+            llm = '  CodeCompanion', -- The markdown header content for the LLM's responses
+            user = '  Me', -- The markdown header for your questions
           },
           -- keymaps = {
           --   close = {
@@ -156,61 +156,61 @@ return {
           --   },
           -- },
           slash_commands = {
-            ["buffer"] = {
-              callback = "strategies.chat.slash_commands.buffer",
+            ['buffer'] = {
+              callback = 'strategies.chat.slash_commands.buffer',
               opts = {
-                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = 'snacks', -- default|telescope|mini_pick|fzf_lua|snacks
                 contains_code = true,
               },
             },
-            ["file"] = {
+            ['file'] = {
               opts = {
-                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = 'snacks', -- default|telescope|mini_pick|fzf_lua|snacks
                 contains_code = true,
               },
             },
-            ["help"] = {
+            ['help'] = {
               opts = {
-                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = 'snacks', -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
-            ["symbols"] = {
+            ['symbols'] = {
               opts = {
                 contains_code = true,
-                provider = "snacks", -- default|telescope|mini_pick|fzf_lua|snacks
+                provider = 'snacks', -- default|telescope|mini_pick|fzf_lua|snacks
               },
             },
           },
         },
         inline = {
-          adapter = "anthropic",
+          adapter = 'anthropic',
         },
         agent = {
-          adapter = "anthropic",
+          adapter = 'anthropic',
         },
       },
       prompt_library = {
-        ["Inline Document"] = {
-          strategy = "inline",
-          description = "Add documentation for code.",
+        ['Inline Document'] = {
+          strategy = 'inline',
+          description = 'Add documentation for code.',
           opts = {
-            modes = { "v" },
-            short_name = "inline-doc",
+            modes = { 'v' },
+            short_name = 'inline-doc',
             auto_submit = true,
             user_prompt = false,
             stop_context_insertion = true,
           },
           prompts = {
             {
-              role = "user",
+              role = 'user',
               content = function(context)
-                local code = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                local code = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
 
-                return "Please provide documentation in comment code for the following code and suggest to have better naming to improve readability.\n\n```"
+                return 'Please provide documentation in comment code for the following code and suggest to have better naming to improve readability.\n\n```'
                   .. context.filetype
-                  .. "\n"
+                  .. '\n'
                   .. code
-                  .. "\n```\n\n"
+                  .. '\n```\n\n'
               end,
               opts = {
                 contains_code = true,
@@ -218,27 +218,27 @@ return {
             },
           },
         },
-        ["Document"] = {
-          strategy = "chat",
-          description = "Write documentation for code.",
+        ['Document'] = {
+          strategy = 'chat',
+          description = 'Write documentation for code.',
           opts = {
-            modes = { "v" },
-            short_name = "doc",
+            modes = { 'v' },
+            short_name = 'doc',
             auto_submit = true,
             user_prompt = false,
             stop_context_insertion = true,
           },
           prompts = {
             {
-              role = "user",
+              role = 'user',
               content = function(context)
-                local code = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                local code = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
 
-                return "Please brief how it works and provide documentation in comment code for the following code. Also suggest to have better naming to improve readability.\n\n```"
+                return 'Please brief how it works and provide documentation in comment code for the following code. Also suggest to have better naming to improve readability.\n\n```'
                   .. context.filetype
-                  .. "\n"
+                  .. '\n'
                   .. code
-                  .. "\n```\n\n"
+                  .. '\n```\n\n'
               end,
               opts = {
                 contains_code = true,
@@ -246,34 +246,34 @@ return {
             },
           },
         },
-        ["Review"] = {
-          strategy = "chat",
-          description = "Review the provided code snippet.",
+        ['Review'] = {
+          strategy = 'chat',
+          description = 'Review the provided code snippet.',
           opts = {
-            modes = { "v" },
-            short_name = "review",
+            modes = { 'v' },
+            short_name = 'review',
             auto_submit = true,
             user_prompt = false,
             stop_context_insertion = true,
           },
           prompts = {
             {
-              role = "system",
+              role = 'system',
               content = COPILOT_REVIEW,
               opts = {
                 visible = false,
               },
             },
             {
-              role = "user",
+              role = 'user',
               content = function(context)
-                local code = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                local code = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
 
-                return "Please review the following code and provide suggestions for improvement then refactor the following code to improve its clarity and readability:\n\n```"
+                return 'Please review the following code and provide suggestions for improvement then refactor the following code to improve its clarity and readability:\n\n```'
                   .. context.filetype
-                  .. "\n"
+                  .. '\n'
                   .. code
-                  .. "\n```\n\n"
+                  .. '\n```\n\n'
               end,
               opts = {
                 contains_code = true,
@@ -281,54 +281,54 @@ return {
             },
           },
         },
-        ["Review Code"] = {
-          strategy = "chat",
-          description = "Review code and provide suggestions for improvement.",
+        ['Review Code'] = {
+          strategy = 'chat',
+          description = 'Review code and provide suggestions for improvement.',
           opts = {
-            short_name = "review-code",
+            short_name = 'review-code',
             auto_submit = false,
             is_slash_cmd = true,
           },
           prompts = {
             {
-              role = "system",
+              role = 'system',
               content = COPILOT_REVIEW,
               opts = {
                 visible = false,
               },
             },
             {
-              role = "user",
-              content = "Please review the following code and provide suggestions for improvement then refactor the following code to improve its clarity and readability.",
+              role = 'user',
+              content = 'Please review the following code and provide suggestions for improvement then refactor the following code to improve its clarity and readability.',
             },
           },
         },
-        ["Code Review of Git Diff"] = {
-          strategy = "chat",
-          description = "Code review of git diff",
+        ['Code Review of Git Diff'] = {
+          strategy = 'chat',
+          description = 'Code review of git diff',
           opts = {
-            modes = { "n" },
+            modes = { 'n' },
             is_slash_cmd = true,
-            short_name = "git-diff-review",
+            short_name = 'git-diff-review',
             auto_submit = true,
           },
           prompts = {
             {
-              role = "system",
+              role = 'system',
               content = COPILOT_REVIEW,
               opts = {
                 visible = false,
               },
             },
             {
-              role = "user",
+              role = 'user',
               content = function()
                 return string.format(
                   [[ Perform a code review of the git diff. Be sure to call out any spelling mistakes, bugs, errors, and other key areas of concern. Provide useful suggestions for fixes and improvements:"
 ```diff
 %s
 ```]],
-                  vim.fn.system("git diff $(git merge-base origin/HEAD HEAD)")
+                  vim.fn.system('git diff $(git merge-base origin/HEAD HEAD)')
                 )
               end,
               opts = {
@@ -337,34 +337,34 @@ return {
             },
           },
         },
-        ["Refactor"] = {
-          strategy = "inline",
-          description = "Refactor the provided code snippet.",
+        ['Refactor'] = {
+          strategy = 'inline',
+          description = 'Refactor the provided code snippet.',
           opts = {
-            modes = { "v" },
-            short_name = "refactor",
+            modes = { 'v' },
+            short_name = 'refactor',
             auto_submit = true,
             user_prompt = false,
             stop_context_insertion = true,
           },
           prompts = {
             {
-              role = "system",
+              role = 'system',
               content = COPILOT_REFACTOR,
               opts = {
                 visible = false,
               },
             },
             {
-              role = "user",
+              role = 'user',
               content = function(context)
-                local code = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                local code = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
 
-                return "Please refactor the following code to improve its clarity and readability:\n\n```"
+                return 'Please refactor the following code to improve its clarity and readability:\n\n```'
                   .. context.filetype
-                  .. "\n"
+                  .. '\n'
                   .. code
-                  .. "\n```\n\n"
+                  .. '\n```\n\n'
               end,
               opts = {
                 contains_code = true,
@@ -372,49 +372,49 @@ return {
             },
           },
         },
-        ["Refactor Code"] = {
-          strategy = "chat",
-          description = "Refactor the provided code snippet.",
+        ['Refactor Code'] = {
+          strategy = 'chat',
+          description = 'Refactor the provided code snippet.',
           opts = {
-            short_name = "refactor-code",
+            short_name = 'refactor-code',
             auto_submit = false,
             is_slash_cmd = true,
           },
           prompts = {
             {
-              role = "system",
+              role = 'system',
               content = COPILOT_REFACTOR,
               opts = {
                 visible = false,
               },
             },
             {
-              role = "user",
-              content = "Please refactor the following code to improve its clarity and readability.",
+              role = 'user',
+              content = 'Please refactor the following code to improve its clarity and readability.',
             },
           },
         },
-        ["Naming"] = {
-          strategy = "inline",
-          description = "Give betting naming for the provided code snippet.",
+        ['Naming'] = {
+          strategy = 'inline',
+          description = 'Give betting naming for the provided code snippet.',
           opts = {
-            modes = { "v" },
-            short_name = "naming",
+            modes = { 'v' },
+            short_name = 'naming',
             auto_submit = true,
             user_prompt = false,
             stop_context_insertion = true,
           },
           prompts = {
             {
-              role = "user",
+              role = 'user',
               content = function(context)
-                local code = require("codecompanion.helpers.actions").get_code(context.start_line, context.end_line)
+                local code = require('codecompanion.helpers.actions').get_code(context.start_line, context.end_line)
 
-                return "Please provide better names for the following variables and functions:\n\n```"
+                return 'Please provide better names for the following variables and functions:\n\n```'
                   .. context.filetype
-                  .. "\n"
+                  .. '\n'
                   .. code
-                  .. "\n```\n\n"
+                  .. '\n```\n\n'
               end,
               opts = {
                 contains_code = true,
@@ -422,18 +422,18 @@ return {
             },
           },
         },
-        ["Better Naming"] = {
-          strategy = "chat",
-          description = "Give betting naming for the provided code snippet.",
+        ['Better Naming'] = {
+          strategy = 'chat',
+          description = 'Give betting naming for the provided code snippet.',
           opts = {
-            short_name = "better-naming",
+            short_name = 'better-naming',
             auto_submit = false,
             is_slash_cmd = true,
           },
           prompts = {
             {
-              role = "user",
-              content = "Please provide better names for the following variables and functions.",
+              role = 'user',
+              content = 'Please provide better names for the following variables and functions.',
             },
           },
         },
@@ -441,13 +441,13 @@ return {
     },
   },
   {
-    "folke/edgy.nvim",
+    'folke/edgy.nvim',
     optional = true,
     opts = function(_, opts)
       opts.right = opts.right or {}
       table.insert(opts.right, {
-        ft = "codecompanion",
-        title = "CodeCompanion Chat",
+        ft = 'codecompanion',
+        title = 'CodeCompanion Chat',
         size = { width = 50 },
       })
     end,
