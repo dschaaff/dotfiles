@@ -5,14 +5,14 @@ return {
   config = function()
     local config = require('fzf-lua.config')
     -- Quickfix
-    config.defaults.keymap.fzf["ctrl-q"] = "select-all+accept"
-    config.defaults.keymap.fzf["ctrl-u"] = "half-page-up"
-    config.defaults.keymap.fzf["ctrl-d"] = "half-page-down"
-    config.defaults.keymap.fzf["ctrl-x"] = "jump"
-    config.defaults.keymap.fzf["ctrl-f"] = "preview-page-down"
-    config.defaults.keymap.fzf["ctrl-b"] = "preview-page-up"
-    config.defaults.keymap.builtin["<c-f>"] = "preview-page-down"
-    config.defaults.keymap.builtin["<c-b>"] = "preview-page-up"
+    config.defaults.keymap.fzf['ctrl-q'] = 'select-all+accept'
+    config.defaults.keymap.fzf['ctrl-u'] = 'half-page-up'
+    config.defaults.keymap.fzf['ctrl-d'] = 'half-page-down'
+    config.defaults.keymap.fzf['ctrl-x'] = 'jump'
+    config.defaults.keymap.fzf['ctrl-f'] = 'preview-page-down'
+    config.defaults.keymap.fzf['ctrl-b'] = 'preview-page-up'
+    config.defaults.keymap.builtin['<c-f>'] = 'preview-page-down'
+    config.defaults.keymap.builtin['<c-b>'] = 'preview-page-up'
   end,
   keys = {
     { '<c-j>', '<c-j>', ft = 'fzf', mode = 't', nowait = true },
@@ -40,7 +40,7 @@ return {
     { '<leader>sC', '<cmd>FzfLua commands<cr>', desc = 'Commands' },
     { '<leader>sd', '<cmd>FzfLua diagnostics_document<cr>', desc = 'Document Diagnostics' },
     { '<leader>sD', '<cmd>FzfLua diagnostics_workspace<cr>', desc = 'Workspace Diagnostics' },
-    { '<leader>sg', '<cmd>FzfLua grep<cr>', desc = 'Grep' },
+    { '<leader>sg', '<cmd>FzfLua live_grep<cr>', desc = 'Grep' },
     -- { "<leader>sG",      LazyVim.pick("live_grep", { root = false }),                desc = "Grep (cwd)" },
     { '<leader>sh', '<cmd>FzfLua help_tags<cr>', desc = 'Help Pages' },
     { '<leader>sH', '<cmd>FzfLua highlights<cr>', desc = 'Search Highlight Groups' },
