@@ -10,6 +10,13 @@ vim.o.relativenumber = true
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
 
+vim.o.tabstop = 2 -- Number of spaces a tab counts for
+vim.o.shiftwidth = 2 -- Number of spaces for each step of (auto)indent
+vim.o.softtabstop = 2 -- Number of spaces a tab counts for while editing
+vim.o.expandtab = true -- Use spaces instead of tabs
+vim.o.smartindent = true -- Smart autoindenting when starting a new line
+vim.o.autoindent = true -- Copy indent from current line when starting new line
+vim.o.shiftround = true -- Round indent to multiple of shiftwidth
 -- Don't show the mode, since it's already in the status line
 vim.o.showmode = false
 
