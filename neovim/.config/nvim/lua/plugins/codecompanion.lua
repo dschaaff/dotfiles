@@ -111,29 +111,40 @@ return {
     end,
     opts = {
       adapters = {
-        anthropic = function()
-          return require('codecompanion.adapters').extend('anthropic', {
-            env = {
-              api_key = 'cmd:op read op://Employee/Anthropic\\ API\\ Key\\ Cordial/credential --no-newline --account team-cordial.1password.com',
-            },
-          })
-        end,
-        copilot = function()
-          return require('codecompanion.adapters').extend('copilot', {
-            schema = {
-              model = {
-                default = 'claude-3.7-sonnet',
+        acp = {
+          gemini_cli = function()
+            return require('codecompanion.adapters').extend('gemini_cli', {
+              env = {
+                api_key = 'cmd:op read op://private/Gemini/credential --no-newline',
               },
-            },
-          })
-        end,
-        gemini = function()
-          return require('codecompanion.adapters').extend('gemini', {
-            env = {
-              api_key = 'cmd:op read op://private/Cordial\\ Google/gemini-api-key --no-newline --account schaaff.1password.com',
-            },
-          })
-        end,
+            })
+          end,
+        },
+        http = {
+          anthropic = function()
+            return require('codecompanion.adapters').extend('anthropic', {
+              env = {
+                api_key = 'cmd:op read op://Employee/Anthropic\\ API\\ Key\\ Cordial/credential --no-newline --account team-cordial.1password.com',
+              },
+            })
+          end,
+          copilot = function()
+            return require('codecompanion.adapters').extend('copilot', {
+              schema = {
+                model = {
+                  default = 'claude-3.7-sonnet',
+                },
+              },
+            })
+          end,
+          gemini = function()
+            return require('codecompanion.adapters').extend('gemini', {
+              env = {
+                api_key = 'cmd:op read op://private/Cordial\\ Google/gemini-api-key --no-newline --account schaaff.1password.com',
+              },
+            })
+          end,
+        },
       },
       display = {
         action_palette = {
