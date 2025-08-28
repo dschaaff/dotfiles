@@ -12,6 +12,8 @@ require('options')
 
 require('keymaps')
 
+require('autocommands')
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 require('lazy-setup')
 
