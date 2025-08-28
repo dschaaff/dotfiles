@@ -300,7 +300,7 @@ return {
             },
           },
         },
-        tflint = {},
+        ['jsonnet-language-server'] = {},
         gopls = {},
 
         lua_ls = {
@@ -333,7 +333,7 @@ return {
         markdownlint = {},
         shellcheck = {},
         marksman = {},
-        terraformls = {},
+        tofu_ls = {},
         tflint = {},
         yamlls = {
           -- lazy-load schemastore when needed
@@ -361,7 +361,10 @@ return {
           },
         },
       }
-
+      local formatters = {
+        shfmt = {},
+        jsonnetfmt = {},
+      }
       -- Ensure the servers and tools above are installed
       --
       -- To check the current status of installed tools and/or manually install
@@ -375,7 +378,7 @@ return {
       --
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
-      local ensure_installed = vim.tbl_keys(servers or {})
+      local ensure_installed = vim.list_extend(vim.tbl_keys(servers or {}), vim.tbl_keys(formatters or {}))
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
       })
