@@ -1,6 +1,6 @@
 return {
   { -- Collection of various small independent plugins/modules
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     version = '*',
     config = function()
       -- Better Around/Inside textobjects
@@ -11,7 +11,7 @@ return {
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup({ n_lines = 500 })
 
-      -- https://github.com/echasnovski/mini.nvim/blob/main/readmes/mini-tabline.md
+      -- https://github.com/nvim-mini/mini.nvim/blob/main/readmes/mini-tabline.md
       require('mini.tabline').setup()
 
       require('mini.pairs').setup()
@@ -118,7 +118,7 @@ return {
       end
 
       -- ... and there is more!
-      --  Check out: https://github.com/echasnovski/mini.nvim
+      --  Check out: https://github.com/nvim-mini/mini.nvim
     end,
   },
 }
