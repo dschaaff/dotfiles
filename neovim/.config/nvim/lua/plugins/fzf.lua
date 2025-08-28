@@ -2,12 +2,7 @@ return {
   'ibhagwan/fzf-lua',
   enabled = not vim.g.vscode,
   cmd = 'FzfLua',
-  dependencies = {
-    'elanmed/fzf-lua-frecency.nvim',
-  },
   config = function()
-    -- Initialize frecency immediately
-    require('fzf-lua-frecency').setup({ display_score = false })
     local config = require('fzf-lua.config')
     -- Quickfix
     config.defaults.keymap.fzf['ctrl-q'] = 'select-all+accept'
@@ -31,7 +26,7 @@ return {
     { '<leader><space>', '<cmd>FzfLua files<cr>', desc = 'Find Files' },
     -- find
     { '<leader>fb', '<cmd>FzfLua buffers sort_mru=true sort_lastused=true<cr>', desc = 'Buffers' },
-    { '<leader>ff', '<cmd>FzfLua combine pickers=frecency;files<cr>', desc = 'Find Files' },
+    { '<leader>ff', '<cmd>FzfLua files<cr>', desc = 'Find Files' },
     { '<leader>fg', '<cmd>FzfLua git_files<cr>', desc = 'Find Files (git-files)' },
     { '<leader>fr', '<cmd>FzfLua oldfiles<cr>', desc = 'Recent' },
     -- git
