@@ -41,7 +41,7 @@ return {
       'nvim-treesitter/nvim-treesitter',
       'saghen/blink.cmp', -- Optional: For using slash commands and variables in the chat buffer
       'ibhagwan/fzf-lua',
-      'jellydn/spinner.nvim',
+      'j-hui/fidget.nvim',
       { 'stevearc/dressing.nvim', opts = {} }, -- Optional: Improves `vim.ui.select`
     },
     config = true,
@@ -94,17 +94,56 @@ return {
       },
     },
     init = function()
-      local spinner = require('spinner')
       local group = vim.api.nvim_create_augroup('CodeCompanionHooks', {})
+
+      local spinner = {
+        completed = '󰸞 Completed',
+        error = ' Error',
+        cancelled = '󰜺 Cancelled',
+      }
+
+      local function format_adapter(adapter)
+        if not adapter then
+          return 'CodeCompanion'
+        end
+        local name = adapter.name or 'CodeCompanion'
+        local model = adapter.schema and adapter.schema.model and adapter.schema.model.default
+        if model then
+          return string.format('%s (%s)', name, model)
+        end
+        return name
+      end
+
+      local progress_handles = {}
+
       vim.api.nvim_create_autocmd({ 'User' }, {
         pattern = 'CodeCompanionRequest*',
         group = group,
         callback = function(request)
           if request.match == 'CodeCompanionRequestStarted' then
-            spinner.show()
-          end
-          if request.match == 'CodeCompanionRequestFinished' then
-            spinner.hide()
+            local progress = require('fidget.progress')
+            local adapter_name = format_adapter(request.data and request.data.adapter)
+            local handle = progress.handle.create({
+              title = adapter_name,
+              message = 'Thinking...',
+              lsp_client = { name = 'CodeCompanion' },
+            })
+            progress_handles[request.data and request.data.bufnr or 'default'] = handle
+          elseif request.match == 'CodeCompanionRequestFinished' then
+            local handle = progress_handles[request.data and request.data.bufnr or 'default']
+            if handle then
+              local status = request.data and request.data.status
+              if status == 'success' then
+                handle:finish(spinner.completed)
+              elseif status == 'error' then
+                handle:finish(spinner.error)
+              elseif status == 'cancelled' then
+                handle:finish(spinner.cancelled)
+              else
+                handle:finish(spinner.completed)
+              end
+              progress_handles[request.data and request.data.bufnr or 'default'] = nil
+            end
           end
         end,
       })
