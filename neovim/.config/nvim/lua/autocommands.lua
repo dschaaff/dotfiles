@@ -41,3 +41,14 @@ vim.api.nvim_create_user_command('Finder', function()
   local path = vim.api.nvim_buf_get_name(0)
   os.execute('open -R ' .. path)
 end, {})
+
+vim.api.nvim_create_user_command('Marked2', function()
+  local file = vim.api.nvim_buf_get_name(0)
+  if file == '' then
+    vim.notify('Buffer has no associated file', vim.log.levels.WARN)
+    return
+  end
+  -- Escape the path for shell execution
+  file = vim.fn.shellescape(file)
+  os.execute('open -a "Marked 2" ' .. file)
+end, {})
