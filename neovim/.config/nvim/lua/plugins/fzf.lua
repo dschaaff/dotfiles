@@ -2,18 +2,39 @@ return {
   'ibhagwan/fzf-lua',
   enabled = not vim.g.vscode,
   cmd = 'FzfLua',
-  config = function()
-    local config = require('fzf-lua.config')
-    -- Quickfix
-    config.defaults.keymap.fzf['ctrl-q'] = 'select-all+accept'
-    config.defaults.keymap.fzf['ctrl-u'] = 'half-page-up'
-    config.defaults.keymap.fzf['ctrl-d'] = 'half-page-down'
-    config.defaults.keymap.fzf['ctrl-x'] = 'jump'
-    config.defaults.keymap.fzf['ctrl-f'] = 'preview-page-down'
-    config.defaults.keymap.fzf['ctrl-b'] = 'preview-page-up'
-    config.defaults.keymap.builtin['<c-f>'] = 'preview-page-down'
-    config.defaults.keymap.builtin['<c-b>'] = 'preview-page-up'
-  end,
+  opts = {
+    defaults = {
+      prompt = '❯ ',
+    },
+    files = {
+      -- formatter = 'path.filename_first',
+      cwd_prompt = false,
+      prompt = '❯ ',
+    },
+    winopts = {
+      preview = {
+        hidden = true,
+        layout = 'horizontal',
+      },
+    },
+    keymap = {
+      -- Below are the default binds, setting any value in these tables will override
+      -- the defaults, to inherit from the defaults change [1] from `false` to `true`
+      builtin = {
+        ['<c-f>'] = 'preview-page-down',
+        ['<c-b>'] = 'preview-page-up',
+        ['<M-p>'] = 'toggle-preview',
+      },
+      fzf = {
+        ['ctrl-q'] = 'select-all+accept',
+        ['ctrl-u'] = 'half-page-up',
+        ['ctrl-d'] = 'half-page-down',
+        ['ctrl-x'] = 'jump',
+        ['ctrl-f'] = 'preview-page-down',
+        ['ctrl-b'] = 'preview-page-up',
+      },
+    },
+  },
   keys = {
     { '<c-j>', '<c-j>', ft = 'fzf', mode = 't', nowait = true },
     { '<c-k>', '<c-k>', ft = 'fzf', mode = 't', nowait = true },
