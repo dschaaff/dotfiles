@@ -99,12 +99,12 @@ return {
           desc = 'Delete Other Buffers',
         },
       })
+      -- split join: use gS to split or join lines like [a, b, c, d]
+      require('mini.splitjoin').setup()
 
-      -- Simple and easy statusline.
-      --  You could remove this setup call if you don't like it,
-      --  and try some other statusline plugin
       require('mini.icons').setup()
       MiniIcons.mock_nvim_web_devicons()
+
       local statusline = require('mini.statusline')
       -- set use_icons to true if you have a Nerd Font
       statusline.setup({ use_icons = true })
