@@ -17,8 +17,9 @@ vim.o.expandtab = true -- Use spaces instead of tabs
 vim.o.smartindent = true -- Smart autoindenting when starting a new line
 vim.o.autoindent = true -- Copy indent from current line when starting new line
 vim.o.shiftround = true -- Round indent to multiple of shiftwidth
--- Don't show the mode, since it's already in the status line
-vim.o.showmode = false
+vim.o.showmode = false -- Don't show the mode, since it's already in the status line
+vim.o.undofile = true
+vim.o.undolevels = 1000
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
