@@ -151,6 +151,13 @@ return {
     opts = {
       adapters = {
         acp = {
+          claude_code = function()
+            return require('codecompanion.adapters').extend('claude_code', {
+              env = {
+                ANTHROPIC_API_KEY = 'cmd:op read op://Employee/Anthropic\\ API\\ Key\\ Cordial/credential --no-newline --account team-cordial.1password.com',
+              },
+            })
+          end,
           gemini_cli = function()
             return require('codecompanion.adapters').extend('gemini_cli', {
               env = {
@@ -188,11 +195,14 @@ return {
       display = {
         action_palette = {
           provider = 'default',
+          opts = {
+            show_default_actions = true,
+          },
         },
       },
       strategies = {
         chat = {
-          adapter = 'anthropic',
+          adapter = 'gemini',
           roles = {
             llm = '  CodeCompanion', -- The markdown header content for the LLM's responses
             user = '  Me', -- The markdown header for your questions
@@ -233,10 +243,10 @@ return {
           },
         },
         inline = {
-          adapter = 'anthropic',
+          adapter = 'gemini',
         },
         agent = {
-          adapter = 'anthropic',
+          adapter = 'gemini',
         },
       },
       prompt_library = {
