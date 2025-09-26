@@ -9,3 +9,5 @@ window-save-state = always
 
 window-inherit-working-directory = true
 keybind = shift+enter=text:\n
+
+shell-integration-features = cursor,sudo,title,ssh-env,ssh-terminfo
