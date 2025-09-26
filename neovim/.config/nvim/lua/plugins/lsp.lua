@@ -336,25 +336,16 @@ return {
         tofu_ls = {},
         tflint = {},
         yamlls = {
-          -- lazy-load schemastore when needed
-          on_new_config = function(new_config)
-            new_config.settings.yaml.schemas = new_config.settings.yaml.schemas or {}
-            vim.list_extend(new_config.settings.yaml.schemas, require('schemastore').yaml.schemas())
-          end,
           settings = {
             redhat = { telemetry = { enabled = false } },
             yaml = {
               keyOrdering = false,
-              format = {
-                enable = true,
-              },
+              format = { enable = true },
               validate = true,
               customTags = { '!reference sequence' },
+              schemas = require('schemastore').yaml.schemas(),
               schemaStore = {
-                -- Must disable built-in schemaStore support to use
-                -- schemas from SchemaStore.nvim plugin
                 enable = false,
-                -- Avoid TypeError: Cannot read properties of undefined (reading 'length')
                 url = '',
               },
             },
@@ -363,6 +354,7 @@ return {
       }
       local formatters = {
         shfmt = {},
+        stylua = {},
         jsonnetfmt = {},
       }
       -- Ensure the servers and tools above are installed
@@ -379,25 +371,19 @@ return {
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.list_extend(vim.tbl_keys(servers or {}), vim.tbl_keys(formatters or {}))
-      vim.list_extend(ensure_installed, {
-        'stylua', -- Used to format Lua code
-      })
       require('mason-tool-installer').setup({ ensure_installed = ensure_installed })
 
       require('mason-lspconfig').setup({
         ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-        automatic_installation = false,
-        handlers = {
-          function(server_name)
-            local server = servers[server_name] or {}
-            -- This handles overriding only values explicitly passed
-            -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for ts_ls)
-            server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
-          end,
-        },
+        automatic_enable = true,
       })
+      for server_name, server_config in pairs(servers) do
+        local config = vim.tbl_deep_extend('force', {
+          capabilities = capabilities,
+        }, server_config)
+
+        vim.lsp.config(server_name, config)
+      end
     end,
   },
 }
