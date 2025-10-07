@@ -29,6 +29,9 @@ vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
 end)
 
+-- check my typos :)
+vim.o.spell = true
+
 -- Enable break indent
 vim.o.breakindent = true
 
