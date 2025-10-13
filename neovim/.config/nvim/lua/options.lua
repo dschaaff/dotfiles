@@ -20,7 +20,8 @@ vim.o.shiftround = true -- Round indent to multiple of shiftwidth
 vim.o.showmode = false -- Don't show the mode, since it's already in the status line
 vim.o.undofile = true
 vim.o.undolevels = 1000
-
+vim.o.shada = "'100,<50,s10,:1000,/100,@100,h" -- Limit ShaDa file (for startup)
+vim.o.shortmess = 'CFOSWaco' -- Disable some built-in completion messages
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -28,6 +29,12 @@ vim.o.undolevels = 1000
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
 end)
+-- Pattern for a start of numbered list (used in `gw`). This reads as
+-- "Start of list item is: at least one special character (digit, -, +, *)
+-- possibly followed by punctuation (. or `)`) followed by at least one space".
+vim.o.formatlistpat = [[^\s*[0-9\-\+\*]\+[\.\)]*\s\+]]
+
+vim.o.iskeyword = '@,48-57,_,192-255,-' -- Treat dash as `word` textobject part
 
 -- check my typos :)
 vim.o.spell = true
@@ -42,7 +49,7 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
--- Keep signcolumn on by default
+-- Keep signcolumn on by default, less redraw flicker
 vim.o.signcolumn = 'yes'
 
 -- Decrease update time
