@@ -202,7 +202,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = 'gemini',
+          adapter = 'anthropic',
           roles = {
             llm = '  CodeCompanion', -- The markdown header content for the LLM's responses
             user = '  Me', -- The markdown header for your questions
