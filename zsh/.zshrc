@@ -4,11 +4,37 @@ export PATH="/opt/homebrew/bin:$PATH"
 # PLUGINS #
 ###########
 # https://getantidote.github.io/
-# update plugins with antidote bundle < ~/.zsh_plugins.txt > .zsh_plugins.zsh
-source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
-source ~/.zsh_plugins.zsh
-
 export ZSH_AUTOSUGGEST_USE_ASYNC=true
+source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+
+# Ensure zsh-completions is in fpath before compinit
+fpath=($(antidote path zsh-users/zsh-completions)/src $fpath)
+
+###############
+# COMPLETIONS #
+###############
+# zstyle settings must be configured BEFORE compinit
+zstyle ':completion:*' completer _extensions _expand _complete _ignored _correct _approximate
+zstyle :compinstall filename '/Users/danielschaaff/.zshrc'
+# case insensitive path-completion
+zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
+# partial completion suggestions
+zstyle ':completion:*' list-suffixes
+zstyle ':completion:*' expand prefix suffix
+# Allow you to select in a menu
+zstyle ':completion:*' menu select
+# Autocomplete options for cd instead of directory stack
+zstyle ':completion:*' complete-options true
+zstyle ':completion:*' file-sort modification
+# color output
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
+# Initialize completion system BEFORE loading plugins (required for fzf-tab)
+autoload -Uz compinit && compinit
+
+# Now load plugins - fzf-tab will work since compinit already ran
+antidote load
+
 PS1="READY > "
 
 
@@ -89,50 +115,25 @@ fi
 
 # [[ -s "$NVM_DIR/nvm.sh" ]] && source "$NVM_DIR/nvm.sh" --no-use
 
-###############
-# COMPLETIONS #
-###############
-zstyle ':completion:*' completer _extensions _expand _complete _ignored _correct _approximate
-zstyle :compinstall filename '/Users/danielschaaff/.zshrc'
-
-# case insensitive path-completion
-zstyle ':completion:*' matcher-list 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]} l:|=* r:|=*'
-
-# partial completion suggestions
-zstyle ':completion:*' list-suffixeszstyle ':completion:*' expand prefix suffix
-
-# Allow you to select in a menu
-zstyle ':completion:*' menu select
-
-# Autocomplete options for cd instead of directory stack
-zstyle ':completion:*' complete-options true
-
-zstyle ':completion:*' file-sort modification
-
-# color output
-zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-
+#########################
+# ADDITIONAL COMPLETIONS #
+#########################
 autoload bashcompinit && bashcompinit
-autoload -Uz compinit && compinit
-# End of lines added by compinstall
 source <(~/.rd/bin/kubectl completion zsh)
 complete -F __start_kubectl kcl
 complete -F __start_kubectl ktl
-
 complete -C '/opt/homebrew/bin/aws_completer' aws
 complete -o nospace -C /usr/local/bin/terraform terraform
 complete -o nospace -C /usr/local/bin/vault vault
-eval "$(logcli --completion-script-zsh)"
-###################
-# END COMPLETIONS #
-###################
+_evalcache logcli --completion-script-zsh
+#############################
+# END ADDITIONAL COMPLETIONS #
+#############################
 
 # _evalcache rbenv init -
 
-autoload -U +X bashcompinit && bashcompinit
-
 # setup zoxide https://github.com/ajeetdsouza/zoxide
-eval "$(zoxide init zsh)"
+_evalcache zoxide init zsh
 
 ######################################
 # SET A HIGHER SOFT ULIMIT FOR SHELL #
@@ -199,28 +200,33 @@ alias assume="source assume"
 
 # setup starship rs prompt
 # set tab title to pwd in wezterm
-function set_win_title(){
-    # set wezterm title
-    echo -ne "\x1b]0; $(basename "$PWD") \x1b\\"
-}
-precmd_functions+=(set_win_title)
-eval "$(starship init zsh)"
+# function set_win_title(){
+#     # set wezterm title
+#     echo -ne "\x1b]0; $(basename "$PWD") \x1b\\"
+# }
+# precmd_functions+=(set_win_title)
+_evalcache starship init zsh
 
-# fzf setup
-source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+# fzf setup - provides Ctrl+T (file search) and Alt+C (cd)
+# Note: fzf's Tab completion is disabled in favor of fzf-tab
+if type fzf &>/dev/null; then
+    source <(fzf --zsh)
+    # Rebind Tab to fzf-tab (fzf --zsh overwrites it with fzf-completion)
+    bindkey '^I' fzf-tab-complete
+else
+    echo ERROR: Could not load fzf shell integration.
+fi
 
 # zsh-history-substring-search configuration
-bindkey '^[[A' history-substring-search-up # or '\eOA'
-bindkey '^[[B' history-substring-search-down # or '\eOB'
+# Using Ctrl+P/N to avoid conflict with Atuin's up/down arrow bindings
+bindkey '^P' history-substring-search-up
+bindkey '^N' history-substring-search-down
 HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
-# atuin.sh
-source $HOME/.atuin.zsh
-source <(atuin gen-completions --shell zsh)
 # setup wezterm shell integration
-if [[ -f "$HOME/.dotfiles/wezterm/wezterm.sh" ]] && [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
-    source $HOME/.dotfiles/wezterm/wezterm.sh
-fi
+# if [[ -f "$HOME/.dotfiles/wezterm/wezterm.sh" ]] && [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
+#     source $HOME/.dotfiles/wezterm/wezterm.sh
+# fi
 
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
 export PATH="/Users/danielschaaff/.rd/bin:$PATH"

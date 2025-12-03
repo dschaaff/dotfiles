@@ -1,7 +1,21 @@
-zsh-users/zsh-history-substring-search
-zdharma-continuum/fast-syntax-highlighting
-zsh-users/zsh-autosuggestions
-3v1n0/zsh-bash-completions-fallback
-zsh-users/zsh-completions
+# Completions - fpath only, no source needed
+zsh-users/zsh-completions kind:fpath
+
+# Utility plugins
 mroth/evalcache
+3v1n0/zsh-bash-completions-fallback
+
+# Autosuggestions (before atuin for proper integration)
+zsh-users/zsh-autosuggestions
+
+# Atuin (integrates with autosuggestions)
 atuinsh/atuin
+
+# fzf-tab - loaded after compinit (set up in .zshrc before antidote load)
+Aloxaf/fzf-tab
+
+# History substring search (uses different keybinds than Atuin)
+zsh-users/zsh-history-substring-search
+
+# Syntax highlighting MUST be last
+zdharma-continuum/fast-syntax-highlighting kind:defer
