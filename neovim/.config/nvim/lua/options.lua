@@ -113,4 +113,7 @@ end
 -- The LSP logfile continually grows in size when enabled
 -- only enable when need to debug
 vim.lsp.set_log_level('off')
+
+-- Use bedrock in claude code, launched via sidekick
+vim.env.CLAUDE_CODE_USE_BEDROCK = '1'
 -- vim: ts=2 sts=2 sw=2 et
