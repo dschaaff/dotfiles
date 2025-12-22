@@ -213,6 +213,9 @@ if type fzf &>/dev/null; then
     source <(fzf --zsh)
     # Rebind Tab to fzf-tab (fzf --zsh overwrites it with fzf-completion)
     bindkey '^I' fzf-tab-complete
+    # Rebind Ctrl+R to atuin (fzf --zsh overwrites it with fzf-history-widget)
+    bindkey -M emacs '^r' atuin-search
+    bindkey -M viins '^r' atuin-search-viins
 else
     echo ERROR: Could not load fzf shell integration.
 fi
