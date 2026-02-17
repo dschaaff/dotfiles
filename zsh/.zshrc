@@ -172,9 +172,6 @@ export GOROOT=/opt/homebrew/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 
-JAVA_HOME=$(/usr/libexec/java_home)
-export JAVA_HOME
-
 # helm
 export HELM_EXPERIMENTAL_OCI=1
 export KUBEVAL_SCHEMA_LOCATION=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
