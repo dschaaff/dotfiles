@@ -25,3 +25,4 @@ zed/.config/zed/conversations
 bin/bin/tofu
 lazygit/Library/Application Support/lazygit/development.log
 vale/.config/vale/styles
+/neovim/.config/nvim/.claude/settings.local.json
