@@ -1,18 +1,19 @@
 return {
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    lazy = false,
     build = ':TSUpdate',
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-    config = function(_, opts)
-      require('nvim-treesitter').setup(opts)
+    config = function()
+      -- Enable treesitter highlighting for every filetype
       vim.api.nvim_create_autocmd('FileType', {
         callback = function()
           pcall(vim.treesitter.start)
         end,
       })
-    end,
-    opts = {
-      ensure_installed = {
+
+      -- Install parsers (no-op if already present)
+      local parsers = {
         'bash',
         'c',
         'diff',
@@ -46,9 +47,9 @@ return {
         'typescript',
         'vim',
         'yaml',
-      },
-      auto_install = true,
-    },
+      }
+      pcall(require('nvim-treesitter').install, parsers)
+    end,
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
