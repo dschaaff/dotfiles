@@ -7,56 +7,46 @@
 // custom settings, run the `open default settings` command
 // from the command palette or from `Zed` application menu.
 {
-  "features": {
-    "edit_prediction_provider": "zed"
-  },
   "agent": {
     "play_sound_when_agent_done": true,
     "default_model": {
       "provider": "anthropic",
-      "model": "claude-sonnet-4-latest"
-    }
+      "model": "claude-sonnet-4-latest",
+    },
   },
   "theme": "Tokyo Night",
   "autosave": {
     "after_delay": {
-      "milliseconds": 1000
-    }
+      "milliseconds": 1000,
+    },
   },
   "buffer_font_size": 13.5,
   "buffer_font_family": "JetBrains Mono",
   "file_types": {
-    "Dockerfile": [
-      "Dockerfile.*",
-      "Dockerfile",
-      "Dockerfile.dev"
-    ],
+    "Dockerfile": ["Dockerfile.*", "Dockerfile", "Dockerfile.dev"],
     "Helm": [
       "**/templates/**/*.tpl",
       "**/templates/**/*.yaml",
       "**/templates/**/*.yml",
       "**/helmfile.d/**/*.yaml",
-      "**/helmfile.d/**/*.yml"
-    ]
+      "**/helmfile.d/**/*.yml",
+    ],
   },
   "languages": {
     "Lua": {
-      "tab_size": 2
-    }
+      "tab_size": 2,
+    },
   },
   "preferred_line_length": 120,
   "prettier": {
     "overrides": [
       {
-        "files": [
-          "*.yaml",
-          "*.yml"
-        ],
+        "files": ["*.yaml", "*.yml"],
         "options": {
-          "singleQuote": false
-        }
-      }
-    ]
+          "singleQuote": false,
+        },
+      },
+    ],
   },
   "lsp": {
     "yaml": {
@@ -64,24 +54,22 @@
         "yaml": {
           "keyOrdering": false,
           "format": {
-            "singleQuote": true
+            "singleQuote": true,
           },
-          "customTags": [
-            "!reference sequence"
-          ]
-        }
-      }
-    }
+          "customTags": ["!reference sequence"],
+        },
+      },
+    },
   },
   // "relative_line_numbers": true,
   "terminal": {
     "font_family": "JetBrainsMono Nerd Font Mono",
-    "copy_on_select": true
+    "copy_on_select": true,
   },
   "vim_mode": true,
   "vim": {
     // Use relative line numbers in normal mode, absolute in insert mode
     // c.f. https://github.com/jeffkreeftmeijer/vim-numbertoggle
-    "toggle_relative_line_numbers": true
-  }
+    "toggle_relative_line_numbers": true,
+  },
 }
