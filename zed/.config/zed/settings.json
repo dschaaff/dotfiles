@@ -21,7 +21,7 @@
     },
   },
   "buffer_font_size": 13.5,
-  "buffer_font_family": "JetBrains Mono",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
   "file_types": {
     "Dockerfile": ["Dockerfile.*", "Dockerfile", "Dockerfile.dev"],
     "Helm": [
