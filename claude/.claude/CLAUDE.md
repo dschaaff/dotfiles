@@ -61,6 +61,10 @@ For each issue: describe concretely with file:line references, present options w
 
 When adding dependencies, CI actions, or tool versions, always look up the current stable version — never assume from memory unless the user provides one.
 
+#### GitLab
+
+Use the glab cli to interact with GitLab.
+
 ### CLI tools
 
 | tool           | replaces   | usage                                                                     |
