@@ -19,15 +19,6 @@ vim.api.nvim_create_autocmd('FileType', {
   end,
 })
 
--- vim-helm: load on helm filetype
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = 'helm',
-  once = true,
-  callback = function()
-    vim.pack.add({ 'https://github.com/towolf/vim-helm' })
-  end,
-})
-
 -- markdown-toc: load on markdown filetype
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'markdown',

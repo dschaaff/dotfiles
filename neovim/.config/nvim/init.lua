@@ -83,6 +83,7 @@ vim.pack.add({
   'https://github.com/rhysd/committia.vim',
   'https://github.com/tpope/vim-rsi', -- readline insertion
   'https://github.com/cappyzawa/starlark.vim',
+  'https://github.com/towolf/vim-helm',
   'https://github.com/stevearc/dressing.nvim',
   'https://github.com/MeanderingProgrammer/render-markdown.nvim',
   -- ai
