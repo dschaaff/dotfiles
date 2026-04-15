@@ -6,6 +6,9 @@
 [includeIf "gitdir:~/development/work/"]
   path = ~/.workGitconfig
 
+[includeIf "gitdir:~/development/gitlab/"]
+  path = ~/.workGitconfig
+
 [commit]
 	gpgsign = true
 	verbose = false
