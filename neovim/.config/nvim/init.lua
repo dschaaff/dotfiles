@@ -64,10 +64,8 @@ vim.pack.add({
   'https://github.com/lewis6991/gitsigns.nvim',
   'https://github.com/tpope/vim-fugitive',
   'https://github.com/farhanmustar/fugitive-delta.nvim',
-  'https://github.com/shumphrey/fugitive-gitlab.vim',
-  'https://github.com/tpope/vim-rhubarb', -- enabled GBrowse
   -- diff + database
-  'https://github.com/sindrets/diffview.nvim',
+  'https://github.com/dlyongemallo/diffview.nvim',
   'https://github.com/tpope/vim-dadbod',
   'https://github.com/kristijanhusak/vim-dadbod-ui',
   'https://github.com/kristijanhusak/vim-dadbod-completion',
