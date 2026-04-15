@@ -1,7 +1,7 @@
 local lint = require('lint')
 
 lint.linters_by_ft = {
-  markdown = { 'vale', 'markdownlint' },
+  markdown = { 'markdownlint' },
   sh = { 'shellcheck' },
   dockerfile = { 'hadolint' },
   json = { 'jsonlint' },
