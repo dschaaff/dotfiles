@@ -114,6 +114,10 @@ end
 -- only enable when need to debug
 vim.lsp.log.set_level('OFF')
 
+-- Experimental ui2: replaces legacy message grid with collapsible messages,
+-- cmdline highlighting, and dedicated msg/pager/dialog windows.
+require('vim._core.ui2').enable()
+
 -- Use bedrock in claude code, launched via sidekick
 vim.env.CLAUDE_CODE_USE_BEDROCK = '1'
 -- vim: ts=2 sts=2 sw=2 et
