@@ -48,6 +48,14 @@ vim.keymap.set('n', '<leader>bo', function()
   end
 end, { desc = 'Delete Other Buffers' })
 
+require('mini.cmdline').setup()
+
+require('mini.files').setup()
+
+vim.keymap.set('n', '<leader>mf', function()
+  require('mini.files').open(vim.api.nvim_buf_get_name(0))
+end, { desc = 'Mini Files' })
+
 -- split join: use gS to split or join lines
 require('mini.splitjoin').setup()
 
