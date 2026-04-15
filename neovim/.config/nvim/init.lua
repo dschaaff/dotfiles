@@ -44,7 +44,6 @@ vim.pack.add({
   'https://github.com/folke/snacks.nvim',
   'https://github.com/nvim-treesitter/nvim-treesitter',
   'https://github.com/nvim-mini/mini.nvim',
-  'https://github.com/folke/which-key.nvim',
   -- completion + snippets
   'https://github.com/rafamadriz/friendly-snippets',
   { src = 'https://github.com/L3MON4D3/LuaSnip', version = vim.version.range('2.x') },
