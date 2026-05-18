@@ -166,7 +166,7 @@ local servers = {
       redhat = { telemetry = { enabled = false } },
       yaml = {
         keyOrdering = false,
-        format = { enable = true },
+        format = { enable = true, printWidth = 200 },
         validate = true,
         customTags = { '!reference sequence' },
         schemas = require('schemastore').yaml.schemas(),
