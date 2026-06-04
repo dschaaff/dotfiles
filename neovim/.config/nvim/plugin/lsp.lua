@@ -161,6 +161,7 @@ local servers = {
   marksman = {},
   tofu_ls = {},
   tflint = {},
+  vtsls = {},
   yamlls = {
     settings = {
       redhat = { telemetry = { enabled = false } },
