@@ -1,0 +1,23 @@
+k8s-find-ds-missing-nodes() {
+  emulate -L zsh
+  local header=0
+  [[ "$1" == "-h" ]] && { header=1; shift; }
+  local ds="$1"
+  if [[ -z "$ds" ]]; then
+    print -u2 "usage: k8s-find-ds-missing-nodes [-h] <daemonset-name>"
+    return 1
+  fi
+
+  local sel
+  sel=$(kubectl get daemonset "$ds" -o json 2>/dev/null \
+    | jq -r '.spec.selector.matchLabels | to_entries | map("\(.key)=\(.value)") | join(",")')
+  if [[ -z "$sel" ]]; then
+    print -u2 "daemonset '$ds' not found in current namespace (or has no matchLabels)"
+    return 1
+  fi
+
+  kubectl get pods -l "$sel" \
+    -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\t"}{.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms[*].matchFields[*].values[*]}{"\n"}{end}' \
+    | awk -F'\t' -v h="$header" 'BEGIN{if(h)print "POD\tPHASE\tNODE"} $2!="Running"{print $1"\t"$2"\t"($3==""?"<unscheduled>":$3)}' \
+    | column -t -s$'\t'
+}
