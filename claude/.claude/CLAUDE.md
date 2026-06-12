@@ -24,7 +24,7 @@ Global instructions for all projects. Project-specific CLAUDE.md files override 
 1. ≤100 lines/function, cyclomatic complexity ≤8
 2. ≤5 positional params
 3. 100-char line length
-4. Absolute imports only — no relative (`..`) paths
+4. No deep relative imports (`../../`). Python/Rust: absolute imports. TS/Node ESM: relative (`./`) or project-configured path aliases
 5. Google-style docstrings on non-trivial public APIs
 
 ### Zero warnings policy
@@ -61,7 +61,7 @@ For each issue: describe concretely with file:line references, present options w
 
 When adding dependencies, CI actions, or tool versions, always look up the current stable version — never assume from memory unless the user provides one.
 
-#### GitLab
+### GitLab
 
 Use the glab cli to interact with GitLab.
 
@@ -134,63 +134,7 @@ Colocated `*.test.ts` files. Supply chain: `pnpm audit --audit-level=moderate` b
 
 ### Rust
 
-**Runtime:** Latest stable via `rustup`
-
-| purpose      | tool                                                       |
-| ------------ | ---------------------------------------------------------- |
-| build & deps | `cargo`                                                    |
-| lint         | `cargo clippy --all-targets --all-features -- -D warnings` |
-| format       | `cargo fmt`                                                |
-| test         | `cargo test`                                               |
-| supply chain | `cargo deny check` (advisories, licenses, bans)            |
-| safety check | `cargo careful test` (stdlib debug assertions + UB checks) |
-
-**Style:**
-
-- Prefer `for` loops with mutable accumulators over iterator chains
-- Shadow variables through transformations (no `raw_x`/`parsed_x` prefixes)
-- No wildcard matches; avoid `matches!` macro—explicit destructuring catches field changes
-- Use `let...else` for early returns; keep happy path unindented
-
-**Type design:**
-
-- Newtypes over primitives (`UserId(u64)` not `u64`)
-- Enums for state machines, not boolean flags
-- `thiserror` for libraries, `anyhow` for applications
-- `tracing` for logging (`error!`/`warn!`/`info!`/`debug!`), not println
-
-**Optimization:**
-
-- Write efficient code by default — correct algorithm, appropriate data structures, no unnecessary allocations
-- Profile before micro-optimizing; measure after
-
-**Cargo.toml lints:**
-
-```toml
-[lints.clippy]
-pedantic = { level = "warn", priority = -1 }
-# Panic prevention
-unwrap_used = "deny"
-expect_used = "warn"
-panic = "deny"
-panic_in_result_fn = "deny"
-unimplemented = "deny"
-# No cheating
-allow_attributes = "deny"
-# Code hygiene
-dbg_macro = "deny"
-todo = "deny"
-print_stdout = "deny"
-print_stderr = "deny"
-# Safety
-await_holding_lock = "deny"
-large_futures = "deny"
-exit = "deny"
-mem_forget = "deny"
-# Pedantic relaxations (too noisy)
-module_name_repetitions = "allow"
-similar_names = "allow"
-```
+Standards (toolchain, style, type design, Cargo.toml clippy lints) live in the `rust-standards` skill — invoke it when working in a Rust project.
 
 ### Bash
 
@@ -199,6 +143,10 @@ All scripts must start with `set -euo pipefail`. Lint: `shellcheck script.sh && 
 ### GitHub Actions
 
 Pin actions to SHA hashes with version comments: `actions/checkout@<full-sha>  # vX.Y.Z` (use `persist-credentials: false`). Scan workflows with `zizmor` before committing. Configure Dependabot with 7-day cooldowns and grouped updates. Use `uv` ecosystem (not `pip`) for Python projects so Dependabot updates `uv.lock`.
+
+## Container Images
+
+Always prefer ECR public, GitHub container registry, and quay.io over Docker Hub due to Docker Hub's rate limits.
 
 ## Workflow
 
