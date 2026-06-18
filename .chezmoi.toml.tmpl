@@ -1,15 +1,9 @@
 {{- $personalEmail := promptStringOnce . "personalEmail" "Personal git email" -}}
 {{- $workEmail := promptStringOnce . "workEmail" "Work git email" -}}
 {{- $signingKey := promptStringOnce . "signingKey" "SSH signing public key" -}}
-{{- $coderabbitMachineId := promptStringOnce . "coderabbitMachineId" "CodeRabbit machine id" -}}
-{{- $ssoStartUrl := promptStringOnce . "ssoStartUrl" "AWS SSO start URL" -}}
-{{- $ssoRegion := promptStringOnce . "ssoRegion" "AWS SSO region" -}}
 sourceDir = "~/.dotfiles"
 
 [data]
     personalEmail = {{ $personalEmail | quote }}
     workEmail = {{ $workEmail | quote }}
     signingKey = {{ $signingKey | quote }}
-    coderabbitMachineId = {{ $coderabbitMachineId | quote }}
-    ssoStartUrl = {{ $ssoStartUrl | quote }}
-    ssoRegion = {{ $ssoRegion | quote }}

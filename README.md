@@ -10,7 +10,7 @@ files are named with chezmoi's source conventions (`dot_` → `.`, `private_` �
 brew install chezmoi          # and have 1Password running for SSH signing
 git clone git@github.com:dschaaff/dotfiles.git ~/.dotfiles
 printf 'sourceDir = "~/.dotfiles"\n' > ~/.config/chezmoi/chezmoi.toml
-chezmoi init                  # prompts for emails, signing key, SSO url/region, CodeRabbit machine id
+chezmoi init                  # prompts for personal/work email and SSH signing key
 chezmoi apply -v              # writes real files into $HOME
 ```
 
@@ -44,14 +44,13 @@ Then `chezmoi cd` and commit. Notes:
 
 - `re-add` only touches files chezmoi already manages — use `chezmoi add` for new files.
 - `re-add` **skips templates**, so a direct edit to a rendered `.tmpl` target (e.g.
-  `~/.gitconfig`, `~/.claude/settings.json`) is **not** captured. Edit those at the source
+  `~/.gitconfig`, `~/.workGitConfig`) is **not** captured. Edit those at the source
   (`chezmoi edit ~/.gitconfig`, or edit the `*.tmpl` under `~/.dotfiles` directly) — see below.
 
 Templated files (machine-specific values pulled from the prompts):
 
-- `dot_gitconfig.tmpl` — personal email, SSH signing key, CodeRabbit machine id
+- `dot_gitconfig.tmpl` — personal email, SSH signing key
 - `dot_workGitConfig.tmpl` — work email, signing key (used by `includeIf` in work dirs)
-- `dot_claude/settings.json.tmpl` — AWS SSO start URL and region
 
 `.chezmoiignore` lists runtime/state files and plugin-manager directories that chezmoi
 does not manage.
