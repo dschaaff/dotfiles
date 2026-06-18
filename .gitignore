@@ -1,28 +1,6 @@
-vim/.vim/plugged
-neovim/.config/nvim/plugged
-zsh/.cordial.sh
-k9s/.k9s/config.yml
-neovim/.config/nvim/.luarc.json
-en.utf-8.add.spl
-tmux/.tmux/plugins
-bin/bin/docker
-bin/bin/docker-compose
-bin/bin/docker-buildx
-.gitignore
-bin/bin/orb
-.gitignore
-.gitignore
-bin/bin/orbctl
-bin/bin/docker-credential-osxkeychain
-bin/bin/kubectl
-bin/bin/release-cli
-bin/bin/linkerd
-warp
-bin/bin/terraform
-zed/.config/zed/prompts
-lazygit/Library/Application Support/lazygit/state.yml
-zed/.config/zed/conversations
-bin/bin/tofu
-lazygit/Library/Application Support/lazygit/development.log
-vale/.config/vale/styles
-/neovim/.config/nvim/.claude/settings.local.json
+# chezmoi source dir. Runtime/state files are kept out of the managed set by
+# .chezmoiignore; these guard against an accidental `git add` in the source tree.
+dot_config/nvim/nvim.log
+dot_config/nvim/spell/en.utf-8.add.spl
+dot_config/nvim/.luarc.json
+*.bak

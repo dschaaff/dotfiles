@@ -1,5 +1,0 @@
-# Define a word
-define() {
-    curl dict://dict.org/d:"$@"
-}
-define

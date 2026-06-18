@@ -1,4 +1,0 @@
-assh() {
-    host=$(getec2ip ${1})
-    ssh ${host}
-}

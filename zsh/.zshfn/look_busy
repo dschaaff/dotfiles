@@ -1,3 +1,0 @@
-look_busy () {
-    cat /dev/urandom | hexdump -C | grep --color=auto "ca fe"
-}
