@@ -26,9 +26,26 @@ chezmoi apply -v              # write pending changes into $HOME
 chezmoi diff                  # preview pending changes
 chezmoi status                # short status of managed files
 chezmoi add ~/.config/foo     # start managing a new file
-chezmoi re-add                # pull live edits back into the source
 chezmoi cd                    # drop into ~/.dotfiles to git add/commit/push
 ```
+
+### Syncing a file you edited directly in `$HOME`
+
+If you edit a managed file in place (e.g. open `~/.zshrc` in your editor) instead of using
+`chezmoi edit`, pull the change back into the source with `re-add`:
+
+```shell
+chezmoi re-add ~/.zshrc       # update the source from this file
+chezmoi re-add                # or sync ALL modified managed files at once
+chezmoi add --force ~/.zshrc  # force re-add a single file even if unmodified
+```
+
+Then `chezmoi cd` and commit. Notes:
+
+- `re-add` only touches files chezmoi already manages — use `chezmoi add` for new files.
+- `re-add` **skips templates**, so a direct edit to a rendered `.tmpl` target (e.g.
+  `~/.gitconfig`, `~/.claude/settings.json`) is **not** captured. Edit those at the source
+  (`chezmoi edit ~/.gitconfig`, or edit the `*.tmpl` under `~/.dotfiles` directly) — see below.
 
 Templated files (machine-specific values pulled from the prompts):
 
