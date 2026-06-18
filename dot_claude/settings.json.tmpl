@@ -6,7 +6,7 @@
     "allow": [
       "Skill(superpowers:*)",
       "Read(~/.claude/plugins/cache/**)",
-      "Bash(/Users/danielschaaff/.claude/plugins/cache/claude-plugins-official/superpowers/*)",
+      "Bash({{ .chezmoi.homeDir }}/.claude/plugins/cache/claude-plugins-official/superpowers/*)",
       "Write(**/.git/sdd/**)",
       "Edit(**/.git/sdd/**)"
     ],
@@ -132,7 +132,7 @@
     },
     "filesystem": {
       "allowWrite": [
-        "unix:///Users/danielschaaff/.rd/docker.sock",
+        "unix://{{ .chezmoi.homeDir }}/.rd/docker.sock",
         "~/Library/Caches/go-build/",
         "~/go/pkg/mod/cache/",
         "~/Library/Caches/helm/",
