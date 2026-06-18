@@ -1,0 +1,58 @@
+# chezmoi ignore — target paths (relative to $HOME) that chezmoi must NOT manage.
+# chezmoi does not read .gitignore; these mirror the old stow .gitignore plus repo meta.
+
+# repo meta — never deployed to $HOME
+README.md
+brewfile
+*.bak
+.config/zed/settings_backup.json
+.config/zellij/config.kdl.bak
+
+# work/secret + machine-local (were gitignored)
+.cordial.sh
+.claude/settings.local.json
+.config/nvim/.claude/settings.local.json
+
+# karabiner machine-generated backups
+.config/karabiner/automatic_backups
+
+# runtime state / logs
+.k9s/config.yml
+.config/k9s/config.yml
+Library/Application Support/lazygit/state.yml
+Library/Application Support/lazygit/development.log
+.config/zed/prompts
+.config/zed/conversations
+.config/vale/styles
+
+# plugin dirs (managed by their own plugin managers)
+.vim/plugged
+.config/nvim/plugged
+.tmux/plugins
+
+# opencode runtime (plugins installed at runtime; only opencode.json + tui.json are managed)
+.config/opencode/node_modules
+.config/opencode/bun.lock
+.config/opencode/package.json
+.config/opencode/package-lock.json
+.config/opencode/.gitignore
+
+# neovim runtime artifacts
+.config/nvim/.luarc.json
+.config/nvim/nvim.log
+.config/nvim/README.md
+.config/nvim/spell/en.utf-8.add.spl
+
+# downloaded binaries in ~/bin (were gitignored)
+bin/docker
+bin/docker-compose
+bin/docker-buildx
+bin/docker-credential-osxkeychain
+bin/orb
+bin/orbctl
+bin/kubectl
+bin/release-cli
+bin/linkerd
+bin/terraform
+bin/tofu
+bin/warp

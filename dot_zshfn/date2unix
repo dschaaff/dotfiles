@@ -1,0 +1,7 @@
+# Regular Date to Unix Timestamp
+if command_exists ruby ; then
+    date2unix() {
+        local raw_date="$@"
+        ruby -e "require 'time'; puts Time.parse(\"$raw_date\").to_i"
+    }
+fi

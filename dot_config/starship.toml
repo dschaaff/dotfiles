@@ -1,0 +1,53 @@
+format = """
+$kubernetes\
+$line_break\
+$hostname\
+$directory\
+$git_branch\
+$git_commit\
+$git_state\
+$git_status\
+$env_var\
+$custom\
+$cmd_duration\
+$fill\
+$aws\
+$line_break\
+$jobs\
+$time\
+$status\
+$character"""
+
+[fill]
+symbol = ' '
+
+[aws]
+format = '[ $region $duration $profile]($style)'
+# [aws.region_aliases]
+# us-west-2 = "usw2"
+# us-west-1 = "usw1"
+
+[directory]
+truncation_length = 5
+truncate_to_repo = false
+
+[kubernetes]
+disabled = false
+format = '[$symbol$context( \($namespace\))]($style)'
+style = "blue bold"
+
+[status]
+disabled = false
+
+[terraform]
+disabled = false
+format = "via [$symbol$version]($style) "
+
+[time]
+disabled = false
+format = "[$time]($style) "
+
+[hostname]
+ssh_only = true
+disabled = false
+

@@ -1,0 +1,99 @@
+[user]
+	email = {{ .personalEmail }}
+	name = Daniel Schaaff
+  signingkey = {{ .signingKey }}
+
+[includeIf "gitdir:~/development/work/"]
+  path = ~/.workGitConfig
+
+[includeIf "gitdir:~/development/gitlab/"]
+  path = ~/.workGitConfig
+
+[commit]
+	gpgsign = true
+	verbose = false
+
+[tag]
+	forceSignAnnotated = true
+	gpgsign = true
+
+[core]
+	excludesfile = {{ .chezmoi.homeDir }}/.gitignore_global
+  pager = delta --color-only
+	; pager = diff-so-fancy | less --tabs=4 -RFX
+
+[url "ssh://git@gitlab.com/"]
+  insteadOf = https://gitlab.com/
+
+[interactive]
+	; diffFilter = diff-so-fancy --patc
+  diffFilter = delta --color-only
+
+[merge]
+  tool = "Sublime Merge"
+  conflictstyle = diff3
+
+[mergetool "Sublime Merge"]
+  cmd = smerge mergetool \"$BASE\" \"$REMOTE\" \"$LOCAL\" -o \"$MERGED\"
+
+[delta]
+  line-numbers = true
+  minus-style                   = syntax "#37222c"
+  minus-non-emph-style          = syntax "#37222c"
+  minus-emph-style              = syntax "#713137"
+  minus-empty-line-marker-style = syntax "#37222c"
+  line-numbers-minus-style      = "#b2555b"
+  plus-style                    = syntax "#20303b"
+  plus-non-emph-style           = syntax "#20303b"
+  plus-emph-style               = syntax "#2c5a66"
+  plus-empty-line-marker-style  = syntax "#20303b"
+  line-numbers-plus-style       = "#266d6a"
+  line-numbers-zero-style       = "#3b4261"
+
+[diff]
+  colorMoved = default
+  pager = delta --color-only
+
+[pager]
+  blame  = delta
+  diff   = delta
+  reflog = delta
+  show   = delta
+
+[color]
+	ui = true
+
+[color "diff-highlight"]
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
+
+[color "diff"]
+	meta = 11
+	frag = magenta bold
+	commit = yellow bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+
+[alias]
+    mr = !sh -c 'git fetch $1 merge-requests/$2/head:mr-$1-$2 && git checkout mr-$1-$2' -
+
+[format]
+	signoff = true
+[gpg]
+	format = ssh
+
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+[coderabbit]
+	machineId = {{ .coderabbitMachineId }}

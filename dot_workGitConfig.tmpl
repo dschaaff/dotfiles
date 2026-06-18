@@ -1,0 +1,12 @@
+[user]
+  email = {{ .workEmail }}
+  name = Daniel Schaaff
+  signingkey = {{ .signingKey }}
+[commit]
+  gpgsign = true
+[tag]
+  gpgsign = true
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
