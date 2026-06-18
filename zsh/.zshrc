@@ -171,6 +171,8 @@ export GOPATH=$HOME/go
 export GOROOT=/opt/homebrew/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
+# bun
+export PATH=$PATH:$HOME/.bun/bin
 
 # helm
 export HELM_EXPERIMENTAL_OCI=1
@@ -235,3 +237,12 @@ export PATH="/Users/danielschaaff/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+# bun completions
+[ -s "/Users/danielschaaff/.bun/_bun" ] && source "/Users/danielschaaff/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+eval "$(zsh-patina activate)"

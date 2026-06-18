@@ -13,7 +13,7 @@ Global instructions for all projects. Project-specific CLAUDE.md files override 
 - **No phantom features** - Don't document or validate features that aren't implemented
 - **Replace, don't deprecate** - When a new implementation replaces an old one, remove the old one entirely. No backward-compatible shims, dual config formats, or migration paths. Proactively flag dead code — it adds maintenance burden and misleads both developers and LLMs.
 - **Verify at every level** - Set up automated guardrails (linters, type checkers, pre-commit hooks, tests) as the first step, not an afterthought. Prefer structure-aware tools (ast-grep, LSPs, compilers) over text pattern matching. Review your own output critically. Every layer catches what the others miss.
-- **Bias toward action** - Decide and move for anything easily reversed; state your assumption so the reasoning is visible. Ask before committing to interfaces, data models, architecture, or destructive/write operations on external services.
+- **Bias toward action** - Decide and move on minor choices (naming, formatting, defaults, picking among equivalents) and anything easily reversed; state your assumption so the reasoning is visible. Ask first only for scope changes, destructive/write operations on external services, or commitments to interfaces, data models, or architecture. When the task is done, stop cleanly — don't close with "Want me to also…?"; if a follow-up is obvious and reversible, just do it, otherwise leave it.
 - **Finish the job** - Don't stop at the minimum that technically satisfies the request. Handle the edge cases you can see. Clean up what you touched. If something is broken adjacent to your change, flag it. But don't invent new scope — there's a difference between thoroughness and gold-plating.
 - **Agent-native by default** - Design so agents can achieve any outcome users can. Tools are atomic primitives; features are outcomes described in prompts. Prefer file-based state for transparency and portability. When adding UI capability, ask: can an agent achieve this outcome too?
 
@@ -92,7 +92,7 @@ Always use opentofu over terraform.
 
 ### Python
 
-**Runtime:** 3.13 with `uv venv`
+**Runtime:** latest stable Python with `uv venv`
 
 | purpose       | tool                         |
 | ------------- | ---------------------------- |
@@ -107,14 +107,17 @@ Tests in `tests/` directory mirroring package structure. Supply chain: `pip-audi
 
 ### Node/TypeScript
 
-**Runtime:** Node 22 LTS, ESM only (`"type": "module"`)
+**Runtime:** latest Node LTS, ESM only (`"type": "module"`)
 
-| purpose | tool           |
-| ------- | -------------- |
-| lint    | `oxlint`       |
-| format  | `oxfmt`        |
-| test    | `vitest`       |
-| types   | `tsc --noEmit` |
+| purpose     | tool           |
+| ----------- | -------------- |
+| deps & pm   | `bun`          |
+| lint        | `oxlint`       |
+| format      | `oxfmt`        |
+| test        | `bun test`     |
+| types       | `tsc --noEmit` |
+
+**Use bun as the package manager and test runner** (`bun install`, `bun add`, `bun run`, `bun test`) — no vitest. Note `bun test` executes on the Bun runtime; if production runs on Node, that's a known test/prod runtime gap to weigh per project.
 
 **Always use oxlint and oxfmt** over eslint/prettier — they're faster and stricter. Enable `typescript`, `import`, `unicorn` plugins.
 
@@ -130,7 +133,7 @@ Tests in `tests/` directory mirroring package structure. Supply chain: `pip-audi
 "isolatedModules": true
 ```
 
-Colocated `*.test.ts` files. Supply chain: `pnpm audit --audit-level=moderate` before installing, pin exact versions (no `^` or `~`), enforce 24-hour publish delay (`pnpm config set minimumReleaseAge 1440`), block postinstall scripts (`pnpm config set ignore-scripts true`).
+Colocated `*.test.ts` files, run with `bun test`. Supply chain: `bun audit --audit-level=moderate` before installing, pin exact versions with `bun add -E` (no `^` or `~`), enforce a 24-hour publish delay (`bun install --minimum-release-age=86400`, seconds — or set `minimumReleaseAge` in `bunfig.toml`). Bun blocks dependency lifecycle scripts by default; allow specific packages via `trustedDependencies` only when needed.
 
 ### Rust
 

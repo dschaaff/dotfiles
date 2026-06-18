@@ -17,5 +17,3 @@ Aloxaf/fzf-tab
 # History substring search (uses different keybinds than Atuin)
 zsh-users/zsh-history-substring-search
 
-# Syntax highlighting MUST be last
-zdharma-continuum/fast-syntax-highlighting kind:defer

@@ -95,3 +95,5 @@
 
 [gpg "ssh"]
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+[coderabbit]
+	machineId = cli/1bc62a4146964c369fcc15a52fb16388
