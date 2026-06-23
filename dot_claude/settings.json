@@ -8,7 +8,17 @@
       "Read(~/.claude/plugins/cache/**)",
       "Bash(/Users/danielschaaff/.claude/plugins/cache/claude-plugins-official/superpowers/*)",
       "Write(**/.git/sdd/**)",
-      "Edit(**/.git/sdd/**)"
+      "Edit(**/.git/sdd/**)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git clone:*)",
+      "Bash(coderabbit:*)",
+      "Bash(trash:*)",
+      "Bash(nono why *)",
+      "Bash(nono profile guide)",
+      "Bash(nono profile validate *)",
+      "Bash(nono profile show *)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -122,7 +132,14 @@
         "mcp.atlassian.com",
         "slack.com",
         "opentofu.org",
-        "terraform.io"
+        "terraform.io",
+        "registry.terraform.io",
+        "registry.opentofu.org",
+        "get.opentofu.org",
+        "releases.hashicorp.com",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "*.amazonaws.com"
       ],
       "allowUnixSockets": [
         "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock",
@@ -138,16 +155,42 @@
         "~/Library/Caches/helm/",
         "~/.cache/prek/",
         "~/.terraform.d/plugin-cache/",
-        "~/.claude/plugins/data/"
+        "~/.claude/plugins/data/",
+        "~/.kube/cache",
+        "~/.aws/sso/cache",
+        "~/.aws/cli/cache",
+        "~/.config",
+        "~/.cache",
+        "~/Library/Caches"
       ],
       "allowRead": [
+        "~/development/",
+        "~/.gitconfig",
+        "~/.gitignore_global",
+        "~/.config/git/ignore",
         "~/.ssh/known_hosts",
         "~/.ssh/config",
-        "~/.config/codex/"
+        "~/.config/codex/",
+        "~/.cargo/bin",
+        "~/go/bin",
+        "~/.pyenv/shims",
+        "~/.pyenv/bin",
+        "~/.local/share/fnm",
+        "~/.local/share/pnpm",
+        "~/.rbenv/shims",
+        "~/.rbenv/bin",
+        "~/.local/bin",
+        "~/bin",
+        "/Users/danielschaaff/.bun/bin",
+        "/Users/danielschaaff/.rd/bin",
+        "/usr/local/sbin",
+        "/opt/homebrew/bin"
       ]
     },
     "enableWeakerNetworkIsolation": true,
     "excludedCommands": [
+      "/opt/homebrew/bin/codex*",
+      "codex*",
       "coderabbit*",
       "trash*",
       "git push",
