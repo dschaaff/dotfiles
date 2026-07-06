@@ -18,7 +18,14 @@
       "Bash(nono why *)",
       "Bash(nono profile guide)",
       "Bash(nono profile validate *)",
-      "Bash(nono profile show *)"
+      "Bash(nono profile show *)",
+      "Bash(chezmoi diff *)",
+      "Bash(chezmoi managed *)",
+      "Bash(chezmoi cat *)",
+      "Bash(chezmoi verify *)",
+      "Bash(chezmoi source-path *)",
+      "Bash(gofmt -l *)",
+      "Bash(npm view *)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -118,6 +125,9 @@
     }
   },
   "outputStyle": "Explanatory",
+  "env": {
+    "AWS_MCP_PROXY_PROFILES": "Cordial-Development/ReadOnly Cordial-Production-East/ReadOnly Cordial-Production/ReadOnly MTA-dev/ReadOnly MTA/ReadOnly Production-Bravo/ReadOnly SRE-dev/ReadOnly SRE-prod/ReadOnly cordial-ecr/ReadOnly datalake/ReadOnly dev-datalake/ReadOnly sre-interview-sandbox/ReadOnly security-tooling/FullAccess"
+  },
   "sandbox": {
     "enabled": true,
     "network": {
@@ -200,6 +210,6 @@
     ]
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "skipWorkflowUsageWarning": true
 }
