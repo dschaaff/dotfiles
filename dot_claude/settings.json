@@ -3,6 +3,7 @@
   "awsAuthRefresh": "granted sso login --sso-start-url https://cordial-sso.awsapps.com/start --sso-region us-west-2",
   "cleanupPeriodDays": 365,
   "permissions": {
+    "defaultMode": "auto",
     "allow": [
       "Skill(superpowers:*)",
       "Read(~/.claude/plugins/cache/**)",
@@ -102,7 +103,9 @@
     "gopls-lsp@claude-plugins-official": true,
     "clickhouse-best-practices@claude-plugins-official": true,
     "ast-grep@ast-grep-marketplace": true,
-    "aws-core@claude-plugins-official": true
+    "aws-core@claude-plugins-official": true,
+    "gitlab-review-tools@cordial-claude-code": true,
+    "langfuse@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "gemini-plugin-cc": {
