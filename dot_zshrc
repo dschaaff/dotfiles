@@ -105,6 +105,14 @@ alias kubectx='switch'
 alias kctx='switch'
 alias tflock='tofu providers lock -platform=darwin_arm64 -platform=linux_arm64 -platform=linux_amd64'
 alias terraform='tofu'
+# Clean interactive shell into the lima-code-agent VM. --workdir takes a
+# GUEST path, so resolve the guest home at runtime (a literal "$HOME" here would
+# expand to the Mac home and produce cd errors in the guest).
+lsh() {
+  local gh
+  gh="$(limactl shell lima-code-agent -- bash -lc 'printf %s "$HOME"')" || return
+  limactl shell --workdir "$gh" lima-code-agent
+}
 
 if [ -f "$HOME/.cordial.sh" ]; then
     source $HOME/.cordial.sh
