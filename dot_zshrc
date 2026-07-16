@@ -107,10 +107,11 @@ alias tflock='tofu providers lock -platform=darwin_arm64 -platform=linux_arm64 -
 alias terraform='tofu'
 # Clean interactive shell into the lima-code-agent VM. --workdir takes a
 # GUEST path, so resolve the guest home at runtime (a literal "$HOME" here would
-# expand to the Mac home and produce cd errors in the guest).
+# expand to the Mac home). The resolver call has no --workdir, so it mirrors the
+# host cwd and prints cd errors to stderr — silence them (we only want stdout).
 lsh() {
   local gh
-  gh="$(limactl shell lima-code-agent -- bash -lc 'printf %s "$HOME"')" || return
+  gh="$(limactl shell lima-code-agent -- bash -lc 'printf %s "$HOME"' 2>/dev/null)" || return
   limactl shell --workdir "$gh" lima-code-agent
 }
 
