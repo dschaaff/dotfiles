@@ -27,7 +27,7 @@ Library/Application Support/lazygit/development.log
 
 # plugin dirs (managed by their own plugin managers)
 .vim/plugged
-.config/nvim/plugged
+.local/share/nvim/site/pack
 .tmux/plugins
 
 # opencode runtime (plugins installed at runtime; only opencode.json + tui.json are managed)
