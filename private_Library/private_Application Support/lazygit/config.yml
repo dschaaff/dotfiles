@@ -8,3 +8,22 @@ git:
   pagers:
     - colorArg: always
       pager: delta --dark --paging=never
+customCommands:
+  - key: "G"
+    description: "AI commit message"
+    context: "files"
+    loadingText: "Generating commit message..."
+    command: |
+      DIFF=$(git diff --cached --diff-algorithm=minimal)
+      if [ -z "$DIFF" ]; then
+        DIFF=$(git diff --diff-algorithm=minimal)
+      fi
+      if [ -z "$DIFF" ]; then
+        echo "No changes to commit"
+        exit 1
+      fi
+      MSG=$(echo "$DIFF" | bclaude -p "You are a commit message generator. Analyze the provided git diff and output ONLY the commit message, nothing else. Rules: Use imperative mood. Start with capital letter. No period at end. Max 50 chars. Be specific. Describe WHAT changed. Never use generic words alone. No conventional commit prefixes. Plain English." 2>/dev/null)
+      if [ -n "$MSG" ]; then
+        git commit -e -m "$MSG"
+      fi
+    output: terminal
