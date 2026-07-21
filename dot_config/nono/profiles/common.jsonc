@@ -1,0 +1,159 @@
+{
+  "$schema": "../nono-profile.schema.json",
+  "meta": {
+    "name": "common",
+    "description": "Shared base for sandboxed agents"
+  },
+  "groups": {
+    "include": [
+      "node_runtime",
+      "python_runtime",
+      "go_runtime",
+      "git_config"
+    ]
+  },
+  "filesystem": {
+    "allow": [
+      "$HOME/development/",
+      "$HOME/.cache",
+      "$HOME/.granted",
+      "$HOME/.local/share/uv", // uvx installs/writes tools here
+      "$HOME/.local/bin", // and may write the uv/uvx shims here
+      "$HOME/Library/Application Support/glab-cli",
+      "/tmp"
+    ],
+    "read": [
+      "$HOME/.workGitConfig",
+      "$HOME/.local/pipx",
+      "$HOME/Library/Application Support/commonfate",
+      "$HOME/.local/state/gh" // gh device-id/state
+    ],
+    "read_file": [
+      "$HOME/.aws/config",
+      "$HOME/.CFUserTextEncoding",
+      // 1Password SSH agent socket, used for SSH commit *signing* (a local
+      // agent op, unlike SSH transport which proxy mode blocks). Needs the
+      // unix_socket grant below too. Keys never touch disk.
+      "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock",
+      "$HOME/.ssh/known_hosts", // ssh host-key verification
+      "$HOME/.ssh/config", // provides the IdentityAgent -> 1Password socket mapping
+      "$HOME/.config/gh/config.yml", // gh CLI reads these; token comes from the proxy
+      "$HOME/.config/gh/hosts.yml"
+    ],
+    "bypass_protection": [
+      "$HOME/.aws/config", // punch ~/.aws/config through deny_credentials
+      // ~/.ssh/* is blocked by the required deny_credentials group; these two
+      // are non-secret (no private keys) and needed for SSH host verification.
+      "$HOME/.ssh/known_hosts",
+      "$HOME/.ssh/config"
+    ],
+    // connect() to a unix socket is a network op on macOS Seatbelt; proxy mode
+    // (below) makes outbound default-deny, so read_file alone is not enough.
+    // This grant lets git sign commits via the 1Password agent under proxy mode.
+    "unix_socket": [
+      "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    ]
+  },
+  "environment": {
+    "allow_vars": [
+      "PATH",
+      "HOME",
+      "TERM",
+      "LANG",
+      "CLAUDE_CODE_USE_BEDROCK",
+      "ANTHROPIC_MODEL",
+      "ANTHROPIC_SMALL_FAST_MODEL",
+      "AWS_REGION",
+      "AWS_PROFILE",
+      "SSH_AUTH_SOCK", // 1Password agent socket, for SSH commit signing
+      "CLAUDE_CONFIG_DIR"
+    ],
+    // Sandbox-scoped git config (via GIT_CONFIG_COUNT) so git rides the
+    // credential proxy over HTTPS instead of SSH (port 22 is blocked in proxy
+    // mode). Only affects sandboxed sessions; your real ~/.gitconfig is untouched.
+    "set_vars": {
+      // Keep Claude Code's config (and its atomic .claude.json.tmp.* writes)
+      // inside the granted ~/.claude dir. ~/.claude.json is a symlink whose
+      // temp siblings otherwise land in $HOME (ungranted) during OAuth writes.
+      "CLAUDE_CONFIG_DIR": "$HOME/.claude",
+      "GIT_CONFIG_COUNT": "6",
+      // github.com: rewrite SSH-style + ssh:// remotes to HTTPS (proxy injects auth)
+      "GIT_CONFIG_KEY_0": "url.https://github.com/.insteadOf",
+      "GIT_CONFIG_VALUE_0": "git@github.com:",
+      "GIT_CONFIG_KEY_1": "url.https://github.com/.insteadOf",
+      "GIT_CONFIG_VALUE_1": "ssh://git@github.com/",
+      // gitlab.com: same rewrite (overrides your global https->ssh insteadOf)
+      "GIT_CONFIG_KEY_2": "url.https://gitlab.com/.insteadOf",
+      "GIT_CONFIG_VALUE_2": "git@gitlab.com:",
+      // gitlab git-HTTP needs the phantom presented as basic-auth username;
+      // GITLAB_TOKEN holds the phantom, and the proxy swaps in the real token.
+      "GIT_CONFIG_KEY_3": "credential.https://gitlab.com.username",
+      "GIT_CONFIG_VALUE_3": "oauth2",
+      "GIT_CONFIG_KEY_4": "credential.https://gitlab.com.helper",
+      "GIT_CONFIG_VALUE_4": "!f() { echo \"password=$GITLAB_TOKEN\"; }; f",
+      // osxkeychain helper is sandbox-blocked; disable it to avoid store errors
+      "GIT_CONFIG_KEY_5": "credential.helper",
+      "GIT_CONFIG_VALUE_5": ""
+    }
+  },
+  "network": {
+    "network_profile": null,
+    // OAuth callback listener for MCP servers whose token expired with no
+    // refresh token (e.g. backstage): Claude Code binds a RANDOM ephemeral port
+    // for http://localhost:PORT/callback. macOS ephemeral range is 49152-65535
+    // (= 16384 ports, nono's per-rule max). Loopback-only; needed so interactive
+    // /mcp authenticate can complete inside the sandbox.
+    "open_port_range": [
+      [
+        49152,
+        65535
+      ]
+    ],
+    // Credential proxy: the real tokens are resolved from 1Password at proxy
+    // startup and injected only on the upstream leg. The sandboxed process sees
+    // a phantom token, never the real glpat-/ghp- value.
+    "credentials": [
+      "gitlab",
+      "github",
+      "github-git"
+    ],
+    "custom_credentials": {
+      // API routes for the glab/gh CLIs, sourced from 1Password (built-in
+      // routes read host env vars; these override to op://).
+      "gitlab": {
+        "upstream": "https://gitlab.com",
+        "credential_key": "op://Private/GitLab/token",
+        "env_var": "GITLAB_TOKEN",
+        "inject_header": "PRIVATE-TOKEN",
+        "credential_format": "{}"
+      },
+      "github": {
+        "upstream": "https://api.github.com",
+        "credential_key": "op://Private/Github/token",
+        "env_var": "GITHUB_TOKEN",
+        "inject_header": "Authorization",
+        "credential_format": "token {}"
+      },
+      // git-over-HTTPS for github.com (a different host than api.github.com).
+      // basic_auth means git needs no local creds — the proxy injects them.
+      "github-git": {
+        "upstream": "https://github.com",
+        "credential_key": "op://Private/Github/token",
+        "env_var": "GH_GIT_PHANTOM",
+        "inject_mode": "basic_auth",
+        "credential_format": "x-access-token:{}"
+      }
+    },
+    // Enabling credentials flips network to default-deny proxy mode; allow all
+    // domains back so general egress (npm, pypi, APIs) keeps working while the
+    // gitlab/github routes stay intercepted.
+    "allow_domain": [
+      "*"
+    ]
+  },
+  "diagnostics": {
+    "suppress_system_services": [
+      "user-preference-read"
+    ]
+  }
+}
