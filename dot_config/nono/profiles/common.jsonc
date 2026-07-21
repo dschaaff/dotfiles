@@ -26,7 +26,12 @@
       "$HOME/.workGitConfig",
       "$HOME/.local/pipx",
       "$HOME/Library/Application Support/commonfate",
-      "$HOME/.local/state/gh" // gh device-id/state
+      "$HOME/.local/state/gh", // gh device-id/state
+      // Rancher Desktop CLI symlinks (docker, docker-compose, docker-buildx, …).
+      // Targets live in /Applications (already granted), but the sandbox must read
+      // the symlink *node* here to follow it — a static `nono why` passes without
+      // this because it resolves to the target, but exec fails at runtime.
+      "$HOME/.rd/bin"
     ],
     "read_file": [
       "$HOME/.aws/config",
@@ -38,7 +43,13 @@
       "$HOME/.ssh/known_hosts", // ssh host-key verification
       "$HOME/.ssh/config", // provides the IdentityAgent -> 1Password socket mapping
       "$HOME/.config/gh/config.yml", // gh CLI reads these; token comes from the proxy
-      "$HOME/.config/gh/hosts.yml"
+      "$HOME/.config/gh/hosts.yml",
+      // Rancher Desktop's docker daemon socket. Rancher runs the engine inside its
+      // own VM, so the socket is the boundary we cross. Like the 1Password agent
+      // socket, proxy mode makes connect() a network op, so it needs the
+      // unix_socket grant below too. DOCKER_HOST (set_vars) points the CLI here so
+      // it never reads ~/.docker (blocked by deny_credentials — holds registry auth).
+      "$HOME/.rd/docker.sock"
     ],
     "bypass_protection": [
       "$HOME/.aws/config", // punch ~/.aws/config through deny_credentials
@@ -51,7 +62,9 @@
     // (below) makes outbound default-deny, so read_file alone is not enough.
     // This grant lets git sign commits via the 1Password agent under proxy mode.
     "unix_socket": [
-      "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+      "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock",
+      // Rancher Desktop docker daemon socket (see read_file note above).
+      "$HOME/.rd/docker.sock"
     ]
   },
   "environment": {
@@ -93,7 +106,14 @@
       "GIT_CONFIG_VALUE_4": "!f() { echo \"password=$GITLAB_TOKEN\"; }; f",
       // osxkeychain helper is sandbox-blocked; disable it to avoid store errors
       "GIT_CONFIG_KEY_5": "credential.helper",
-      "GIT_CONFIG_VALUE_5": ""
+      "GIT_CONFIG_VALUE_5": "",
+      // Point the docker CLI straight at Rancher's socket. With DOCKER_HOST set,
+      // docker skips context/config resolution, so it never touches ~/.docker
+      // (blocked by deny_credentials).
+      "DOCKER_HOST": "unix://$HOME/.rd/docker.sock",
+      // Isolate docker's config away from the host ~/.docker (registry auth).
+      // ~/.cache is already granted readwrite; docker creates this on demand.
+      "DOCKER_CONFIG": "$HOME/.cache/nono-docker"
     }
   },
   "network": {
