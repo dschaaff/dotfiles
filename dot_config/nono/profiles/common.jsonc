@@ -74,6 +74,7 @@
       "TERM",
       "LANG",
       "CLAUDE_CODE_USE_BEDROCK",
+      "CLAUDE_CODE_USE_MANTLE",
       "ANTHROPIC_MODEL",
       "ANTHROPIC_SMALL_FAST_MODEL",
       "AWS_REGION",
@@ -89,24 +90,26 @@
       // inside the granted ~/.claude dir. ~/.claude.json is a symlink whose
       // temp siblings otherwise land in $HOME (ungranted) during OAuth writes.
       "CLAUDE_CONFIG_DIR": "$HOME/.claude",
-      "GIT_CONFIG_COUNT": "6",
+      "GIT_CONFIG_COUNT": "5",
+      // Disable the sandbox-blocked osxkeychain helper FIRST. An empty
+      // credential.helper resets git's entire accumulated helper list, so it
+      // must come before anything else. With the gitlab-git/github-git proxy
+      // routes injecting the Authorization header directly (basic_auth), git
+      // needs no local credential helper at all.
+      "GIT_CONFIG_KEY_0": "credential.helper",
+      "GIT_CONFIG_VALUE_0": "",
       // github.com: rewrite SSH-style + ssh:// remotes to HTTPS (proxy injects auth)
-      "GIT_CONFIG_KEY_0": "url.https://github.com/.insteadOf",
-      "GIT_CONFIG_VALUE_0": "git@github.com:",
       "GIT_CONFIG_KEY_1": "url.https://github.com/.insteadOf",
-      "GIT_CONFIG_VALUE_1": "ssh://git@github.com/",
-      // gitlab.com: same rewrite (overrides your global https->ssh insteadOf)
-      "GIT_CONFIG_KEY_2": "url.https://gitlab.com/.insteadOf",
-      "GIT_CONFIG_VALUE_2": "git@gitlab.com:",
-      // gitlab git-HTTP needs the phantom presented as basic-auth username;
-      // GITLAB_TOKEN holds the phantom, and the proxy swaps in the real token.
-      "GIT_CONFIG_KEY_3": "credential.https://gitlab.com.username",
-      "GIT_CONFIG_VALUE_3": "oauth2",
-      "GIT_CONFIG_KEY_4": "credential.https://gitlab.com.helper",
-      "GIT_CONFIG_VALUE_4": "!f() { echo \"password=$GITLAB_TOKEN\"; }; f",
-      // osxkeychain helper is sandbox-blocked; disable it to avoid store errors
-      "GIT_CONFIG_KEY_5": "credential.helper",
-      "GIT_CONFIG_VALUE_5": "",
+      "GIT_CONFIG_VALUE_1": "git@github.com:",
+      "GIT_CONFIG_KEY_2": "url.https://github.com/.insteadOf",
+      "GIT_CONFIG_VALUE_2": "ssh://git@github.com/",
+      // gitlab.com: rewrite SSH-style + ssh:// remotes to HTTPS (overrides your
+      // global https->ssh insteadOf). The gitlab-git proxy route (below) injects
+      // the Authorization Basic header on .git paths, so git needs no local creds.
+      "GIT_CONFIG_KEY_3": "url.https://gitlab.com/.insteadOf",
+      "GIT_CONFIG_VALUE_3": "git@gitlab.com:",
+      "GIT_CONFIG_KEY_4": "url.https://gitlab.com/.insteadOf",
+      "GIT_CONFIG_VALUE_4": "ssh://git@gitlab.com/",
       // Point the docker CLI straight at Rancher's socket. With DOCKER_HOST set,
       // docker skips context/config resolution, so it never touches ~/.docker
       // (blocked by deny_credentials).
@@ -118,6 +121,15 @@
   },
   "network": {
     "network_profile": null,
+    // Enabling credentials (below) intercepts TLS with a nono-generated CA so the
+    // proxy can swap in the real token. Go CLIs (glab, gh, tofu) ignore SSL_CERT_FILE
+    // and only trust the macOS user keychain, so the default per-session CA makes
+    // them fail cert verification (curl/node/python are fine via env vars).
+    // "trusted" installs a reusable CA into the keychain — the profile equivalent of
+    // `nono run --trust-proxy-ca`. See https://nono.sh/docs/cli/usage/flags#trust-proxy-ca
+    "tls_intercept": {
+      "ca_lifecycle": "trusted"
+    },
     // OAuth callback listener for MCP servers whose token expired with no
     // refresh token (e.g. backstage): Claude Code binds a RANDOM ephemeral port
     // for http://localhost:PORT/callback. macOS ephemeral range is 49152-65535
@@ -134,18 +146,46 @@
     // a phantom token, never the real glpat-/ghp- value.
     "credentials": [
       "gitlab",
+      "gitlab-git",
       "github",
       "github-git"
     ],
     "custom_credentials": {
       // API routes for the glab/gh CLIs, sourced from 1Password (built-in
       // routes read host env vars; these override to op://).
+      // REST-API route (glab): PRIVATE-TOKEN header, scoped to /api/** so it
+      // does NOT match .git paths. Two routes on one host (gitlab.com) coexist
+      // only if their endpoint_rules are DISJOINT — else nono returns its own
+      // "Ambiguous route" 403 (that was the earlier regression, not GitLab).
       "gitlab": {
         "upstream": "https://gitlab.com",
         "credential_key": "op://Private/GitLab/token",
         "env_var": "GITLAB_TOKEN",
         "inject_header": "PRIVATE-TOKEN",
-        "credential_format": "{}"
+        "credential_format": "{}",
+        "endpoint_rules": [
+          {
+            "method": "*",
+            "path": "/api/**"
+          }
+        ]
+      },
+      // git-over-HTTPS route: overwrites the Authorization header with
+      // Basic base64(<secret>). basic_auth IGNORES credential_format (nono
+      // v0.69.0 base64s the RAW secret), so the 1Password field MUST hold the
+      // literal "oauth2:<PAT>" (colon included) — GitLab git-http requires a
+      // real user:password pair. Scoped to git smart/dumb-HTTP paths only.
+      "gitlab-git": {
+        "upstream": "https://gitlab.com",
+        "credential_key": "op://Private/GitLab/git-basic",
+        "env_var": "GL_GIT_PHANTOM",
+        "inject_mode": "basic_auth",
+        "endpoint_rules": [
+          {
+            "method": "*",
+            "path": "**/*.git/**"
+          }
+        ]
       },
       "github": {
         "upstream": "https://api.github.com",
