@@ -4,6 +4,16 @@ Global instructions for all projects. Project-specific CLAUDE.md files override 
 
 - Use skills proactively when they match the task — suggest relevant ones, don't block on them
 
+- Keep responses focused, brief, and concise. Keep disclaimers and caveats short, and spend most of the response on the main answer. When asked to explain something, give a high-level summary unless an in-depth explanation is specifically requested.
+
+- Match the length of written documents (reports, markdown, summaries) to what the task needs: cover the substance, but don't pad with filler sections, redundant summaries, or boilerplate.
+
+- Before your first tool call, say in one sentence what you're about to do. While working, give a brief update only when you find something important or change direction. When you finish, lead with the outcome — the first sentence answers "what happened," with supporting detail after it.
+
+- Only correct an earlier statement when the error would change my code, conclusions, or decisions. State corrections plainly and briefly, then continue. For slips that change nothing, make the fix and move on.
+
+- Delegate to subagents liberally to keep my main context clean. Investigations that read many files, broad searches, and independent parallel tracks should go to subagents that return conclusions rather than file dumps. Prefer one well-scoped subagent over several overlapping ones. Don't spawn a subagent purely to double-check work you've already done.
+
 ## Philosophy
 
 - **No speculative features** - Don't add features, flags, or configuration unless users actively need them
@@ -12,9 +22,9 @@ Global instructions for all projects. Project-specific CLAUDE.md files override 
 - **Justify new dependencies** - Each dependency is attack surface and maintenance burden
 - **No phantom features** - Don't document or validate features that aren't implemented
 - **Replace, don't deprecate** - When a new implementation replaces an old one, remove the old one entirely. No backward-compatible shims, dual config formats, or migration paths. Proactively flag dead code — it adds maintenance burden and misleads both developers and LLMs.
-- **Verify at every level** - Set up automated guardrails (linters, type checkers, pre-commit hooks, tests) as the first step, not an afterthought. Prefer structure-aware tools (ast-grep, LSPs, compilers) over text pattern matching. Review your own output critically. Every layer catches what the others miss.
-- **Bias toward action** - Decide and move on minor choices (naming, formatting, defaults, picking among equivalents) and anything easily reversed; state your assumption so the reasoning is visible. Ask first only for scope changes, destructive/write operations on external services, or commitments to interfaces, data models, or architecture. When the task is done, stop cleanly — don't close with "Want me to also…?"; if a follow-up is obvious and reversible, just do it, otherwise leave it.
-- **Finish the job** - Don't stop at the minimum that technically satisfies the request. Handle the edge cases you can see. Clean up what you touched. If something is broken adjacent to your change, flag it. But don't invent new scope — there's a difference between thoroughness and gold-plating.
+- **Verify at every level** - Set up automated guardrails (linters, type checkers, pre-commit hooks, tests) as the first step, not an afterthought. Prefer structure-aware tools (ast-grep, LSPs, compilers) over text pattern matching — they catch what text search misses.
+- **Bias toward action** - Decide and move on minor choices (naming, formatting, defaults, picking among equivalents) and anything easily reversed; state your assumption so the reasoning is visible. Ask first only for scope changes, destructive/write operations on external services, or commitments to interfaces, data models, or architecture. When the task is done, stop cleanly — no "Want me to also…?".
+- **Deliver the requested scope** - Finish the whole task: no stubs, placeholders, or TODOs standing in for work. Deliver at the scope intended — don't quietly narrow, widen, or transform it. If something adjacent is broken or a better approach exists, say so in a sentence and continue with the task as asked. Stop short of actions clearly beyond what was requested; adjacent cleanup and refactors are separate work.
 - **Agent-native by default** - Design so agents can achieve any outcome users can. Tools are atomic primitives; features are outcomes described in prompts. Prefer file-based state for transparency and portability. When adding UI capability, ask: can an agent achieve this outcome too?
 
 ## Code Quality
@@ -45,7 +55,7 @@ Code should be self-documenting. No commented-out code—delete it. If you need 
 
 Evaluate in order: architecture → code quality → tests → performance.
 
-For each issue: describe concretely with file:line references, present options with trade offs when the fix isn't obvious, recommend one, and ask before proceeding.
+Report everything you find in one pass — don't pre-filter by severity, and don't stop mid-review to ask. For each issue: describe it concretely with file:line references, present options with trade-offs when the fix isn't obvious, and recommend one. Filtering and applying fixes is a separate step after the full report.
 
 ### Testing
 
@@ -81,71 +91,16 @@ Use the glab cli to interact with GitLab.
 
 Prefer ast-grep over ripgrep when searching for code structure (function calls, class definitions, imports, pattern matching across arguments). Use ripgrep for literal strings and log messages.
 
-### Terraform and Opentofu
+### Language standards
 
-Always use opentofu over terraform.
+Full standards live in `~/.claude/rules/` and load when you touch matching files. Headlines:
 
-| purpose             | tool   |
-| ------------------- | ------ |
-| lint terraform code | tflint |
-| security checks     | tfsec  |
-
-### Python
-
-**Runtime:** latest stable Python with `uv venv`
-
-| purpose       | tool                         |
-| ------------- | ---------------------------- |
-| deps & venv   | `uv`                         |
-| lint & format | `ruff check` · `ruff format` |
-| static types  | `ty check`                   |
-| tests         | `pytest -q`                  |
-
-**Always use uv, ruff, and ty** over pip/poetry, black/pylint/flake8, and mypy/pyright — they're faster and stricter. Configure `ty` strictness via `[tool.ty.rules]` in pyproject.toml. Use `uv_build` for pure Python, `hatchling` for extensions.
-
-Tests in `tests/` directory mirroring package structure. Supply chain: `pip-audit` before deploying, pin exact versions (`==` not `>=`), verify hashes with `uv pip install --require-hashes`.
-
-### Node/TypeScript
-
-**Runtime:** latest Node LTS, ESM only (`"type": "module"`)
-
-| purpose     | tool           |
-| ----------- | -------------- |
-| deps & pm   | `bun`          |
-| lint        | `oxlint`       |
-| format      | `oxfmt`        |
-| test        | `bun test`     |
-| types       | `tsc --noEmit` |
-
-**Use bun as the package manager and test runner** (`bun install`, `bun add`, `bun run`, `bun test`) — no vitest. Note `bun test` executes on the Bun runtime; if production runs on Node, that's a known test/prod runtime gap to weigh per project.
-
-**Always use oxlint and oxfmt** over eslint/prettier — they're faster and stricter. Enable `typescript`, `import`, `unicorn` plugins.
-
-**tsconfig.json strictness** — enable all of these:
-
-```jsonc
-"strict": true,
-"noUncheckedIndexedAccess": true,
-"exactOptionalPropertyTypes": true,
-"noImplicitOverride": true,
-"noPropertyAccessFromIndexSignature": true,
-"verbatimModuleSyntax": true,
-"isolatedModules": true
-```
-
-Colocated `*.test.ts` files, run with `bun test`. Supply chain: `bun audit --audit-level=moderate` before installing, pin exact versions with `bun add -E` (no `^` or `~`), enforce a 24-hour publish delay (`bun install --minimum-release-age=86400`, seconds — or set `minimumReleaseAge` in `bunfig.toml`). Bun blocks dependency lifecycle scripts by default; allow specific packages via `trustedDependencies` only when needed.
-
-### Rust
-
-Standards (toolchain, style, type design, Cargo.toml clippy lints) live in the `rust-standards` skill — invoke it when working in a Rust project.
-
-### Bash
-
-All scripts must start with `set -euo pipefail`. Lint: `shellcheck script.sh && shfmt -d script.sh`
-
-### GitHub Actions
-
-Pin actions to SHA hashes with version comments: `actions/checkout@<full-sha>  # vX.Y.Z` (use `persist-credentials: false`). Scan workflows with `zizmor` before committing. Configure Dependabot with 7-day cooldowns and grouped updates. Use `uv` ecosystem (not `pip`) for Python projects so Dependabot updates `uv.lock`.
+- **Python** — `uv` + `ruff` + `ty`, latest stable, tests in `tests/`
+- **Node/TS** — `bun` + `oxlint` + `oxfmt`, ESM only, strict tsconfig
+- **Rust** — invoke the `rust-standards` skill
+- **Bash** — `set -euo pipefail`, shellcheck + shfmt
+- **Terraform** — opentofu, never terraform; tflint + tfsec
+- **GitHub Actions** — SHA-pinned, zizmor-scanned
 
 ## Container Images
 
@@ -169,7 +124,7 @@ Always prefer ECR public, GitHub container registry, and quay.io over Docker Hub
 **Hooks and worktrees:**
 
 - Install prek in every repo (`prek install`). Run `prek run` before committing. Configure auto-updates: `prek auto-update --cooldown-days 7`
-- Parallel subagents require worktrees. Each subagent MUST work in its own worktree (`wt switch <branch>`), not the main repo. Never share working directories.
+- Parallel subagents require worktrees. Each subagent works in its own worktree (`git worktree add ../<name> <branch>`, or the Agent tool's `isolation: "worktree"`), never the main repo. Never share working directories.
 
 **Pull requests:**
 Describe what the code does now — not discarded approaches, prior iterations, or alternatives. Only describe what's in the diff.
