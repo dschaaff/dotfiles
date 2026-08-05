@@ -55,3 +55,12 @@ bin/linkerd
 bin/terraform
 bin/tofu
 bin/warp
+
+.claude/.claude.json
+.claude/.credentials.json
+.claude/history.jsonl
+.claude/projects
+.claude/sessions
+.claude/backups
+.claude/shell-snapshots
+.claude/statsig
