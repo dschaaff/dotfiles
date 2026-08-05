@@ -175,6 +175,7 @@ export GPG_TTY=$(tty)
 export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
 # .local/bin is used by pipx
 export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
+export CLAUDE_CONFIG_DIR="$HOME/.claude"
 # go
 export GOPATH=$HOME/go
 export GOROOT=/opt/homebrew/opt/go/libexec
