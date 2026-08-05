@@ -6,9 +6,64 @@
   "provider": {
     "amazon-bedrock": {
       "options": {
-        "region": "us-west-2",
+        "region": "us-east-1",
         "profile": "Cordial-Development/Developer"
       }
+    }
+  },
+  "mcp": {
+    "backstage": {
+      "type": "remote",
+      "url": "https://backstage.cordial.com/api/mcp-actions/v1/default",
+      "enabled": true
+    },
+    "backstage-dev": {
+      "type": "remote",
+      "url": "https://backstage.dev.cordialdev.com/api/mcp-actions/v1/default",
+      "enabled": true
+    },
+    "grafana": {
+      "type": "remote",
+      "url": "https://grafana-mcp.ops.cordial.io/mcp",
+      "enabled": true
+    },
+    "grafana-nonprod": {
+      "type": "remote",
+      "url": "https://non-prod-grafana-mcp.cordialdev.com/mcp",
+      "enabled": true
+    },
+    "atlassian": {
+      "type": "remote",
+      "url": "https://mcp.atlassian.com/v1/mcp/authv2",
+      "enabled": true
+    },
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp",
+      "enabled": true,
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-18498425-61a8-4302-822e-e924cdfd9b14"
+      }
+    },
+    "rootly": {
+      "type": "remote",
+      "url": "https://mcp.rootly.com/mcp-codemode",
+      "enabled": true
+    },
+    "aws-mcp": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "mcp-proxy-for-aws@1.6.0",
+        "https://aws-mcp.us-east-1.api.aws/mcp",
+        "--skip-auth",
+        "--metadata",
+        "INSTALL_SOURCE=agent-toolkit"
+      ],
+      "environment": {
+        "AWS_MCP_PROXY_PROFILES": "Cordial-Development/ReadOnly Cordial-Production-East/ReadOnly Cordial-Production/ReadOnly MTA-dev/ReadOnly MTA/ReadOnly Production-Bravo/ReadOnly SRE-dev/ReadOnly SRE-prod/ReadOnly cordial-ecr/ReadOnly datalake/ReadOnly dev-datalake/ReadOnly sre-interview-sandbox/ReadOnly security-tooling/FullAccess"
+      },
+      "enabled": true
     }
   }
 }

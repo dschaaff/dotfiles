@@ -12,14 +12,49 @@
       "git_config"
     ]
   },
+  "allow_gpu": true,
   "filesystem": {
     "allow": [
-      "$HOME/development/",
+      "$HOME/development",
       "$HOME/.cache",
       "$HOME/.granted",
+      "$HOME/.terraform.d",
+      "$HOME/.terraform.d/plugin-cache",
+      "$HOME/.local/state/nvim",
       "$HOME/.local/share/uv", // uvx installs/writes tools here
       "$HOME/.local/bin", // and may write the uv/uvx shims here
       "$HOME/Library/Application Support/glab-cli",
+      "$HOME/.local/share/uv", // uvx installs/writes tools here
+      "$HOME/.local/bin", // and may write the uv/uvx shims here
+      // bun runtime: the binary + global bin shims (~/.bun/bin), the module
+      // cache (~/.bun/install/cache), and global installs (~/.bun/install/global)
+      // all live under here. Mirrors the uv grants above — bun both execs from
+      // and writes into this dir, so a single readwrite grant covers exec + cache.
+      "$HOME/.bun",
+      "$HOME/bin",
+      "$HOME/go",
+      // `trash` (/usr/bin/trash) calls NSFileManager trashItemAtURL, which
+      // *renames* the file into ~/.Trash rather than unlinking it. Without this
+      // grant it fails with afpAccessDenied on the source file, which reads like
+      // a source-path problem but is really the missing destination. readwrite
+      // (not write) because the API enumerates ~/.Trash to uniquify colliding
+      // names. Files on non-boot volumes go to <volume>/.Trashes instead and
+      // still won't work — agents operate under ~/development and /tmp, both on
+      // the boot volume.
+      "$HOME/.Trash",
+      "$HOME/Library/Application Support/glab-cli",
+      "$HOME/.local/share/claude/versions/",
+      // macOS login keychain. `granted credential-process` (the credential_process
+      // for every ~/.aws/config profile) keeps the IAM Identity Center SSO token in
+      // the keyring, not on disk — without this it fails with "The specified item
+      // could not be found in the keyring" and any AWS/Bedrock call gets no creds.
+      // readwrite because the Security framework locks/writes the db, and
+      // bypass_protection below to punch it through deny_credentials.
+      // The claude profile grants this itself, which is why nclaude works and npi didn't.
+      {
+        "path": "$HOME/Library/Keychains",
+        "when": "macos"
+      },
       "/tmp"
     ],
     "read": [
@@ -49,14 +84,39 @@
       // socket, proxy mode makes connect() a network op, so it needs the
       // unix_socket grant below too. DOCKER_HOST (set_vars) points the CLI here so
       // it never reads ~/.docker (blocked by deny_credentials — holds registry auth).
-      "$HOME/.rd/docker.sock"
+      "$HOME/.rd/docker.sock",
+      // granted stats its browser native-messaging manifest on startup; the path is
+      // permanently restricted by default, so it needs a grant + bypass_protection
+      // below to stop showing up as a denial.
+      {
+        "path": "$HOME/Library/Application Support/Arc/User Data/NativeMessagingHosts/io.commonfate.granted.json",
+        "when": "macos"
+      }
+    ],
+    "write_file": [
+      // granted rewrites its own browser native-messaging manifest on startup;
+      // grant the write so it doesn't log a denial on every sandboxed run.
+      {
+        "path": "$HOME/Library/Application Support/Arc/User Data/NativeMessagingHosts/io.commonfate.granted.json",
+        "when": "macos"
+      }
     ],
     "bypass_protection": [
       "$HOME/.aws/config", // punch ~/.aws/config through deny_credentials
       // ~/.ssh/* is blocked by the required deny_credentials group; these two
       // are non-secret (no private keys) and needed for SSH host verification.
       "$HOME/.ssh/known_hosts",
-      "$HOME/.ssh/config"
+      "$HOME/.ssh/config",
+      // see the Keychains note under filesystem.allow
+      {
+        "path": "$HOME/Library/Keychains",
+        "when": "macos"
+      },
+      // granted's native-messaging manifest (see read_file above)
+      {
+        "path": "$HOME/Library/Application Support/Arc/User Data/NativeMessagingHosts/io.commonfate.granted.json",
+        "when": "macos"
+      }
     ],
     // connect() to a unix socket is a network op on macOS Seatbelt; proxy mode
     // (below) makes outbound default-deny, so read_file alone is not enough.
@@ -70,6 +130,7 @@
   "environment": {
     "allow_vars": [
       "PATH",
+      "EDITOR",
       "HOME",
       "TERM",
       "LANG",
