@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Use when the user wants to build something, flesh out an idea, or stress-test a plan or design decision - before any implementation. A relentless one-question-at-a-time interview that ends in shared understanding, not code.
+description: Use BEFORE any implementation when the user wants to build or add something - "let's build X", "I want to add Y", "I have an idea", "I'm thinking about", "help me design" - even when the request sounds simple enough to just do. A relentless one-question-at-a-time interview that ends in shared understanding and points to /to-spec. For stress-testing ideas that do NOT end in building software, use the grilling skill instead.
 ---
 
 # Brainstorm

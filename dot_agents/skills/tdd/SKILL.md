@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Use when implementing any feature or bugfix, before writing implementation code. Red-green test-driven development - failing test first, minimal code to pass, refactoring deferred to review.
+description: Red-green test-driven development - failing test first, minimal code to pass, refactoring deferred to review. Use before writing ANY implementation code - new features, bugfixes, behavior changes - even when the user never mentions tests or TDD. "Add a flag", "fix this bug", "make X do Y" all mean this skill applies.
 ---
 
 # Test-Driven Development
@@ -46,7 +46,7 @@ Run the test again. Confirm it passes and everything else stays green, with pris
 ### Repeat
 
 Next behavior, next failing test. There is no refactor step: quality cleanup belongs to
-review. Renaming or tidying code you wrote in the current slice is fine in passing — a
+review. Renaming or tidying code you just wrote for this task is fine in passing — a
 dedicated "now improve the code" pass is not.
 
 ## Test Quality

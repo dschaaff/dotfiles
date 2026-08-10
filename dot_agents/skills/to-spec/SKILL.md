@@ -1,6 +1,6 @@
 ---
 name: to-spec
-description: Use when a design discussion is ready to be written up, or the user asks to turn the conversation into a spec. Synthesizes the conversation into a spec file in docs/specs with vertical slices - no interview, just synthesis.
+description: Use when a design discussion is ready to be written up, or the user says anything like "write this up as a spec", "turn this into a spec", "create the spec file", or a brainstorm has just concluded. Synthesizes the conversation into a spec file in docs/specs with vertical slices - no interview, just synthesis.
 ---
 
 # To Spec
@@ -18,7 +18,9 @@ decisions sections must fit the actual repo, not a hypothetical one.
 
 ## Write the spec
 
-Path: `docs/specs/YYYY-MM-DD-<topic>.md`. Sections, in order:
+Path: `docs/specs/YYYY-MM-DD-<topic>.md`. If a spec for this topic already exists in
+`docs/specs/`, update it in place instead of creating a new file — the spec is a living
+document. Sections, in order:
 
 ```markdown
 # <topic>

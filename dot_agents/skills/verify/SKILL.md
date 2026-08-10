@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Use when reviewing a diff, branch, or slice against a spec or coding standards. Two-axis review rubric - spec compliance and code quality, reported separately with a capped report.
+description: Spec-anchored review - use when reviewing a diff, branch, or slice against a spec (docs/specs), including as a reviewer subagent dispatched by implement-spec, or when the user asks to "verify against the spec" or "check this matches the spec". Two-axis rubric - spec compliance and code quality - reported separately with a capped report. Generic code review with no spec belongs to other review tooling, not this skill.
 ---
 
 # Verify

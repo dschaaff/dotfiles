@@ -1,23 +1,16 @@
 ---
 name: writing-as-dschaaff
 description: >-
-  Produce writing in Daniel Schaaff's (dschaaff) personal voice. ALWAYS use this
-  skill — do not draft from scratch — whenever the task is to write, draft,
-  rewrite, edit, or polish any first-person prose that Daniel will publish or
-  send under his own name. Default writing will NOT match his voice; it comes out
-  hyped, generic, and wrong, so this skill is required to get the tone, register,
-  and word choice right. This covers blog posts (danielschaaff.com), Slack
-  messages and team updates, PR/MR descriptions, announcements, technical
-  explanations to engineers, READMEs and docs he authors, cover letters, and bios
-  — even when he doesn't say "in my voice." Trigger on phrasings like "write a
-  blog post about…", "draft a slack message for #channel…", "post an update for
-  the team…", "announce that…", "explain X to the engineers", "write up the
-  migration", "rewrite this so it sounds like me", "write a cover letter for me",
-  "give me a readme intro in my voice", or "help me write a PR description." Do
-  NOT use for: code, config files, or commit-message conventions; customer-facing
-  release notes (a separate skill owns those); fact-checking or reviewing a draft
-  for accuracy; pure mechanical fixes that must preserve wording (typo/grammar
-  cleanup, translation); or text written in someone else's voice.
+  Use when writing, drafting, rewriting, editing, or polishing any first-person
+  prose Daniel Schaaff (dschaaff) will publish or send under his own name: blog
+  posts (danielschaaff.com), Slack messages, team updates, PR/MR descriptions,
+  announcements, technical explanations to engineers, READMEs and docs he
+  authors, cover letters, bios. Applies even when he doesn't say "in my voice" —
+  e.g. "write a blog post about...", "draft a slack message for #channel...",
+  "announce that...", "explain X to the engineers", "rewrite this so it sounds
+  like me". Not for code, config, or commit messages; customer-facing release
+  notes; fact-checking or accuracy review; mechanical typo/grammar cleanup or
+  translation that must preserve wording; writing in someone else's voice.
 ---
 
 # Writing as dschaaff

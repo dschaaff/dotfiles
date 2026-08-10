@@ -1,6 +1,6 @@
 ---
 name: implement-spec
-description: Use when executing an approved spec from docs/specs. Controller loop that implements the spec slice-by-slice with fresh subagents, reviews each slice against the spec, and finishes with a whole-branch review.
+description: Use when executing an approved spec from docs/specs - "implement the spec", "execute the spec", "build what we spec'd", "work through docs/specs/<file>", or resuming a partially-done spec. Controller loop that implements the spec slice-by-slice with fresh subagents, reviews each slice against the spec, and finishes with a whole-branch review.
 ---
 
 # Implement Spec
@@ -81,7 +81,8 @@ cross-slice context. A confirmed gap joins the findings.
 
 Critical or Important findings go back to the implementer verbatim (resume it, or dispatch
 fresh with the findings and slice number). The implementer fixes, re-runs the covering
-tests, reports. After each round, re-review scoped to the fix (`FIX_BASE..HEAD`).
+tests, reports. After each round, re-review scoped to the fix: `FIX_BASE..HEAD`, where
+FIX_BASE is the head the previous review saw.
 
 After round 2, stop dispatching and adjudicate each leftover yourself:
 
