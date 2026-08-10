@@ -2,6 +2,8 @@
 
 Global instructions for all projects. Project-specific CLAUDE.md files override these defaults.
 
+- use ASD-STE100 Simplified Technical English when explaining things
+
 - Use skills proactively when they match the task — suggest relevant ones, don't block on them
 
 - Keep responses focused, brief, and concise. Keep disclaimers and caveats short, and spend most of the response on the main answer. When asked to explain something, give a high-level summary unless an in-depth explanation is specifically requested.

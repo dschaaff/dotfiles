@@ -78,7 +78,7 @@ Ordered so the subagent-loaded skills (`tdd`, `verify`) exist before `implement-
 dispatches them. Chat-flow pointers (brainstorm → to-spec → implement-spec) are plain text
 and tolerate forward references.
 
-### Slice 1: `tdd` skill
+### Slice 1: `tdd` skill — DONE
 
 **Goal:** the TDD discipline implementer subagents load.
 
@@ -104,7 +104,7 @@ Requirements:
 Done when: SKILL.md exists, contains the loop, the iron law, seam/behavior rules, and a
 table of at most 4 rationalizations; total file under ~120 lines.
 
-### Slice 2: `verify` skill
+### Slice 2: `verify` skill — DONE
 
 **Goal:** the two-axis review rubric reviewer subagents load.
 
@@ -130,7 +130,7 @@ Requirements:
 Done when: SKILL.md exists with both axes, the skip list, the cap, and the scope statement;
 no superpowers references.
 
-### Slice 3: `brainstorm` skill
+### Slice 3: `brainstorm` skill — DONE
 
 **Goal:** the grilling-style dialogue that turns an idea into shared understanding.
 
@@ -154,7 +154,7 @@ Requirements:
 Done when: SKILL.md exists with the one-question rule, facts-vs-decisions rule, hard gate,
 and to-spec pointer; writes no artifacts.
 
-### Slice 4: `to-spec` skill
+### Slice 4: `to-spec` skill — DONE
 
 **Goal:** synthesize the conversation into a committed spec file.
 
@@ -185,7 +185,7 @@ Requirements:
 Done when: SKILL.md exists with the template, slice requirements, self-review checklist, and
 the commit + review gate.
 
-### Slice 5: `implement-spec` skill
+### Slice 5: `implement-spec` skill — DONE
 
 **Goal:** the controller loop that executes a spec slice-by-slice via subagents.
 
@@ -225,7 +225,7 @@ Done when: SKILL.md exists covering setup, the 5-step slice loop, the 2-round ca
 adjudication paths, final review, and finish step; references `tdd` and `verify` by name;
 no ledgers, report files, or helper scripts.
 
-### Slice 6: CLAUDE.md cleanup
+### Slice 6: CLAUDE.md cleanup — DONE
 
 **Goal:** remove superpowers-specific guidance now superseded by the skills.
 
