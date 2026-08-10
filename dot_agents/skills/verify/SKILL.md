@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Spec-anchored review - use when reviewing a diff, branch, or slice against a spec (docs/specs), including as a reviewer subagent dispatched by implement-spec, or when the user asks to "verify against the spec" or "check this matches the spec". Two-axis rubric - spec compliance and code quality - reported separately with a capped report. Generic code review with no spec belongs to other review tooling, not this skill.
+description: Spec-anchored review - invoke BEFORE running any git commands when asked to review, verify, or check a diff, branch, slice, or commit range against a spec (docs/specs) - "verify against the spec", "does this match what we spec'd", "review slice N". Also the rubric for reviewer subagents dispatched by implement-spec. Two-axis rubric - spec compliance and code quality - reported separately with a capped report. Generic code review with no spec belongs to other review tooling, not this skill.
 ---
 
 # Verify

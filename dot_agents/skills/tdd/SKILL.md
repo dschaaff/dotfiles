@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Red-green test-driven development - failing test first, minimal code to pass, refactoring deferred to review. Use before writing ANY implementation code - new features, bugfixes, behavior changes - even when the user never mentions tests or TDD. "Add a flag", "fix this bug", "make X do Y" all mean this skill applies.
+description: REQUIRED process for changing production code - invoke BEFORE the first Edit/Write to any source file, not after exploring. Red-green test-driven development - failing test first, minimal code to pass. Applies to every feature, bugfix, and behavior change no matter how small, even when the user never mentions tests - "add a flag", "fix this bug", "make X do Y", "handle this edge case" all require this skill first. Skipping it because the change looks trivial is the failure mode it exists to prevent.
 ---
 
 # Test-Driven Development

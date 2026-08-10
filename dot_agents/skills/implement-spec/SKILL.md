@@ -1,6 +1,6 @@
 ---
 name: implement-spec
-description: Use when executing an approved spec from docs/specs - "implement the spec", "execute the spec", "build what we spec'd", "work through docs/specs/<file>", or resuming a partially-done spec. Controller loop that implements the spec slice-by-slice with fresh subagents, reviews each slice against the spec, and finishes with a whole-branch review.
+description: REQUIRED whenever implementing work described by a spec file in docs/specs - "implement the spec", "execute the spec", "build it" after a spec was written, "work through the slices", or resuming a partially-done spec. Never read a spec and start coding directly; invoke this skill FIRST, before opening the spec. Controller loop that implements the spec slice-by-slice with fresh subagents, reviews each slice against the spec, and finishes with a whole-branch review.
 ---
 
 # Implement Spec

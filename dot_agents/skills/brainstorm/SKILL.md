@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Use BEFORE any implementation when the user wants to build or add something - "let's build X", "I want to add Y", "I have an idea", "I'm thinking about", "help me design" - even when the request sounds simple enough to just do. A relentless one-question-at-a-time interview that ends in shared understanding and points to /to-spec. For stress-testing ideas that do NOT end in building software, use the grilling skill instead.
+description: REQUIRED first step for any new feature, tool, service, or design work - invoke BEFORE exploring files or writing anything. Triggers on "let's build X", "I want to add Y", "we need a script/service that...", "help me design Z", "I'm thinking about...", "I have an idea" - even when the request sounds simple enough to just do; simple-sounding requests are where unexamined assumptions waste the most work. A relentless one-question-at-a-time interview ending in shared understanding, then /to-spec. Not for executing an existing spec (implement-spec) or stress-testing non-build ideas (grilling).
 ---
 
 # Brainstorm

@@ -1,6 +1,6 @@
 ---
 name: to-spec
-description: Use when a design discussion is ready to be written up, or the user says anything like "write this up as a spec", "turn this into a spec", "create the spec file", or a brainstorm has just concluded. Synthesizes the conversation into a spec file in docs/specs with vertical slices - no interview, just synthesis.
+description: Invoke whenever the user wants the current discussion captured as a spec - "write this up as a spec", "turn this into a spec", "create the spec", "spec it out", or a design conversation has just wrapped up and the next step is a written spec. Do not write a spec file by hand from memory of the template; this skill defines the format. Synthesizes the conversation into docs/specs with vertical slices - no interview, just synthesis.
 ---
 
 # To Spec
