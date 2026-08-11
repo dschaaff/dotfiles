@@ -732,7 +732,7 @@ Verify, then `trash "$BK"` — not before.
   user.email` must print `dschaaff@cordial.com`, then `trash
   ~/development/gitlab/_stow-check`.
 
-### Slice 7: Teardown and merge
+### Slice 7: Teardown and merge — DONE
 
 **Goal:** Remove chezmoi from the machine and land the work on master.
 
