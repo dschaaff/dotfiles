@@ -1,7 +1,7 @@
 [user]
-  email = {{ .workEmail }}
+  email = dschaaff@cordial.com
   name = Daniel Schaaff
-  signingkey = {{ .signingKey }}
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM2yLApsXhRdeElX86Zy1kt+n1cEVepMRLlF+LWE40l7
 [commit]
   gpgsign = true
 [tag]

@@ -1,7 +1,7 @@
 [user]
-	email = {{ .personalEmail }}
+	email = daniel@danielschaaff.com
 	name = Daniel Schaaff
-  signingkey = {{ .signingKey }}
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIM2yLApsXhRdeElX86Zy1kt+n1cEVepMRLlF+LWE40l7
 
 [includeIf "gitdir:~/development/work/"]
   path = ~/.workGitConfig
@@ -18,7 +18,7 @@
 	gpgsign = true
 
 [core]
-	excludesfile = {{ .chezmoi.homeDir }}/.gitignore_global
+	excludesfile = ~/.gitignore_global
   pager = delta --color-only
 	; pager = diff-so-fancy | less --tabs=4 -RFX
 
