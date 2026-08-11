@@ -19,7 +19,7 @@ cd ~/.dotfiles && ./install.sh
 relinks. Any extra arguments pass through to `stow`:
 
 ```shell
-./install.sh -n     # dry run — print what would happen, change nothing
+./install.sh -n     # dry run — print what stow would do (still creates ~/.claude if absent)
 ./install.sh -D     # unlink everything
 ```
 

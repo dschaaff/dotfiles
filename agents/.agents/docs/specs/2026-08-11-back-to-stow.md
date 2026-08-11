@@ -140,12 +140,28 @@ reconciled as drift.
 
 Skills live in `~/.agents/skills` so that Claude Code, Codex, and opencode can all reach
 them, and `~/.claude/skills` is a pointer at that directory. Under chezmoi this was a
-templated symlink. Under stow it becomes a symlink committed in the repo whose target is
-the absolute path `/Users/danielschaaff/.agents/skills`, so `~/.claude/skills` resolves
-through two hops: `$HOME` link → repo symlink → `~/.agents/skills`. A relative target was
-rejected because it would silently depend on the repo sitting exactly one level below
-`$HOME`; the absolute path is honest about depending on the home directory and nothing
-else.
+templated symlink. Under stow it is a symlink committed in the repo with the **relative**
+target `../../agents/.agents/skills`.
+
+An absolute target is not an option: stow 2.4.1 refuses to stow an absolute symlink found
+inside a package, and it does not merely skip the file — it registers a conflict and aborts
+every operation, all 29 packages included. Measured against a throwaway `$HOME`,
+`install.sh` planned 43 links, hit `source is an absolute symlink`, printed `All operations
+aborted`, exited 1, and created nothing. The relevant guard is in `Stow.pm` around line 503,
+commented "Don't try to stow absolute symlinks (they can't be unstowed)". No flag overrides
+it.
+
+The relative target resolves from the symlink's own directory, `<repo>/claude/.claude/`, so
+`../../agents/.agents/skills` lands on `<repo>/agents/.agents/skills` — inside the repo,
+independent of where the repo sits. `~/.claude/skills` therefore resolves in two hops:
+`$HOME` link → repo symlink → the repo's own `agents` package. Since `~/.agents` folds to
+that same directory, both paths reach one place.
+
+One visible side effect: because the link now points inside the repo, Claude Code indexes
+`claude/.claude/skills` as a directory-scoped skill set while working in this repo, showing
+each skill twice — once scoped, once global. That is cosmetic. Having `install.sh` create
+`~/.claude/skills` imperatively would avoid it, at the cost of a special case in a script
+whose whole appeal is that it has none.
 
 ### Inventory reconciliation
 
@@ -300,8 +316,9 @@ Both `[includeIf]` blocks in `git/.gitconfig` must read `path = ~/.workGitConfig
 capital `C`. Master had `~/.workGitconfig`, which worked only because APFS is
 case-insensitive by default; the chezmoi branch fixed it and the fix is kept.
 
-Replace `claude/.claude/skills` with a symlink whose target is the literal absolute path
-`/Users/danielschaaff/.agents/skills`.
+Replace `claude/.claude/skills` with a symlink whose target is the literal relative path
+`../../agents/.agents/skills`. It must not be absolute — stow aborts every package when it
+finds an absolute symlink inside one.
 
 Set git mode `100755` on exactly these six files, using `chmod +x <file>` followed by `git
 update-index --chmod=+x <file>` so the bit is recorded in the index and not only on disk:
@@ -511,12 +528,23 @@ Report three categories separately: content differs, missing from `$HOME`, and �
 the derived target set against `~/.dotfiles-migration/chezmoi-managed.txt` — managed but
 absent from the repo. Print the full report before changing anything.
 
-The expected result, measured after slices 1 and 2: 128 derived targets, of which 118
-identical, 6 content differences, 2 template files that differ by design, and 2 paths
-missing from `$HOME`. Zero managed-but-untracked paths. Those five figures must sum to 128
-— if they sum to 127, the script dropped `.claude/skills` from the derived set instead of
-comparing it as a symlink, and that symlink counts toward the identical group once slice 2
-has pointed the repo copy at `/Users/danielschaaff/.agents/skills`.
+The expected result, measured after slices 1–3: 128 derived targets, of which 119 identical,
+6 content differences to resolve, 1 file that differs by design, and 2 paths missing from
+`$HOME`. Zero managed-but-untracked paths. Those figures must sum to 128 — if they sum to
+127, the script dropped `.claude/skills` from the derived set instead of comparing it as a
+symlink.
+
+Only `git/.gitconfig` differs by design. `git/.workGitConfig` is byte-identical to the live
+file, so it belongs in the identical group; an earlier draft of this spec wrongly counted
+both as by-design differences. After the six resolutions land, expect 125 identical and 1
+differing.
+
+`claude/.claude/settings.json` needs care: slice 3 already replaced five
+`Bash(chezmoi …)` permission entries with `"Bash(stow *)"`, and the live `$HOME` copy still
+carries the chezmoi entries. Copying the live file wholesale therefore undoes slice 3 and
+reintroduces `chezmoi` into the tree. Take the live file for its model value and key order,
+then re-apply the five-for-one permission substitution on top. Slice 3's `git grep -il
+chezmoi` condition must still hold when this slice finishes.
 
 Six differences are known and already decided — take the `$HOME` version for each and
 commit it:
@@ -528,7 +556,7 @@ commit it:
 | `lazygit/Library/Application Support/lazygit/config.yml` | `git.diffRenderers` instead of the renamed-away `git.pagers` |
 | `ghostty/.config/ghostty/config` | `shell-integration-features = cursor,sudo,ssh-env,ssh-terminfo` with the `# disabled title temporarily to test` comment |
 | `agents/.agents/skills/implement-spec/SKILL.md` | the longer TDD wording requiring the skill be invoked with the Skill tool, and red-phase output per behavior |
-| `neovim/.config/nvim/nvim-pack-lock.json` | ten newer plugin revisions; `vim.pack` wrote them and chezmoi's `create_` attribute deliberately never read them back |
+| `neovim/.config/nvim/nvim-pack-lock.json` | eleven newer plugin revisions; `vim.pack` wrote them and chezmoi's `create_` attribute deliberately never read them back |
 
 Note that the opencode resolution drops six MCP server entries the repo still holds
 (`backstage`, `backstage-dev`, `grafana`, `grafana-nonprod`, `atlassian`, `rootly`) in
