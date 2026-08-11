@@ -53,17 +53,22 @@ Record BASE (`git rev-parse HEAD`). Dispatch a fresh subagent whose prompt conta
 - The spec path and slice number: "Read the spec first. Your slice's requirements are
   verbatim and binding — exact values, names, and formats are not suggestions."
 - Interfaces or decisions from earlier slices that the spec doesn't capture.
-- The instruction to follow the `tdd` skill for all implementation.
+- This directive, verbatim: "Invoke the `tdd` skill with the Skill tool before your first
+  Edit or Write, and follow it for every change in this slice. Prose acknowledgement is not
+  invocation — the skill must be loaded."
 - The report contract: implement, test, commit; reply with status, commits, the test
   command and its results, and any concerns. Statuses:
-  - `DONE` — with test evidence. Concerns welcome alongside.
+  - `DONE` — with test evidence: for each behavior, the failing-test output you saw before
+    writing the code and the passing output after. Concerns welcome alongside.
   - `BLOCKED` — can't proceed; states exactly what it needs.
 
 ### 2. Handle the report
 
-- **DONE:** requires a named test command and its results. Missing evidence → ask the
-  implementer for it before anything else. Read any concerns; correctness or scope concerns
-  get resolved before review.
+- **DONE:** requires a named test command, its results, and red-phase output per behavior.
+  Missing evidence → ask the implementer for it before anything else. Green-only evidence
+  means the tests were written after the code: send the slice back to be reimplemented
+  test-first, don't accept it and don't review it. Read any concerns; correctness or scope
+  concerns get resolved before review.
 - **BLOCKED:** missing context → supply it and re-dispatch. Reasoning gap → re-dispatch on
   a more capable model. Slice too large → split it (update the spec) and dispatch the
   pieces. Spec itself wrong → ask the user. Never re-send the same dispatch unchanged.

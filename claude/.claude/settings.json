@@ -19,7 +19,11 @@
       "Bash(nono profile guide)",
       "Bash(nono profile validate *)",
       "Bash(nono profile show *)",
-      "Bash(stow *)",
+      "Bash(chezmoi diff *)",
+      "Bash(chezmoi managed *)",
+      "Bash(chezmoi cat *)",
+      "Bash(chezmoi verify *)",
+      "Bash(chezmoi source-path *)",
       "Bash(gofmt -l *)",
       "Bash(npm view *)"
     ],
@@ -64,7 +68,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "us.anthropic.claude-opus-5[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -216,6 +220,6 @@
   },
   "alwaysThinkingEnabled": true,
   "effortLevel": "high",
-  "skipWorkflowUsageWarning": true,
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true
 }

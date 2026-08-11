@@ -5,9 +5,9 @@ gui:
 git:
   commit:
     signOff: true
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --dark --paging=never
+      command: delta --dark --paging=never
 customCommands:
   - key: "G"
     description: "AI commit message"
