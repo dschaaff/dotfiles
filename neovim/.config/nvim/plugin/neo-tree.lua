@@ -1,4 +1,5 @@
 local opts = {
+  close_if_last_window = true,
   open_files_do_not_replace_types = { 'terminal', 'Trouble', 'trouble', 'qf', 'Outline' },
   filesystem = {
     follow_current_file = { enabled = true },

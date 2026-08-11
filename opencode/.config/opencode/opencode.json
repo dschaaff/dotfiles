@@ -1,0 +1,46 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "superpowers@git+https://github.com/obra/superpowers.git"
+  ],
+  "provider": {
+    "amazon-bedrock": {
+      "options": {
+        "region": "us-west-2",
+        "profile": "Cordial-Development/Developer"
+      }
+    }
+  },
+  "mcp": {
+    "context7": {
+      "type": "remote",
+      "url": "https://mcp.context7.com/mcp/oauth",
+      "enabled": true
+    },
+    "aws-mcp": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "mcp-proxy-for-aws@1.6.0",
+        "https://aws-mcp.us-east-1.api.aws/mcp",
+        "--skip-auth",
+        "--metadata",
+        "INSTALL_SOURCE=agent-toolkit"
+      ],
+      "environment": {
+        "AWS_MCP_PROXY_PROFILES": "Cordial-Development/ReadOnly Cordial-Production-East/ReadOnly Cordial-Production/ReadOnly MTA-dev/ReadOnly MTA/ReadOnly Production-Bravo/ReadOnly SRE-dev/ReadOnly SRE-prod/ReadOnly cordial-ecr/ReadOnly datalake/ReadOnly dev-datalake/ReadOnly sre-interview-sandbox/ReadOnly security-tooling/FullAccess"
+      },
+      "enabled": true
+    },
+    "eng-mcp": {
+      "type": "remote",
+      "url": "https://eng-mcp.ops.cordial.io/mcp?codemode=search_and_execute",
+      "enabled": true
+    },
+    "eng-mcp-dev": {
+      "type": "remote",
+      "url": "https://eng-mcp.cordialdev.com/mcp?codemode=search_and_execute",
+      "enabled": true
+    }
+  }
+}

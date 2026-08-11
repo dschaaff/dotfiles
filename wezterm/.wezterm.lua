@@ -16,7 +16,7 @@ config.front_end = "WebGpu"
 config.font_size = 13.5
 config.font = wezterm.font({
 	family = "JetBrains Mono",
-	-- weight = "DemiBold",
+	weight = "DemiBold",
 })
 config.max_fps = 120
 -- config.bold_brightens_ansi_colors = true

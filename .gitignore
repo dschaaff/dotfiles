@@ -1,28 +1,72 @@
-vim/.vim/plugged
-neovim/.config/nvim/plugged
-zsh/.cordial.sh
-k9s/.k9s/config.yml
-neovim/.config/nvim/.luarc.json
-en.utf-8.add.spl
-tmux/.tmux/plugins
+.DS_Store
+*.bak
+
+agents/.agents/skills/.claude
+
 bin/bin/docker
-bin/bin/docker-compose
 bin/bin/docker-buildx
-.gitignore
-bin/bin/orb
-.gitignore
-.gitignore
-bin/bin/orbctl
+bin/bin/docker-compose
 bin/bin/docker-credential-osxkeychain
 bin/bin/kubectl
-bin/bin/release-cli
 bin/bin/linkerd
-warp
+bin/bin/orb
+bin/bin/orbctl
+bin/bin/release-cli
 bin/bin/terraform
-zed/.config/zed/prompts
-lazygit/Library/Application Support/lazygit/state.yml
-zed/.config/zed/conversations
 bin/bin/tofu
+bin/bin/warp
+
+# Claude Code writes ~38 state paths under ~/.claude and adds more every release, so
+# this is an allowlist rather than a denylist. It only bites if install.sh's mkdir guard
+# ever fails and stow folds ~/.claude into the repo, but a denylist cannot keep pace.
+claude/.claude/*
+!claude/.claude/CLAUDE.md
+!claude/.claude/settings.json
+!claude/.claude/commands/
+!claude/.claude/rules/
+!claude/.claude/skills
+
+# k9s 0.51 writes config.yaml; older versions wrote config.yml. ~/.config/k9s is folded
+# into the repo, so an uncovered name lands here on first run.
+k9s/.config/k9s/config.yaml
+k9s/.config/k9s/config.yml
+
+karabiner/.config/karabiner/automatic_backups
+
 lazygit/Library/Application Support/lazygit/development.log
-vale/.config/vale/styles
-/neovim/.config/nvim/.claude/settings.local.json
+lazygit/Library/Application Support/lazygit/github_pull_requests.json
+lazygit/Library/Application Support/lazygit/state.yml
+
+neovim/.config/nvim/.claude/settings.local.json
+neovim/.config/nvim/.luarc.json
+neovim/.config/nvim/nvim.log
+neovim/.config/nvim/spell/en.utf-8.add.spl
+
+nono/.config/nono/nono-profile.schema.json
+nono/.config/nono/pack-update-hints.json
+nono/.config/nono/packages
+nono/.config/nono/profile-drafts
+nono/.config/nono/profiles/.claude
+nono/.config/nono/profiles/.probe
+
+opencode/.config/opencode/.gitignore
+opencode/.config/opencode/agent
+opencode/.config/opencode/bun.lock
+opencode/.config/opencode/cli.json
+opencode/.config/opencode/node_modules
+opencode/.config/opencode/package-lock.json
+opencode/.config/opencode/package.json
+opencode/.config/opencode/plugins
+opencode/.config/opencode/service.json
+opencode/.config/opencode/skills
+
+tmux/.tmux/plugins
+
+vim/.vim/plugged
+
+zed/.config/zed/conversations
+zed/.config/zed/prompts
+zed/.config/zed/settings_backup.json
+zed/.config/zed/themes
+
+zsh/.cordial.sh

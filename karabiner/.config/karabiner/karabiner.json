@@ -5,28 +5,46 @@
                 "rules": [
                     {
                         "description": "Hold Spacebar + Tab = Cmd+Tab, + ` = Cmd+` ; tap Spacebar = Space",
-                        "enabled": true,
+                        "enabled": false,
                         "manipulators": [
                             {
                                 "conditions": [
-                                    { "type": "variable_if", "name": "spacebar_layer", "value": 1 }
+                                    {
+                                        "name": "spacebar_layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
                                 ],
                                 "from": {
                                     "key_code": "tab",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "key_code": "tab", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "tab",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
                                 "conditions": [
-                                    { "type": "variable_if", "name": "spacebar_layer", "value": 1 }
+                                    {
+                                        "name": "spacebar_layer",
+                                        "type": "variable_if",
+                                        "value": 1
+                                    }
                                 ],
                                 "from": {
                                     "key_code": "grave_accent_and_tilde",
                                     "modifiers": { "optional": ["any"] }
                                 },
-                                "to": [{ "key_code": "grave_accent_and_tilde", "modifiers": ["left_command"] }],
+                                "to": [
+                                    {
+                                        "key_code": "grave_accent_and_tilde",
+                                        "modifiers": ["left_command"]
+                                    }
+                                ],
                                 "type": "basic"
                             },
                             {
@@ -35,8 +53,22 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "parameters": { "basic.to_if_alone_timeout_milliseconds": 250 },
-                                "to": [{ "set_variable": { "name": "spacebar_layer", "value": 1 } }],
-                                "to_after_key_up": [{ "set_variable": { "name": "spacebar_layer", "value": 0 } }],
+                                "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "spacebar_layer",
+                                            "value": 1
+                                        }
+                                    }
+                                ],
+                                "to_after_key_up": [
+                                    {
+                                        "set_variable": {
+                                            "name": "spacebar_layer",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
                                 "to_if_alone": [{ "key_code": "spacebar" }],
                                 "type": "basic"
                             }

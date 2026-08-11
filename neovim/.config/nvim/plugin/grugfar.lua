@@ -10,12 +10,15 @@ require('grug-far').setup({
 })
 
 vim.keymap.set({ 'n', 'v' }, '<leader>sr', function()
-  local grug = require('grug-far')
+  require('grug-far').open({ transient = true })
+end, { desc = 'Search and Replace (project)' })
+
+vim.keymap.set({ 'n', 'v' }, '<leader>sR', function()
   local ext = vim.bo.buftype == '' and vim.fn.expand('%:e')
-  grug.open({
+  require('grug-far').open({
     transient = true,
     prefills = {
       filesFilter = ext and ext ~= '' and '*.' .. ext or nil,
     },
   })
-end, { desc = 'Search and Replace' })
+end, { desc = 'Search and Replace (current file type)' })

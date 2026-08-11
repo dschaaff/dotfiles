@@ -1,0 +1,221 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "cleanupPeriodDays": 365,
+  "env": {
+    "AWS_MCP_PROXY_PROFILES": "Cordial-Development/ReadOnly Cordial-Production-East/ReadOnly Cordial-Production/ReadOnly MTA-dev/ReadOnly MTA/ReadOnly Production-Bravo/ReadOnly SRE-dev/ReadOnly SRE-prod/ReadOnly cordial-ecr/ReadOnly datalake/ReadOnly dev-datalake/ReadOnly sre-interview-sandbox/ReadOnly security-tooling/FullAccess"
+  },
+  "permissions": {
+    "allow": [
+      "Skill(superpowers:*)",
+      "Read(~/.claude/plugins/cache/**)",
+      "Bash(/Users/danielschaaff/.claude/plugins/cache/claude-plugins-official/superpowers/*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git clone:*)",
+      "Bash(coderabbit:*)",
+      "Bash(trash:*)",
+      "Bash(nono why *)",
+      "Bash(nono profile guide)",
+      "Bash(nono profile validate *)",
+      "Bash(nono profile show *)",
+      "Bash(stow *)",
+      "Bash(gofmt -l *)",
+      "Bash(npm view *)"
+    ],
+    "deny": [
+      "Bash(rm -rf *)",
+      "Bash(rm -fr *)",
+      "Bash(sudo *)",
+      "Bash(mkfs *)",
+      "Bash(dd *)",
+      "Bash(wget *|bash*)",
+      "Bash(wget *| bash*)",
+      "Bash(git push --force*)",
+      "Bash(git push *--force*)",
+      "Bash(git reset --hard*)",
+      "Edit(~/.bashrc)",
+      "Edit(~/.zshrc)",
+      "Edit(~/.ssh/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.azure/**)",
+      "Read(~/.git-credentials)",
+      "Read(~/.docker/config.json)",
+      "Read(~/.kube/**)",
+      "Read(~/.npmrc)",
+      "Read(~/.npm/**)",
+      "Read(~/.pypirc)",
+      "Read(~/.gem/credentials)",
+      "Read(~/Library/Keychains/**)",
+      "Read(~/Library/Application Support/**/metamask*/**)",
+      "Read(~/Library/Application Support/**/electrum*/**)",
+      "Read(~/Library/Application Support/**/exodus*/**)",
+      "Read(~/Library/Application Support/**/phantom*/**)",
+      "Read(~/Library/Application Support/**/solflare*/**)",
+      "CronCreate",
+      "CronDelete",
+      "CronList",
+      "EnterPlanMode",
+      "ExitPlanMode",
+      "PowerShell",
+      "RemoteTrigger",
+      "DesignSync"
+    ],
+    "defaultMode": "auto"
+  },
+  "model": "us.anthropic.claude-opus-5[1m]",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "CMD=$(jq -r '.tool_input.command'); if echo \"$CMD\" | grep -qiE '(^|;[[:space:]]*|&&[[:space:]]*|[|][|][[:space:]]*|[|][[:space:]]*)rm[[:space:]]' && echo \"$CMD\" | grep -qiE '(^|[[:space:]])-[a-zA-Z]*[rR]|--recursive' && echo \"$CMD\" | grep -qiE '(^|[[:space:]])-[a-zA-Z]*[fF]|--force'; then echo 'BLOCKED: Use trash instead of rm -rf' >&2; exit 2; fi"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "input=$(cat); cwd=$(echo \"$input\" | jq -r '.cwd // empty'); parts=(); [ -n \"$cwd\" ] && parts+=(\"$(echo $cwd | sed \"s|$HOME|~|\")\"); kctx=$(kubectl config current-context 2>/dev/null) && ns=$(kubectl config view --minify -o jsonpath='{..namespace}' 2>/dev/null) && parts+=(\"k8s:${kctx}${ns:+($ns)}\"); branch=$(git -C \"${cwd:-.}\" rev-parse --abbrev-ref HEAD 2>/dev/null) && parts+=(\"git:${branch}\"); profile=${AWS_PROFILE:-${AWS_DEFAULT_PROFILE:-}} && [ -n \"$profile\" ] && parts+=(\"aws:${profile}\"); ctx=$(echo \"$input\" | jq -r 'def c: tostring | gsub(\"(?<a>\\\\d)(?=(\\\\d{3})+$)\"; .a + \",\"); if (.context_window.used_percentage // null) == null then empty else \"ctx:\\(.context_window.used_percentage)% (\\(.context_window.total_input_tokens // 0 | c))\" end'); [ -n \"$ctx\" ] && parts+=(\"$ctx\"); model=$(echo \"$input\" | jq -r '.model.display_name // empty'); [ -n \"$model\" ] && parts+=(\"model:${model}\"); echo \"${parts[*]}\""
+  },
+  "enabledPlugins": {
+    "alert-debug@cordial-claude-code": true,
+    "code-review@schaaff-claude-code": true,
+    "tofu-terraform@cordial-claude-code": true,
+    "coderabbit@claude-plugins-official": false,
+    "skill-creator@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "codex@openai-codex": true,
+    "laravel-boost@claude-plugins-official": false,
+    "claude-md-management@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "release-tools@cordial-claude-code": true,
+    "mta-operations@cordial-claude-code": true,
+    "ast-grep@ast-grep-marketplace": true,
+    "aws-core@claude-plugins-official": true,
+    "gitlab-review-tools@cordial-claude-code": true,
+    "nono@nolabs-ai": true,
+    "langfuse@claude-plugins-official": true,
+    "renovate-triage@cordial-claude-code": true,
+    "backstage@cordial-claude-code": true,
+    "grafana@cordial-claude-code": true,
+    "mcp-portal@cordial-claude-code": true
+  },
+  "extraKnownMarketplaces": {
+    "gemini-plugin-cc": {
+      "source": {
+        "source": "github",
+        "repo": "DuncanSchouten/gemini-plugin-cc"
+      }
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      }
+    },
+    "ast-grep-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "ast-grep/agent-skill"
+      }
+    },
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    }
+  },
+  "sandbox": {
+    "enabled": false,
+    "network": {
+      "allowedDomains": [
+        "api.opsgenie.com",
+        "app.coderabbit.ai",
+        "cli.coderabbit.ai",
+        "gitlab.com",
+        "github.com",
+        "githubusercontent.com",
+        "cordial.atlassian.net",
+        "mcp.atlassian.com",
+        "slack.com",
+        "opentofu.org",
+        "terraform.io",
+        "registry.terraform.io",
+        "registry.opentofu.org",
+        "get.opentofu.org",
+        "releases.hashicorp.com",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "*.amazonaws.com"
+      ],
+      "allowUnixSockets": [
+        "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock",
+        "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/s.sock"
+      ],
+      "allowLocalBinding": true
+    },
+    "filesystem": {
+      "allowWrite": [
+        "unix:///Users/danielschaaff/.rd/docker.sock",
+        "~/Library/Caches/go-build/",
+        "~/go/pkg/mod/cache/",
+        "~/Library/Caches/helm/",
+        "~/.cache/prek/",
+        "~/.terraform.d/plugin-cache/",
+        "~/.claude/plugins/data/",
+        "~/.kube/cache",
+        "~/.aws/sso/cache",
+        "~/.aws/cli/cache",
+        "~/.config",
+        "~/.cache",
+        "~/Library/Caches"
+      ],
+      "allowRead": [
+        "~/development/",
+        "~/.gitconfig",
+        "~/.gitignore_global",
+        "~/.config/git/ignore",
+        "~/.ssh/known_hosts",
+        "~/.ssh/config",
+        "~/.config/codex/",
+        "~/.cargo/bin",
+        "~/go/bin",
+        "~/.pyenv/shims",
+        "~/.pyenv/bin",
+        "~/.local/share/fnm",
+        "~/.local/share/pnpm",
+        "~/.rbenv/shims",
+        "~/.rbenv/bin",
+        "~/.local/bin",
+        "~/bin",
+        "/Users/danielschaaff/.bun/bin",
+        "/Users/danielschaaff/.rd/bin",
+        "/usr/local/sbin",
+        "/opt/homebrew/bin"
+      ]
+    },
+    "enableWeakerNetworkIsolation": true,
+    "excludedCommands": [
+      "/opt/homebrew/bin/codex*",
+      "codex*",
+      "*codex-companion.mjs*",
+      "coderabbit*",
+      "trash*",
+      "glab*",
+      "git push",
+      "git fetch",
+      "git pull",
+      "git clone"
+    ]
+  },
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "high",
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true
+}

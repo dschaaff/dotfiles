@@ -1,0 +1,332 @@
+{
+  "$schema": "../nono-profile.schema.json",
+  "meta": {
+    "name": "common",
+    "description": "Shared base for sandboxed agents"
+  },
+  "groups": {
+    "include": [
+      "node_runtime",
+      "python_runtime",
+      "go_runtime",
+      "git_config"
+    ]
+  },
+  "allow_gpu": true,
+  "filesystem": {
+    "allow": [
+      "$HOME/development",
+      "$HOME/.cache",
+      "$HOME/.npm",
+      "$HOME/.granted",
+      "$HOME/.terraform.d",
+      "$HOME/.terraform.d/plugin-cache",
+      "$HOME/.local/state/nvim",
+      "$HOME/.local/share/uv", // uvx installs/writes tools here
+      "$HOME/.local/bin", // and may write the uv/uvx shims here
+      "$HOME/Library/Application Support/glab-cli",
+      "$HOME/.local/share/uv", // uvx installs/writes tools here
+      "$HOME/.local/bin", // and may write the uv/uvx shims here
+      // bun runtime: the binary + global bin shims (~/.bun/bin), the module
+      // cache (~/.bun/install/cache), and global installs (~/.bun/install/global)
+      // all live under here. Mirrors the uv grants above — bun both execs from
+      // and writes into this dir, so a single readwrite grant covers exec + cache.
+      "$HOME/.bun",
+      "$HOME/bin",
+      "$HOME/go",
+      // `trash` (/usr/bin/trash) calls NSFileManager trashItemAtURL, which
+      // *renames* the file into ~/.Trash rather than unlinking it. Without this
+      // grant it fails with afpAccessDenied on the source file, which reads like
+      // a source-path problem but is really the missing destination. readwrite
+      // (not write) because the API enumerates ~/.Trash to uniquify colliding
+      // names. Files on non-boot volumes go to <volume>/.Trashes instead and
+      // still won't work — agents operate under ~/development and /tmp, both on
+      // the boot volume.
+      "$HOME/.Trash",
+      "$HOME/Library/Application Support/glab-cli",
+      "$HOME/.local/share/claude/versions/",
+      // macOS login keychain. `granted credential-process` (the credential_process
+      // for every ~/.aws/config profile) keeps the IAM Identity Center SSO token in
+      // the keyring, not on disk — without this it fails with "The specified item
+      // could not be found in the keyring" and any AWS/Bedrock call gets no creds.
+      // readwrite because the Security framework locks/writes the db, and
+      // bypass_protection below to punch it through deny_credentials.
+      // The claude profile grants this itself, which is why nclaude works and npi didn't.
+      {
+        "path": "$HOME/Library/Keychains",
+        "when": "macos"
+      },
+      // Apple `container` state root (CONTAINER_APP_ROOT). readwrite, not read:
+      // the CLI touches this tree itself rather than proxying everything over
+      // XPC. The content store returns *path strings*, so the CLI opens
+      // content/blobs/sha256/* directly — without read here, `image ls` and
+      // `run` fail on image-config resolution (apple/container#1620). Writes are
+      // needed for `container build` (stages the build context under a builder
+      // resource dir) and for bare `container` / `--help`, which unconditionally
+      // creates plugin-state/. Do not point CONTAINER_APP_ROOT elsewhere to
+      // dodge this — the daemon returns absolute paths in its own tree, so the
+      // client root must match the daemon's.
+      {
+        "path": "$HOME/Library/Application Support/com.apple.container",
+        "when": "macos"
+      },
+      "/tmp"
+    ],
+    "read": [
+      "$HOME/.workGitConfig",
+      "$HOME/.local/pipx",
+      "$HOME/.terraform.d",
+      "$HOME/Library/Application Support/commonfate",
+      "$HOME/.local/state/gh", // gh device-id/state
+      // Rancher Desktop CLI symlinks (docker, docker-compose, docker-buildx, …).
+      // Targets live in /Applications (already granted), but the sandbox must read
+      // the symlink *node* here to follow it — a static `nono why` passes without
+      // this because it resolves to the target, but exec fails at runtime.
+      "$HOME/.rd/bin",
+      // Apple `container` plugin binaries (container-core-images,
+      // container-runtime-linux, container-network-vmnet, machine-apiserver).
+      // /usr/local/bin is already readable via group:system_read_macos, but
+      // /usr/local/libexec is not, and without it the CLI reports
+      // "PLUGINS: not available, run `container system start`".
+      {
+        "path": "/usr/local/libexec/container",
+        "when": "macos"
+      },
+    ],
+    "read_file": [
+      "$HOME/.aws/config",
+      "$HOME/.CFUserTextEncoding",
+      // 1Password SSH agent socket, used for SSH commit *signing* (a local
+      // agent op, unlike SSH transport which proxy mode blocks). Needs the
+      // unix_socket grant below too. Keys never touch disk.
+      "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock",
+      "$HOME/.ssh/known_hosts", // ssh host-key verification
+      "$HOME/.ssh/config", // provides the IdentityAgent -> 1Password socket mapping
+      "$HOME/.config/gh/config.yml", // gh CLI reads these; token comes from the proxy
+      "$HOME/.config/gh/hosts.yml",
+      // Rancher Desktop's docker daemon socket. Rancher runs the engine inside its
+      // own VM, so the socket is the boundary we cross. Like the 1Password agent
+      // socket, proxy mode makes connect() a network op, so it needs the
+      // unix_socket grant below too. DOCKER_HOST (set_vars) points the CLI here so
+      // it never reads ~/.docker (blocked by deny_credentials — holds registry auth).
+      "$HOME/.rd/docker.sock"
+    ],
+    "write_file": [],
+    "bypass_protection": [
+      "$HOME/.aws/config", // punch ~/.aws/config through deny_credentials
+      // ~/.ssh/* is blocked by the required deny_credentials group; these two
+      // are non-secret (no private keys) and needed for SSH host verification.
+      "$HOME/.ssh/known_hosts",
+      "$HOME/.ssh/config",
+      // see the Keychains note under filesystem.allow
+      {
+        "path": "$HOME/Library/Keychains",
+        "when": "macos"
+      }
+      // NOTE: granted also probes each browser's NativeMessagingHosts manifest
+      // (~/Library/Application Support/{Arc,Google/Chrome,...}/io.commonfate.granted.json).
+      // Those are permanently restricted and surface as a cosmetic denial in the
+      // footer; credentials still resolve, so they're deliberately left ungranted.
+    ],
+    // connect() to a unix socket is a network op on macOS Seatbelt; proxy mode
+    // (below) makes outbound default-deny, so read_file alone is not enough.
+    // This grant lets git sign commits via the 1Password agent under proxy mode.
+    "unix_socket": [
+      "$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock",
+      // Rancher Desktop docker daemon socket (see read_file note above).
+      "$HOME/.rd/docker.sock"
+    ]
+  },
+  "environment": {
+    "allow_vars": [
+      "PATH",
+      "EDITOR",
+      "HOME",
+      "TERM",
+      "LANG",
+      "CLAUDE_CODE_USE_BEDROCK",
+      "CLAUDE_CODE_USE_MANTLE",
+      "ANTHROPIC_MODEL",
+      "ANTHROPIC_SMALL_FAST_MODEL",
+      "AWS_REGION",
+      "AWS_PROFILE",
+      "SSH_AUTH_SOCK", // 1Password agent socket, for SSH commit signing
+      "CLAUDE_CONFIG_DIR"
+    ],
+    // Sandbox-scoped git config (via GIT_CONFIG_COUNT) so git rides the
+    // credential proxy over HTTPS instead of SSH (port 22 is blocked in proxy
+    // mode). Only affects sandboxed sessions; your real ~/.gitconfig is untouched.
+    "set_vars": {
+      // Keep Claude Code's config (and its atomic .claude.json.tmp.* writes)
+      // inside the granted ~/.claude dir. ~/.claude.json is a symlink whose
+      // temp siblings otherwise land in $HOME (ungranted) during OAuth writes.
+      "CLAUDE_CONFIG_DIR": "$HOME/.claude",
+      "GIT_CONFIG_COUNT": "5",
+      // Disable the sandbox-blocked osxkeychain helper FIRST. An empty
+      // credential.helper resets git's entire accumulated helper list, so it
+      // must come before anything else. With the gitlab-git/github-git proxy
+      // routes injecting the Authorization header directly (basic_auth), git
+      // needs no local credential helper at all.
+      "GIT_CONFIG_KEY_0": "credential.helper",
+      "GIT_CONFIG_VALUE_0": "",
+      // github.com: rewrite SSH-style + ssh:// remotes to HTTPS (proxy injects auth)
+      "GIT_CONFIG_KEY_1": "url.https://github.com/.insteadOf",
+      "GIT_CONFIG_VALUE_1": "git@github.com:",
+      "GIT_CONFIG_KEY_2": "url.https://github.com/.insteadOf",
+      "GIT_CONFIG_VALUE_2": "ssh://git@github.com/",
+      // gitlab.com: rewrite SSH-style + ssh:// remotes to HTTPS (overrides your
+      // global https->ssh insteadOf). The gitlab-git proxy route (below) injects
+      // the Authorization Basic header on .git paths, so git needs no local creds.
+      "GIT_CONFIG_KEY_3": "url.https://gitlab.com/.insteadOf",
+      "GIT_CONFIG_VALUE_3": "git@gitlab.com:",
+      "GIT_CONFIG_KEY_4": "url.https://gitlab.com/.insteadOf",
+      "GIT_CONFIG_VALUE_4": "ssh://git@gitlab.com/",
+      // Point the docker CLI straight at Rancher's socket. With DOCKER_HOST set,
+      // docker skips context/config resolution, so it never touches ~/.docker
+      // (blocked by deny_credentials).
+      "DOCKER_HOST": "unix://$HOME/.rd/docker.sock",
+      // Isolate docker's config away from the host ~/.docker (registry auth).
+      // ~/.cache is already granted readwrite; docker creates this on demand.
+      "DOCKER_CONFIG": "$HOME/.cache/nono-docker"
+    }
+  },
+  "network": {
+    "network_profile": null,
+    // Enabling credentials (below) intercepts TLS with a nono-generated CA so the
+    // proxy can swap in the real token. Go CLIs (glab, gh, tofu) ignore SSL_CERT_FILE
+    // and only trust the macOS user keychain, so the default per-session CA makes
+    // them fail cert verification (curl/node/python are fine via env vars).
+    // "trusted" installs a reusable CA into the keychain — the profile equivalent of
+    // `nono run --trust-proxy-ca`. See https://nono.sh/docs/cli/usage/flags#trust-proxy-ca
+    "tls_intercept": {
+      "ca_lifecycle": "trusted"
+    },
+    // OAuth callback listener for MCP servers whose token expired with no
+    // refresh token (e.g. backstage): Claude Code binds a RANDOM ephemeral port
+    // for http://localhost:PORT/callback. macOS ephemeral range is 49152-65535
+    // (= 16384 ports, nono's per-rule max). Loopback-only; needed so interactive
+    // /mcp authenticate can complete inside the sandbox.
+    "open_port_range": [
+      [
+        49152,
+        65535
+      ]
+    ],
+    // Credential proxy: the real tokens are resolved from 1Password at proxy
+    // startup and injected only on the upstream leg. The sandboxed process sees
+    // a phantom token, never the real glpat-/ghp- value.
+    "credentials": [
+      "gitlab",
+      "gitlab-git",
+      "github",
+      "github-git"
+    ],
+    "custom_credentials": {
+      // API routes for the glab/gh CLIs, sourced from 1Password (built-in
+      // routes read host env vars; these override to op://).
+      // REST-API route (glab): PRIVATE-TOKEN header, scoped to /api/** so it
+      // does NOT match .git paths. Two routes on one host (gitlab.com) coexist
+      // only if their endpoint_rules are DISJOINT — else nono returns its own
+      // "Ambiguous route" 403 (that was the earlier regression, not GitLab).
+      "gitlab": {
+        "upstream": "https://gitlab.com",
+        "credential_key": "op://Private/GitLab/token",
+        "env_var": "GITLAB_TOKEN",
+        "inject_header": "PRIVATE-TOKEN",
+        "credential_format": "{}",
+        "endpoint_rules": [
+          {
+            "method": "*",
+            "path": "/api/**"
+          }
+        ]
+      },
+      // git-over-HTTPS route: overwrites the Authorization header with
+      // Basic base64(<secret>). basic_auth IGNORES credential_format (nono
+      // v0.69.0 base64s the RAW secret), so the 1Password field MUST hold the
+      // literal "oauth2:<PAT>" (colon included) — GitLab git-http requires a
+      // real user:password pair. Scoped to git smart/dumb-HTTP paths only.
+      "gitlab-git": {
+        "upstream": "https://gitlab.com",
+        "credential_key": "op://Private/GitLab/git-basic",
+        "env_var": "GL_GIT_PHANTOM",
+        "inject_mode": "basic_auth",
+        "endpoint_rules": [
+          {
+            "method": "*",
+            "path": "**/*.git/**"
+          }
+        ]
+      },
+      "github": {
+        "upstream": "https://api.github.com",
+        "credential_key": "op://Private/Github/token",
+        "env_var": "GITHUB_TOKEN",
+        "inject_header": "Authorization",
+        "credential_format": "token {}"
+      },
+      // git-over-HTTPS for github.com (a different host than api.github.com).
+      // basic_auth means git needs no local creds — the proxy injects them.
+      "github-git": {
+        "upstream": "https://github.com",
+        "credential_key": "op://Private/Github/token",
+        "env_var": "GH_GIT_PHANTOM",
+        "inject_mode": "basic_auth",
+        "credential_format": "x-access-token:{}"
+      }
+    },
+    // Enabling credentials flips network to default-deny proxy mode; allow all
+    // domains back so general egress (npm, pypi, APIs) keeps working while the
+    // gitlab/github routes stay intercepted.
+    "allow_domain": [
+      "*"
+    ]
+  },
+  "diagnostics": {
+    "suppress_system_services": [
+      "user-preference-read"
+    ]
+  },
+  // Apple `container` (github.com/apple/container) is a client/server design: the
+  // `container` CLI is a thin XPC client and launchd-managed daemons do the real
+  // work (VM lifecycle, image pulls, snapshots) as jobs in the *user* domain. The
+  // CLI reaches them over Mach services named
+  // com.apple.container.<plugin-type>.<plugin-name>[.<instanceId>], declared in
+  // MachServices in the plists under
+  // ~/Library/Application Support/com.apple.container/*/. Note the CLI talks to
+  // several services, not just the apiserver: images go through
+  // core.container-core-images and VM lifecycle through core.machine-apiserver.
+  // Per-container runtime services are instance-suffixed
+  // (runtime.container-runtime-linux.<container-id>), hence the prefix rules.
+  //
+  // nono has no typed capability for Mach services, so this needs the raw Seatbelt
+  // escape hatch. Without it every subcommand fails with the CLI's generic
+  // "Error: The operation couldn't be completed. Operation not permitted" — which
+  // looks like a filesystem denial but is the XPC lookup being blocked, and shows
+  // up as "No path denials were observed" in the nono footer.
+  //
+  // These are scoped global-names/prefixes, not a blanket (allow mach-lookup). The
+  // escalation is still real: `container run -v /any/host/path:/mnt` is an indirect
+  // filesystem bypass. Bind sources cross XPC as plain path strings and the
+  // runtime helper — entitled with com.apple.security.virtualization and *not*
+  // sandboxed, since launchd spawns it — opens them with its own authority.
+  // Seatbelt cannot mediate that. Only keep this if you accept that the agent can
+  // read/write any path it can name through a container.
+  //
+  // Upstream considers a sandboxed client unsupported (apple/container#1620), so
+  // expect rough edges rather than clean denials.
+  "platform_overrides": {
+    "macos": {
+      "unsafe_macos_seatbelt_rules": [
+        "(allow mach-lookup (global-name \"com.apple.container.apiserver\"))",
+        "(allow mach-lookup (global-name \"com.apple.container.core.container-core-images\"))",
+        "(allow mach-lookup (global-name \"com.apple.container.core.machine-apiserver\"))",
+        "(allow mach-lookup (global-name-prefix \"com.apple.container.runtime.\"))",
+        "(allow mach-lookup (global-name-prefix \"com.apple.container.network.\"))",
+        // The CLI aborts early without this; it checks whether it is running
+        // under Rosetta before touching the XPC layer.
+        "(allow sysctl-read (sysctl-name \"sysctl.proc_translated\"))"
+      ]
+    }
+  }
+}

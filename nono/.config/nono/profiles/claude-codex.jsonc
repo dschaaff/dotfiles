@@ -1,0 +1,13 @@
+{
+  "$schema": "../nono-profile.schema.json",
+  "extends": [
+    "claude-code",
+    "codex",
+    "common"
+  ],
+  "meta": {
+    "name": "claude-codex",
+    "version": "1.0.0",
+    "description": "Claude Code + openai/codex-plugin-cc (codex spawned as child)"
+  }
+}

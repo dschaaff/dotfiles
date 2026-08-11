@@ -105,6 +105,15 @@ alias kubectx='switch'
 alias kctx='switch'
 alias tflock='tofu providers lock -platform=darwin_arm64 -platform=linux_arm64 -platform=linux_amd64'
 alias terraform='tofu'
+# Clean interactive shell into the lima-code-agent VM. --workdir takes a
+# GUEST path, so resolve the guest home at runtime (a literal "$HOME" here would
+# expand to the Mac home). The resolver call has no --workdir, so it mirrors the
+# host cwd and prints cd errors to stderr — silence them (we only want stdout).
+lsh() {
+  local gh
+  gh="$(limactl shell lima-code-agent -- bash -lc 'printf %s "$HOME"' 2>/dev/null)" || return
+  limactl shell --workdir "$gh" lima-code-agent
+}
 
 if [ -f "$HOME/.cordial.sh" ]; then
     source $HOME/.cordial.sh
@@ -166,11 +175,14 @@ export GPG_TTY=$(tty)
 export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
 # .local/bin is used by pipx
 export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
+export CLAUDE_CONFIG_DIR="$HOME/.claude"
 # go
 export GOPATH=$HOME/go
 export GOROOT=/opt/homebrew/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
+# bun
+export PATH=$PATH:$HOME/.bun/bin
 
 # helm
 export HELM_EXPERIMENTAL_OCI=1
@@ -235,3 +247,12 @@ export PATH="/Users/danielschaaff/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 [[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path zsh)"
+
+# bun completions
+[ -s "/Users/danielschaaff/.bun/_bun" ] && source "/Users/danielschaaff/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+eval "$(zsh-patina activate)"

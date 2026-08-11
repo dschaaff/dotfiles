@@ -1,0 +1,12 @@
+{
+  "$schema": "../nono-profile.schema.json",
+  "extends": [
+    "pi",
+    "common"
+  ],
+  "meta": {
+    "name": "my-pi",
+    "version": "1.0.0",
+    "description": "PI coding agent"
+  }
+}

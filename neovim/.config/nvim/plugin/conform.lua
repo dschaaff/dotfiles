@@ -1,6 +1,12 @@
 require('conform').setup({
   notify_on_error = false,
   format_on_save = function(bufnr)
+    -- Opt-out flags (conform's documented pattern). Project-local config such
+    -- as kumomta's .nvim.lua sets vim.b.disable_autoformat to keep prettier
+    -- away from hand-authored markdown.
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      return nil
+    end
     local disable_filetypes = { c = true, cpp = true }
     if disable_filetypes[vim.bo[bufnr].filetype] then
       return nil

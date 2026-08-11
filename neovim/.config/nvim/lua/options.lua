@@ -49,6 +49,12 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
+-- Load project-local config (.nvim.lua/.nvimrc/.exrc) from the cwd.
+-- Neovim trust-gates these: the first time it sees a file it prompts, and
+-- only runs it after you `:trust` it. Used here so repos can opt out of
+-- formatters that fight their conventions (see kumomta's .nvim.lua).
+vim.o.exrc = true
+
 -- Keep signcolumn on by default, less redraw flicker
 vim.o.signcolumn = 'yes'
 

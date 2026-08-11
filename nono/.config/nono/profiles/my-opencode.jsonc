@@ -1,0 +1,14 @@
+{
+  "$schema": "../nono-profile.schema.json",
+  "extends": [
+    "claude-code",
+    "codex",
+    "opencode",
+    "common"
+  ],
+  "meta": {
+    "name": "my-opencode",
+    "version": "1.0.0",
+    "description": "opencode"
+  }
+}

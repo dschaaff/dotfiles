@@ -2,7 +2,19 @@
 
 Global instructions for all projects. Project-specific CLAUDE.md files override these defaults.
 
+- use ASD-STE100 Simplified Technical English when explaining things
+
 - Use skills proactively when they match the task — suggest relevant ones, don't block on them
+
+- Keep responses focused, brief, and concise. Keep disclaimers and caveats short, and spend most of the response on the main answer. When asked to explain something, give a high-level summary unless an in-depth explanation is specifically requested.
+
+- Match the length of written documents (reports, markdown, summaries) to what the task needs: cover the substance, but don't pad with filler sections, redundant summaries, or boilerplate.
+
+- Before your first tool call, say in one sentence what you're about to do. While working, give a brief update only when you find something important or change direction. When you finish, lead with the outcome — the first sentence answers "what happened," with supporting detail after it.
+
+- Only correct an earlier statement when the error would change my code, conclusions, or decisions. State corrections plainly and briefly, then continue. For slips that change nothing, make the fix and move on.
+
+- Delegate to subagents liberally to keep my main context clean. Investigations that read many files, broad searches, and independent parallel tracks should go to subagents that return conclusions rather than file dumps. Prefer one well-scoped subagent over several overlapping ones. Don't spawn a subagent purely to double-check work you've already done.
 
 ## Philosophy
 
@@ -12,9 +24,9 @@ Global instructions for all projects. Project-specific CLAUDE.md files override 
 - **Justify new dependencies** - Each dependency is attack surface and maintenance burden
 - **No phantom features** - Don't document or validate features that aren't implemented
 - **Replace, don't deprecate** - When a new implementation replaces an old one, remove the old one entirely. No backward-compatible shims, dual config formats, or migration paths. Proactively flag dead code — it adds maintenance burden and misleads both developers and LLMs.
-- **Verify at every level** - Set up automated guardrails (linters, type checkers, pre-commit hooks, tests) as the first step, not an afterthought. Prefer structure-aware tools (ast-grep, LSPs, compilers) over text pattern matching. Review your own output critically. Every layer catches what the others miss.
-- **Bias toward action** - Decide and move for anything easily reversed; state your assumption so the reasoning is visible. Ask before committing to interfaces, data models, architecture, or destructive/write operations on external services.
-- **Finish the job** - Don't stop at the minimum that technically satisfies the request. Handle the edge cases you can see. Clean up what you touched. If something is broken adjacent to your change, flag it. But don't invent new scope — there's a difference between thoroughness and gold-plating.
+- **Verify at every level** - Set up automated guardrails (linters, type checkers, pre-commit hooks, tests) as the first step, not an afterthought. Prefer structure-aware tools (ast-grep, LSPs, compilers) over text pattern matching — they catch what text search misses.
+- **Bias toward action** - Decide and move on minor choices (naming, formatting, defaults, picking among equivalents) and anything easily reversed; state your assumption so the reasoning is visible. Ask first only for scope changes, destructive/write operations on external services, or commitments to interfaces, data models, or architecture. When the task is done, stop cleanly — no "Want me to also…?".
+- **Deliver the requested scope** - Finish the whole task: no stubs, placeholders, or TODOs standing in for work. Deliver at the scope intended — don't quietly narrow, widen, or transform it. If something adjacent is broken or a better approach exists, say so in a sentence and continue with the task as asked. Stop short of actions clearly beyond what was requested; adjacent cleanup and refactors are separate work.
 - **Agent-native by default** - Design so agents can achieve any outcome users can. Tools are atomic primitives; features are outcomes described in prompts. Prefer file-based state for transparency and portability. When adding UI capability, ask: can an agent achieve this outcome too?
 
 ## Code Quality
@@ -24,7 +36,7 @@ Global instructions for all projects. Project-specific CLAUDE.md files override 
 1. ≤100 lines/function, cyclomatic complexity ≤8
 2. ≤5 positional params
 3. 100-char line length
-4. Absolute imports only — no relative (`..`) paths
+4. No deep relative imports (`../../`). Python/Rust: absolute imports. TS/Node ESM: relative (`./`) or project-configured path aliases
 5. Google-style docstrings on non-trivial public APIs
 
 ### Zero warnings policy
@@ -45,7 +57,7 @@ Code should be self-documenting. No commented-out code—delete it. If you need 
 
 Evaluate in order: architecture → code quality → tests → performance.
 
-For each issue: describe concretely with file:line references, present options with trade offs when the fix isn't obvious, recommend one, and ask before proceeding.
+Report everything you find in one pass — don't pre-filter by severity, and don't stop mid-review to ask. For each issue: describe it concretely with file:line references, present options with trade-offs when the fix isn't obvious, and recommend one. Filtering and applying fixes is a separate step after the full report.
 
 ### Testing
 
@@ -61,7 +73,7 @@ For each issue: describe concretely with file:line references, present options w
 
 When adding dependencies, CI actions, or tool versions, always look up the current stable version — never assume from memory unless the user provides one.
 
-#### GitLab
+### GitLab
 
 Use the glab cli to interact with GitLab.
 
@@ -81,124 +93,20 @@ Use the glab cli to interact with GitLab.
 
 Prefer ast-grep over ripgrep when searching for code structure (function calls, class definitions, imports, pattern matching across arguments). Use ripgrep for literal strings and log messages.
 
-### Terraform and Opentofu
+### Language standards
 
-Always use opentofu over terraform.
+Full standards live in `~/.claude/rules/` and load when you touch matching files. Headlines:
 
-| purpose             | tool   |
-| ------------------- | ------ |
-| lint terraform code | tflint |
-| security checks     | tfsec  |
+- **Python** — `uv` + `ruff` + `ty`, latest stable, tests in `tests/`
+- **Node/TS** — `bun` + `oxlint` + `oxfmt`, ESM only, strict tsconfig
+- **Rust** — invoke the `rust-standards` skill
+- **Bash** — `set -euo pipefail`, shellcheck + shfmt
+- **Terraform** — opentofu, never terraform; tflint + tfsec
+- **GitHub Actions** — SHA-pinned, zizmor-scanned
 
-### Python
+## Container Images
 
-**Runtime:** 3.13 with `uv venv`
-
-| purpose       | tool                         |
-| ------------- | ---------------------------- |
-| deps & venv   | `uv`                         |
-| lint & format | `ruff check` · `ruff format` |
-| static types  | `ty check`                   |
-| tests         | `pytest -q`                  |
-
-**Always use uv, ruff, and ty** over pip/poetry, black/pylint/flake8, and mypy/pyright — they're faster and stricter. Configure `ty` strictness via `[tool.ty.rules]` in pyproject.toml. Use `uv_build` for pure Python, `hatchling` for extensions.
-
-Tests in `tests/` directory mirroring package structure. Supply chain: `pip-audit` before deploying, pin exact versions (`==` not `>=`), verify hashes with `uv pip install --require-hashes`.
-
-### Node/TypeScript
-
-**Runtime:** Node 22 LTS, ESM only (`"type": "module"`)
-
-| purpose | tool           |
-| ------- | -------------- |
-| lint    | `oxlint`       |
-| format  | `oxfmt`        |
-| test    | `vitest`       |
-| types   | `tsc --noEmit` |
-
-**Always use oxlint and oxfmt** over eslint/prettier — they're faster and stricter. Enable `typescript`, `import`, `unicorn` plugins.
-
-**tsconfig.json strictness** — enable all of these:
-
-```jsonc
-"strict": true,
-"noUncheckedIndexedAccess": true,
-"exactOptionalPropertyTypes": true,
-"noImplicitOverride": true,
-"noPropertyAccessFromIndexSignature": true,
-"verbatimModuleSyntax": true,
-"isolatedModules": true
-```
-
-Colocated `*.test.ts` files. Supply chain: `pnpm audit --audit-level=moderate` before installing, pin exact versions (no `^` or `~`), enforce 24-hour publish delay (`pnpm config set minimumReleaseAge 1440`), block postinstall scripts (`pnpm config set ignore-scripts true`).
-
-### Rust
-
-**Runtime:** Latest stable via `rustup`
-
-| purpose      | tool                                                       |
-| ------------ | ---------------------------------------------------------- |
-| build & deps | `cargo`                                                    |
-| lint         | `cargo clippy --all-targets --all-features -- -D warnings` |
-| format       | `cargo fmt`                                                |
-| test         | `cargo test`                                               |
-| supply chain | `cargo deny check` (advisories, licenses, bans)            |
-| safety check | `cargo careful test` (stdlib debug assertions + UB checks) |
-
-**Style:**
-
-- Prefer `for` loops with mutable accumulators over iterator chains
-- Shadow variables through transformations (no `raw_x`/`parsed_x` prefixes)
-- No wildcard matches; avoid `matches!` macro—explicit destructuring catches field changes
-- Use `let...else` for early returns; keep happy path unindented
-
-**Type design:**
-
-- Newtypes over primitives (`UserId(u64)` not `u64`)
-- Enums for state machines, not boolean flags
-- `thiserror` for libraries, `anyhow` for applications
-- `tracing` for logging (`error!`/`warn!`/`info!`/`debug!`), not println
-
-**Optimization:**
-
-- Write efficient code by default — correct algorithm, appropriate data structures, no unnecessary allocations
-- Profile before micro-optimizing; measure after
-
-**Cargo.toml lints:**
-
-```toml
-[lints.clippy]
-pedantic = { level = "warn", priority = -1 }
-# Panic prevention
-unwrap_used = "deny"
-expect_used = "warn"
-panic = "deny"
-panic_in_result_fn = "deny"
-unimplemented = "deny"
-# No cheating
-allow_attributes = "deny"
-# Code hygiene
-dbg_macro = "deny"
-todo = "deny"
-print_stdout = "deny"
-print_stderr = "deny"
-# Safety
-await_holding_lock = "deny"
-large_futures = "deny"
-exit = "deny"
-mem_forget = "deny"
-# Pedantic relaxations (too noisy)
-module_name_repetitions = "allow"
-similar_names = "allow"
-```
-
-### Bash
-
-All scripts must start with `set -euo pipefail`. Lint: `shellcheck script.sh && shfmt -d script.sh`
-
-### GitHub Actions
-
-Pin actions to SHA hashes with version comments: `actions/checkout@<full-sha>  # vX.Y.Z` (use `persist-credentials: false`). Scan workflows with `zizmor` before committing. Configure Dependabot with 7-day cooldowns and grouped updates. Use `uv` ecosystem (not `pip`) for Python projects so Dependabot updates `uv.lock`.
+Always prefer ECR public, GitHub container registry, and quay.io over Docker Hub due to Docker Hub's rate limits.
 
 ## Workflow
 
@@ -218,7 +126,7 @@ Pin actions to SHA hashes with version comments: `actions/checkout@<full-sha>  #
 **Hooks and worktrees:**
 
 - Install prek in every repo (`prek install`). Run `prek run` before committing. Configure auto-updates: `prek auto-update --cooldown-days 7`
-- Parallel subagents require worktrees. Each subagent MUST work in its own worktree (`wt switch <branch>`), not the main repo. Never share working directories.
+- Parallel subagents require worktrees. Each subagent works in its own worktree (`git worktree add ../<name> <branch>`, or the Agent tool's `isolation: "worktree"`), never the main repo. Never share working directories.
 
 **Pull requests:**
 Describe what the code does now — not discarded approaches, prior iterations, or alternatives. Only describe what's in the diff.
