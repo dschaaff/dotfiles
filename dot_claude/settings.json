@@ -1,8 +1,10 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 365,
+  "env": {
+    "AWS_MCP_PROXY_PROFILES": "Cordial-Development/ReadOnly Cordial-Production-East/ReadOnly Cordial-Production/ReadOnly MTA-dev/ReadOnly MTA/ReadOnly Production-Bravo/ReadOnly SRE-dev/ReadOnly SRE-prod/ReadOnly cordial-ecr/ReadOnly datalake/ReadOnly dev-datalake/ReadOnly sre-interview-sandbox/ReadOnly security-tooling/FullAccess"
+  },
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "Skill(superpowers:*)",
       "Read(~/.claude/plugins/cache/**)",
@@ -54,10 +56,19 @@
       "Read(~/Library/Application Support/**/electrum*/**)",
       "Read(~/Library/Application Support/**/exodus*/**)",
       "Read(~/Library/Application Support/**/phantom*/**)",
-      "Read(~/Library/Application Support/**/solflare*/**)"
-    ]
+      "Read(~/Library/Application Support/**/solflare*/**)",
+      "CronCreate",
+      "CronDelete",
+      "CronList",
+      "EnterPlanMode",
+      "ExitPlanMode",
+      "PowerShell",
+      "RemoteTrigger",
+      "DesignSync"
+    ],
+    "defaultMode": "auto"
   },
-  "model": "us.anthropic.claude-opus-5[1m]",
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -77,34 +88,26 @@
   },
   "enabledPlugins": {
     "alert-debug@cordial-claude-code": true,
-    "backstage-platform@cordial-claude-code": true,
     "code-review@schaaff-claude-code": true,
-    "grafana-mcp@cordial-claude-code": true,
-    "lua-lsp@claude-plugins-official": true,
-    "php-lsp@claude-plugins-official": true,
     "tofu-terraform@cordial-claude-code": true,
     "coderabbit@claude-plugins-official": false,
-    "superpowers@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "plugin-dev@claude-plugins-official": true,
     "slack@claude-plugins-official": true,
     "codex@openai-codex": true,
-    "atlassian@claude-plugins-official": true,
-    "agent-sdk-dev@claude-plugins-official": true,
     "laravel-boost@claude-plugins-official": false,
     "claude-md-management@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
     "release-tools@cordial-claude-code": true,
     "mta-operations@cordial-claude-code": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "clickhouse-best-practices@claude-plugins-official": true,
     "ast-grep@ast-grep-marketplace": true,
     "aws-core@claude-plugins-official": true,
     "gitlab-review-tools@cordial-claude-code": true,
     "nono@nolabs-ai": true,
-    "chrome-devtools-mcp@claude-plugins-official": true,
-    "langfuse@claude-plugins-official": true
+    "langfuse@claude-plugins-official": true,
+    "renovate-triage@cordial-claude-code": true,
+    "backstage@cordial-claude-code": true,
+    "grafana@cordial-claude-code": true,
+    "mcp-portal@cordial-claude-code": true
   },
   "extraKnownMarketplaces": {
     "gemini-plugin-cc": {
@@ -124,11 +127,13 @@
         "source": "github",
         "repo": "ast-grep/agent-skill"
       }
+    },
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
     }
-  },
-  "outputStyle": "Explanatory",
-  "env": {
-    "AWS_MCP_PROXY_PROFILES": "Cordial-Development/ReadOnly Cordial-Production-East/ReadOnly Cordial-Production/ReadOnly MTA-dev/ReadOnly MTA/ReadOnly Production-Bravo/ReadOnly SRE-dev/ReadOnly SRE-prod/ReadOnly cordial-ecr/ReadOnly datalake/ReadOnly dev-datalake/ReadOnly sre-interview-sandbox/ReadOnly security-tooling/FullAccess"
   },
   "sandbox": {
     "enabled": false,
@@ -203,6 +208,7 @@
     "excludedCommands": [
       "/opt/homebrew/bin/codex*",
       "codex*",
+      "*codex-companion.mjs*",
       "coderabbit*",
       "trash*",
       "glab*",
@@ -213,6 +219,7 @@
     ]
   },
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
-  "skipWorkflowUsageWarning": true
+  "effortLevel": "high",
+  "skipWorkflowUsageWarning": true,
+  "tui": "fullscreen"
 }

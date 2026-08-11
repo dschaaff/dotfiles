@@ -2,6 +2,16 @@
 {{- $workEmail := promptStringOnce . "workEmail" "Work git email" -}}
 {{- $signingKey := promptStringOnce . "signingKey" "SSH signing public key" -}}
 sourceDir = "~/.dotfiles"
+edit.watch = true
+
+[merge]
+    command = "nvim"
+    args = [
+        "-d",
+        {{ printf "%q" "{{ .Destination }}" }},
+        {{ printf "%q" "{{ .Source }}" }},
+        {{ printf "%q" "{{ .Target }}" }},
+    ]
 
 [data]
     personalEmail = {{ $personalEmail | quote }}

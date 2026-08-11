@@ -17,6 +17,7 @@
     "allow": [
       "$HOME/development",
       "$HOME/.cache",
+      "$HOME/.npm",
       "$HOME/.granted",
       "$HOME/.terraform.d",
       "$HOME/.terraform.d/plugin-cache",
@@ -55,18 +56,42 @@
         "path": "$HOME/Library/Keychains",
         "when": "macos"
       },
+      // Apple `container` state root (CONTAINER_APP_ROOT). readwrite, not read:
+      // the CLI touches this tree itself rather than proxying everything over
+      // XPC. The content store returns *path strings*, so the CLI opens
+      // content/blobs/sha256/* directly — without read here, `image ls` and
+      // `run` fail on image-config resolution (apple/container#1620). Writes are
+      // needed for `container build` (stages the build context under a builder
+      // resource dir) and for bare `container` / `--help`, which unconditionally
+      // creates plugin-state/. Do not point CONTAINER_APP_ROOT elsewhere to
+      // dodge this — the daemon returns absolute paths in its own tree, so the
+      // client root must match the daemon's.
+      {
+        "path": "$HOME/Library/Application Support/com.apple.container",
+        "when": "macos"
+      },
       "/tmp"
     ],
     "read": [
       "$HOME/.workGitConfig",
       "$HOME/.local/pipx",
+      "$HOME/.terraform.d",
       "$HOME/Library/Application Support/commonfate",
       "$HOME/.local/state/gh", // gh device-id/state
       // Rancher Desktop CLI symlinks (docker, docker-compose, docker-buildx, …).
       // Targets live in /Applications (already granted), but the sandbox must read
       // the symlink *node* here to follow it — a static `nono why` passes without
       // this because it resolves to the target, but exec fails at runtime.
-      "$HOME/.rd/bin"
+      "$HOME/.rd/bin",
+      // Apple `container` plugin binaries (container-core-images,
+      // container-runtime-linux, container-network-vmnet, machine-apiserver).
+      // /usr/local/bin is already readable via group:system_read_macos, but
+      // /usr/local/libexec is not, and without it the CLI reports
+      // "PLUGINS: not available, run `container system start`".
+      {
+        "path": "/usr/local/libexec/container",
+        "when": "macos"
+      },
     ],
     "read_file": [
       "$HOME/.aws/config",
@@ -84,23 +109,9 @@
       // socket, proxy mode makes connect() a network op, so it needs the
       // unix_socket grant below too. DOCKER_HOST (set_vars) points the CLI here so
       // it never reads ~/.docker (blocked by deny_credentials — holds registry auth).
-      "$HOME/.rd/docker.sock",
-      // granted stats its browser native-messaging manifest on startup; the path is
-      // permanently restricted by default, so it needs a grant + bypass_protection
-      // below to stop showing up as a denial.
-      {
-        "path": "$HOME/Library/Application Support/Arc/User Data/NativeMessagingHosts/io.commonfate.granted.json",
-        "when": "macos"
-      }
+      "$HOME/.rd/docker.sock"
     ],
-    "write_file": [
-      // granted rewrites its own browser native-messaging manifest on startup;
-      // grant the write so it doesn't log a denial on every sandboxed run.
-      {
-        "path": "$HOME/Library/Application Support/Arc/User Data/NativeMessagingHosts/io.commonfate.granted.json",
-        "when": "macos"
-      }
-    ],
+    "write_file": [],
     "bypass_protection": [
       "$HOME/.aws/config", // punch ~/.aws/config through deny_credentials
       // ~/.ssh/* is blocked by the required deny_credentials group; these two
@@ -111,12 +122,11 @@
       {
         "path": "$HOME/Library/Keychains",
         "when": "macos"
-      },
-      // granted's native-messaging manifest (see read_file above)
-      {
-        "path": "$HOME/Library/Application Support/Arc/User Data/NativeMessagingHosts/io.commonfate.granted.json",
-        "when": "macos"
       }
+      // NOTE: granted also probes each browser's NativeMessagingHosts manifest
+      // (~/Library/Application Support/{Arc,Google/Chrome,...}/io.commonfate.granted.json).
+      // Those are permanently restricted and surface as a cosmetic denial in the
+      // footer; credentials still resolve, so they're deliberately left ungranted.
     ],
     // connect() to a unix socket is a network op on macOS Seatbelt; proxy mode
     // (below) makes outbound default-deny, so read_file alone is not enough.
@@ -276,5 +286,47 @@
     "suppress_system_services": [
       "user-preference-read"
     ]
+  },
+  // Apple `container` (github.com/apple/container) is a client/server design: the
+  // `container` CLI is a thin XPC client and launchd-managed daemons do the real
+  // work (VM lifecycle, image pulls, snapshots) as jobs in the *user* domain. The
+  // CLI reaches them over Mach services named
+  // com.apple.container.<plugin-type>.<plugin-name>[.<instanceId>], declared in
+  // MachServices in the plists under
+  // ~/Library/Application Support/com.apple.container/*/. Note the CLI talks to
+  // several services, not just the apiserver: images go through
+  // core.container-core-images and VM lifecycle through core.machine-apiserver.
+  // Per-container runtime services are instance-suffixed
+  // (runtime.container-runtime-linux.<container-id>), hence the prefix rules.
+  //
+  // nono has no typed capability for Mach services, so this needs the raw Seatbelt
+  // escape hatch. Without it every subcommand fails with the CLI's generic
+  // "Error: The operation couldn't be completed. Operation not permitted" — which
+  // looks like a filesystem denial but is the XPC lookup being blocked, and shows
+  // up as "No path denials were observed" in the nono footer.
+  //
+  // These are scoped global-names/prefixes, not a blanket (allow mach-lookup). The
+  // escalation is still real: `container run -v /any/host/path:/mnt` is an indirect
+  // filesystem bypass. Bind sources cross XPC as plain path strings and the
+  // runtime helper — entitled with com.apple.security.virtualization and *not*
+  // sandboxed, since launchd spawns it — opens them with its own authority.
+  // Seatbelt cannot mediate that. Only keep this if you accept that the agent can
+  // read/write any path it can name through a container.
+  //
+  // Upstream considers a sandboxed client unsupported (apple/container#1620), so
+  // expect rough edges rather than clean denials.
+  "platform_overrides": {
+    "macos": {
+      "unsafe_macos_seatbelt_rules": [
+        "(allow mach-lookup (global-name \"com.apple.container.apiserver\"))",
+        "(allow mach-lookup (global-name \"com.apple.container.core.container-core-images\"))",
+        "(allow mach-lookup (global-name \"com.apple.container.core.machine-apiserver\"))",
+        "(allow mach-lookup (global-name-prefix \"com.apple.container.runtime.\"))",
+        "(allow mach-lookup (global-name-prefix \"com.apple.container.network.\"))",
+        // The CLI aborts early without this; it checks whether it is running
+        // under Rosetta before touching the XPC layer.
+        "(allow sysctl-read (sysctl-name \"sysctl.proc_translated\"))"
+      ]
+    }
   }
 }
