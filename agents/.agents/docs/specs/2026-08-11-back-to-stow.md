@@ -632,12 +632,19 @@ Remove chezmoi's config and state, then the binary:
 Remove the migration scratch directory: `trash ~/.dotfiles-migration`. Do this only after
 slice 6 has verified the cutover, since it holds the rollback copy.
 
-Fast-forward master to `back-to-stow` and push. Do not create a merge commit; master's tip
-is the merge base, so `git merge --ff-only` from master succeeds.
+Push `back-to-stow` and open a pull request against master. Do not fast-forward or push
+master directly — the standing rule is that main is only ever updated through a PR, and the
+merge is the user's to perform. Because master's tip is the merge base, the PR will merge
+as a fast-forward when they take it.
+
+The PR body describes what the repo does now: a stow package tree, one package per
+top-level directory, `./install.sh` to link everything, and the six drift resolutions. It
+does not narrate the chezmoi era or the review that reshaped this spec.
 
 **Done when:** `command -v chezmoi` returns nothing; `test -e ~/.config/chezmoi` fails;
-`test -e ~/.dotfiles-migration` fails; `git log --oneline -1 master` matches
-`back-to-stow`; `git rev-list --count master..back-to-stow` is `0`.
+`test -e ~/.dotfiles-migration` fails; `git rev-parse origin/back-to-stow` equals local
+`HEAD`; `gh pr view --json state,baseRefName` reports an open PR with base `master`; and
+`git rev-parse master` is unchanged from before the slice.
 
 ## Out of scope
 
