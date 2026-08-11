@@ -196,7 +196,7 @@ Four seams, chosen because each one fails in a way the others cannot see:
 
 ## Slices
 
-### Slice 1: Inventory snapshot and stow package tree
+### Slice 1: Inventory snapshot and stow package tree — DONE
 
 **Goal:** Capture the pre-migration inventory, then restructure the source tree into 29
 stow packages with chezmoi's filename attributes stripped, changing no file content.
@@ -265,13 +265,20 @@ them from `$HOME`, do not move them; the cutover removes the originals.
 file sits under one of the 29 package directories above, except the root files `README.md`,
 `.gitignore`, `.chezmoiignore`, and `.chezmoi.toml.tmpl`; and the derived target manifest
 matches the pre-migration one. Derive it by stripping the leading package component from
-each `git ls-files` path and compare as a set against `chezmoi-managed.txt`: the only
-permitted differences are the two spec files
-(`.agents/docs/specs/2026-08-10-sdd-skills.md`, `.agents/docs/specs/2026-08-11-back-to-stow.md`)
-and the two newly tracked paths (`.agents/skills/playwright-cli/SKILL.md`,
-`.config/nono/profiles/my-opencode.jsonc`), all four present in the repo and absent from
-chezmoi's inventory. A name-only check that no path still contains `dot_`, `private_`,
-`executable_`, or `create_` is not sufficient — it proves nothing about where files landed.
+each `git ls-files` path and compare as a set against `chezmoi-managed.txt`. Expect 128
+derived targets against 118 managed ones, with no managed target missing and exactly ten
+repo-only additions permitted:
+
+- `.agents/docs/specs/2026-08-11-back-to-stow.md` — this spec, written after chezmoi stopped
+  being the source of truth
+- `.agents/skills/playwright-cli/SKILL.md` and its seven files under `references/`
+- `.config/nono/profiles/my-opencode.jsonc`
+
+`.agents/docs/specs/2026-08-10-sdd-skills.md` is *not* in that set — chezmoi did manage it,
+so it appears in both inventories. It is absent from `$HOME`, which slice 4 covers.
+
+A name-only check that no path still contains `dot_`, `private_`, `executable_`, or
+`create_` is not sufficient — it proves nothing about where files landed.
 
 ### Slice 2: Content and mode translation
 
@@ -485,16 +492,19 @@ accounted for.
 
 Write a throwaway audit script — not committed — that walks `git ls-files`, strips the
 leading package component to get the `$HOME`-relative target, and compares byte-for-byte
-against `$HOME/<target>`. Skip the four repo-root files (`README.md`, `.gitignore`,
-`install.sh`, `brewfile`), skip `neovim/.stow-local-ignore`, and skip the
-`claude/.claude/skills` symlink. Report three categories separately: content differs,
-missing from `$HOME`, and — by diffing the derived target set against
-`~/.dotfiles-migration/chezmoi-managed.txt` — managed but absent from the repo. Print the
-full report before changing anything.
+against `$HOME/<target>`. Skip the repo-root files (`README.md`, `.gitignore`, `install.sh`,
+`brewfile`) and `neovim/.stow-local-ignore`. Compare `claude/.claude/skills` as a symlink —
+read both link targets rather than their contents, since it is a symlink on both sides.
+Report three categories separately: content differs, missing from `$HOME`, and — by diffing
+the derived target set against `~/.dotfiles-migration/chezmoi-managed.txt` — managed but
+absent from the repo. Print the full report before changing anything.
 
-The expected result, measured on 2026-08-11 against 119 tracked targets: 108 identical, 6
-content differences, 2 template files that differ by design, 1 path missing from `$HOME`
-before slice 1 plus this spec file, and zero managed-but-untracked paths.
+The expected result, measured after slices 1 and 2: 128 derived targets, of which 118
+identical, 6 content differences, 2 template files that differ by design, and 2 paths
+missing from `$HOME`. Zero managed-but-untracked paths. Those five figures must sum to 128
+— if they sum to 127, the script dropped `.claude/skills` from the derived set instead of
+comparing it as a symlink, and that symlink counts toward the identical group once slice 2
+has pointed the repo copy at `/Users/danielschaaff/.agents/skills`.
 
 Six differences are known and already decided — take the `$HOME` version for each and
 commit it:
@@ -531,21 +541,31 @@ and the full report has been shown.
 **Goal:** Prove the full target manifest is correct before anything in `$HOME` is touched.
 
 Commit everything first. Then install the whole tree into an empty temporary directory,
-which no existing file can obstruct, and compare what arrives against what should:
+which no existing file can obstruct:
 
 ```
 TMP=$(mktemp -d)
 stow --target="$TMP" --verbose */
-find -L "$TMP" -type f | sed "s|^$TMP/||" | sort > /tmp/actual.txt
 ```
 
-Build the expected list from `git ls-files` by stripping the leading package component,
-excluding the four repo-root files and `neovim/.stow-local-ignore`. Every expected path
-must appear in the actual list. Paths present in the actual list but not expected are
-untracked working-tree files that stow deployed — report them, do not fail on them.
+Build the expected target list from `git ls-files` by stripping the leading package
+component, excluding the repo-root files and `neovim/.stow-local-ignore`. Then test each
+expected path for arrival individually:
 
-`comm -23 expected.txt actual.txt` must be empty. If `neovim/.config/nvim/.gitignore`
-appears in that output, `neovim/.stow-local-ignore` from slice 3 is wrong or missing.
+```
+# for each expected target t:
+[ -e "$TMP/$t" ] || [ -L "$TMP/$t" ] || echo "MISSING: $t"
+```
+
+Every expected target must arrive. Test each path directly rather than enumerating the tree
+with `find -L` and diffing: `claude/.claude/skills` is a symlink pointing at
+`~/.agents/skills`, so `find -L` would descend through it into the live home directory,
+flooding the comparison with unrelated files while never listing the symlink itself. The
+per-path test sidesteps that — `-e` resolves through folded directory symlinks, and `-L`
+catches symlinks whose own target lies outside `$TMP`.
+
+The missing list must be empty. If `neovim/.config/nvim/.gitignore` appears in it,
+`neovim/.stow-local-ignore` from slice 3 is wrong or missing.
 
 Also confirm folding landed where intended: `.agents` must be a single symlink inside
 `$TMP`, not a directory. Then `trash "$TMP"`.
