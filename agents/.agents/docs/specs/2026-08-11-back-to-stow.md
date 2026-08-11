@@ -280,7 +280,7 @@ so it appears in both inventories. It is absent from `$HOME`, which slice 4 cove
 A name-only check that no path still contains `dot_`, `private_`, `executable_`, or
 `create_` is not sufficient — it proves nothing about where files landed.
 
-### Slice 2: Content and mode translation
+### Slice 2: Content and mode translation — DONE
 
 **Goal:** Turn the three files that chezmoi handled specially into plain files stow can
 deploy, and restore executable bits.
@@ -315,7 +315,9 @@ update-index --chmod=+x <file>` so the bit is recorded in the index and not only
 
 Every other file in `zsh/.zshfn/` is a zsh autoload function and stays non-executable.
 
-**Done when:** `rg -l '\{\{' git/` returns nothing; `diff git/.gitconfig ~/.gitconfig`
+**Done when:** `rg -l --hidden '\{\{' git/` returns nothing — `--hidden` is required, since both
+files are dotfiles and ripgrep skips them by default, making the check vacuous without it;
+`diff git/.gitconfig ~/.gitconfig`
 reports exactly one differing line, the `excludesfile` line, and `diff git/.workGitConfig
 ~/.workGitConfig` reports no differences — the live files are chezmoi's rendered output, so
 anything else means a value was mistyped; `git config --file git/.gitconfig --get
