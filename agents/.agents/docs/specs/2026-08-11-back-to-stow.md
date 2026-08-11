@@ -657,7 +657,7 @@ directory that must fold did; `test -f "$TMP/.config/nvim/.gitignore" && test -L
 "$TMP/.config/nvim/.gitignore"` succeeds, proving that file arrived as its own link rather
 than through a folded parent; and `$TMP` is removed with `trash`.
 
-### Slice 6: Cutover
+### Slice 6: Cutover — DONE
 
 **Goal:** Replace the real files in `$HOME` with symlinks into the repo, reversibly.
 
@@ -676,6 +676,16 @@ BK=~/.dotfiles-migration/premigration
 mkdir -p "$BK"
 # for each path: mkdir -p "$BK/$(dirname "$p")" && mv "$HOME/$p" "$BK/$p"
 ```
+
+Deriving that list from `git ls-files` alone is not sufficient. Stow deploys whatever sits
+in a package directory, tracked or not, so any untracked file inside a package will collide
+with its live counterpart and abort the run. Before moving anything, run `git status --short
+--ignored --untracked-files=all` and clear every `??` and `!!` entry out of the packages.
+One such file existed here: `neovim/.config/nvim/.claude/settings.local.json`, swept into the
+package by slice 1 from the old chezmoi source tree. `.chezmoiignore` had deliberately
+excluded it, and `settings.local.json` is machine-local by convention, so it belongs in
+`$HOME` as a real file and not in a package at all. Note that a `.gitignore` entry does not
+protect against this — git ignoring a file has no bearing on whether stow deploys it.
 
 Where a directory is meant to fold, move the directory itself so stow finds it absent;
 where it is not, move only the managed entries inside it. Directories to move wholesale:
@@ -700,7 +710,9 @@ Verify, then `trash "$BK"` — not before.
 
 **Done when:** all of the following hold.
 
-- `./install.sh -n` reports no conflicts and no pending actions on a second invocation.
+- `./install.sh -n` reports no conflicts on a second invocation. It will still report actions
+  — `--restow` unstows before it stows, so a settled tree shows 61 `UNLINK` plus 61 `LINK`.
+  Expecting zero actions is wrong; what matters is zero conflicts and a stable link count.
 - For every expected target (derived as in slice 5), `realpath "$HOME/$target"` equals
   `realpath` of its package source exactly, and `cmp -s` of the two reports no difference.
   A prefix match against `/Users/danielschaaff/.dotfiles/` is not sufficient.
