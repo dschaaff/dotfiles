@@ -19,11 +19,7 @@
       "Bash(nono profile guide)",
       "Bash(nono profile validate *)",
       "Bash(nono profile show *)",
-      "Bash(chezmoi diff *)",
-      "Bash(chezmoi managed *)",
-      "Bash(chezmoi cat *)",
-      "Bash(chezmoi verify *)",
-      "Bash(chezmoi source-path *)",
+      "Bash(stow *)",
       "Bash(gofmt -l *)",
       "Bash(npm view *)"
     ],

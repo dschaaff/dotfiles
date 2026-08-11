@@ -24,7 +24,7 @@ committed document. No ledgers, no report files, no helper scripts.
 
 ## Design decisions
 
-- **Skill location:** `~/.dotfiles/dot_agents/skills/<name>/SKILL.md` (chezmoi-managed).
+- **Skill location:** `~/.dotfiles/agents/.agents/skills/<name>/SKILL.md` (stow-managed).
   Existing `grilling`/`grill-me` skills stay untouched.
 - **Separation of dialogue and artifact:** `brainstorm` writes nothing; `to-spec` synthesizes
   from any conversation ("no interview, just synthesis"), whether or not it was a formal
@@ -231,12 +231,12 @@ no ledgers, report files, or helper scripts.
 
 Requirements:
 
-- Delete the "Superpowers deltas" section from `~/.dotfiles/dot_claude/CLAUDE.md` (the
-  chezmoi source for `~/.claude/CLAUDE.md`) — model selection now lives in
+- Delete the "Superpowers deltas" section from `~/.dotfiles/claude/.claude/CLAUDE.md` (the
+  stow source for `~/.claude/CLAUDE.md`) — model selection now lives in
   `implement-spec`.
 - Leave every other section untouched.
 
-Done when: the section is gone from the chezmoi source file and nothing else changed.
+Done when: the section is gone from the stow source file and nothing else changed.
 
 ## Out of scope
 

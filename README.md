@@ -1,63 +1,52 @@
 # dotfiles
 
-Managed with [chezmoi](https://www.chezmoi.io). This repo is the chezmoi source;
-files are named with chezmoi's source conventions (`dot_` → `.`, `private_` → mode
-`0600`, `executable_` → mode `0755`, `*.tmpl` → templated).
+A GNU Stow package tree. Every top-level directory is a package whose contents mirror the
+path layout under `$HOME`, so `zsh/.zshrc` deploys to `~/.zshrc`. Files at the repo root
+(`README.md`, `install.sh`, `brewfile`, `.gitignore`) are not packages.
+
+Every managed path in `$HOME` is a symlink into this repo. Editing the live file edits the
+repo; `git status` is the only drift report. There is no apply or sync step.
 
 ## New machine
 
 ```shell
-brew install chezmoi          # and have 1Password running for SSH signing
+brew install stow
 git clone git@github.com:dschaaff/dotfiles.git ~/.dotfiles
-printf 'sourceDir = "~/.dotfiles"\n' > ~/.config/chezmoi/chezmoi.toml
-chezmoi init                  # prompts for personal/work email and SSH signing key
-chezmoi apply -v              # writes real files into $HOME
+cd ~/.dotfiles && ./install.sh
 ```
 
-`chezmoi init` runs the prompts in `.chezmoi.toml.tmpl` once and stores the answers in
-`~/.config/chezmoi/chezmoi.toml` (machine-local, never committed). Re-running `init` or
-`apply` will not re-prompt.
-
-## Daily workflow
+`install.sh` runs `stow --restow` over every top-level directory, so it both installs and
+relinks. Any extra arguments pass through to `stow`:
 
 ```shell
-chezmoi edit ~/.zshrc         # edit the source, then apply
-chezmoi apply -v              # write pending changes into $HOME
-chezmoi diff                  # preview pending changes
-chezmoi status                # short status of managed files
-chezmoi add ~/.config/foo     # start managing a new file
-chezmoi cd                    # drop into ~/.dotfiles to git add/commit/push
+./install.sh -n     # dry run — print what would happen, change nothing
+./install.sh -D     # unlink everything
 ```
 
-### Syncing a file you edited directly in `$HOME`
+A real file sitting where stow wants a symlink is a conflict and stow refuses. Move the
+file aside and rerun. Do not reach for `--adopt` or `--force`.
 
-If you edit a managed file in place (e.g. open `~/.zshrc` in your editor) instead of using
-`chezmoi edit`, pull the change back into the source with `re-add`:
+## Adding files
+
+Anything created inside a folded directory (`~/.agents`, `~/.claude/rules`, and others that
+are a single symlink into the repo) is already in the repo. Everything else needs a new file
+in the matching package.
+
+Stow has a built-in ignore list that it applies per package and never reports. A file named
+`.gitignore` or `.gitmodules`, or any name ending in `~`, is skipped in silence. To deploy
+one, add a `.stow-local-ignore` to that package — it *replaces* the built-in list, so it has
+to restate the patterns worth keeping while omitting the one it needs to deploy.
+`neovim/.stow-local-ignore` exists for exactly this reason.
+
+## Not tracked
+
+tpm is not in the repo. Clone it by hand:
 
 ```shell
-chezmoi re-add ~/.zshrc       # update the source from this file
-chezmoi re-add                # or sync ALL modified managed files at once
-chezmoi add --force ~/.zshrc  # force re-add a single file even if unmodified
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 
-Then `chezmoi cd` and commit. Notes:
-
-- `re-add` only touches files chezmoi already manages — use `chezmoi add` for new files.
-- `re-add` **skips templates**, so a direct edit to a rendered `.tmpl` target (e.g.
-  `~/.gitconfig`, `~/.workGitConfig`) is **not** captured. Edit those at the source
-  (`chezmoi edit ~/.gitconfig`, or edit the `*.tmpl` under `~/.dotfiles` directly) — see below.
-
-Templated files (machine-specific values pulled from the prompts):
-
-- `dot_gitconfig.tmpl` — personal email, SSH signing key
-- `dot_workGitConfig.tmpl` — work email, signing key (used by `includeIf` in work dirs)
-
-`.chezmoiignore` lists runtime/state files and plugin-manager directories that chezmoi
-does not manage.
-
-`com.googlecode.iterm2.plist` and `.config/karabiner/karabiner.json` are rewritten by their
-apps at runtime, so `chezmoi diff` may show churn. Run `chezmoi re-add` on them before
-committing to pick up live changes.
+`~/.cordial.sh` holds work secrets and stays an untracked file in `$HOME`.
 
 ## MacOS Ulimit Fixes
 

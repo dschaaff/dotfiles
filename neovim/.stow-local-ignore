@@ -1,0 +1,11 @@
+# Replaces stow's built-in ignore list for this package. Omits \.gitignore so that
+# .config/nvim/.gitignore actually deploys; stow would otherwise skip it silently.
+\.git
+\.gitmodules
+\.hg
+\.svn
+.+~
+\#.*\#
+^/README.*
+^/LICENSE.*
+^/COPYING
