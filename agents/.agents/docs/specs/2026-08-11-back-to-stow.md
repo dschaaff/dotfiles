@@ -342,7 +342,7 @@ user.email` prints `daniel@danielschaaff.com` and `--get includeIf.gitdir:~/deve
 prints `~/.workGitConfig`; `git ls-files -s` shows mode `120000` for
 `claude/.claude/skills` and mode `100755` for exactly the six files above and no others.
 
-### Slice 3: Repo meta
+### Slice 3: Repo meta — DONE
 
 **Goal:** Remove chezmoi from the repo and add the stow entry points.
 
@@ -514,7 +514,7 @@ succeeds; `test -f neovim/.stow-local-ignore` succeeds and every line in it ment
 `gitignore` is a comment line — the two-line header comment names it twice, so a count of
 matches is not the check; what matters is that no *pattern* line contains it.
 
-### Slice 4: Drift resolution
+### Slice 4: Drift resolution — DONE
 
 **Goal:** Make the repo content match what is live in `$HOME`, with every difference
 accounted for.
@@ -534,10 +534,20 @@ The expected result, measured after slices 1–3: 128 derived targets, of which 
 127, the script dropped `.claude/skills` from the derived set instead of comparing it as a
 symlink.
 
-Only `git/.gitconfig` differs by design. `git/.workGitConfig` is byte-identical to the live
-file, so it belongs in the identical group; an earlier draft of this spec wrongly counted
-both as by-design differences. After the six resolutions land, expect 125 identical and 1
-differing.
+`git/.workGitConfig` is byte-identical to the live file, so it belongs in the identical
+group; an earlier draft of this spec wrongly counted both git configs as by-design
+differences.
+
+After the six resolutions land, expect **123 identical, 3 differing, 2 missing**. The three
+that differ do so deliberately and none of them is drift:
+
+- `git/.gitconfig` — the one `excludesfile` line, per slice 2
+- `claude/.claude/settings.json` — the permission substitution described below, which makes
+  the repo copy permanently non-identical to the live one
+- `claude/.claude/skills` — the repo symlink is relative (`../../agents/.agents/skills`)
+  while the live one is still chezmoi's absolute link. Both resolve to the same skills, and
+  the cutover replaces the live link. Compare symlinks by target, so this registers as a
+  difference until slice 6 runs.
 
 `claude/.claude/settings.json` needs care: slice 3 already replaced five
 `Bash(chezmoi …)` permission entries with `"Bash(stow *)"`, and the live `$HOME` copy still
@@ -572,11 +582,14 @@ installs them; slice 6 verifies they arrive.
 
 Anything else the audit turns up is a genuine unknown: report it and ask before resolving.
 
-**Done when:** the audit reports zero content differences outside the two git files, zero
-paths missing from `$HOME` outside the two spec files, zero managed-but-untracked paths,
-and the full report has been shown.
+**Done when:** the audit reports differences at exactly three paths — `git/.gitconfig`,
+`claude/.claude/settings.json`, and `claude/.claude/skills` — and no others; zero paths
+missing from `$HOME` outside the two spec files; zero managed-but-untracked paths; and the
+full report has been shown. Naming the three explicitly matters: a check phrased as "zero
+differences outside the git configs" is unsatisfiable, because two of the three deliberate
+exceptions are not git configs.
 
-### Slice 5: Non-destructive preflight
+### Slice 5: Non-destructive preflight — DONE
 
 **Goal:** Prove the full target manifest is correct before anything in `$HOME` is touched.
 
@@ -606,6 +619,12 @@ would ever have deployed that file. In `$HOME` the directory does not fold, stow
 entry by entry, and a file its ignore list matches is simply dropped. Pre-creating the
 no-fold directories is what makes the two runs comparable. `mktemp -d` is unusable here —
 the sandbox denies writes under `/var/folders`, so the target must live under `$TMPDIR`.
+
+Run the whole preflight — directory setup, `stow`, the per-path checks, and cleanup — inside
+a single shell invocation. `$TMPDIR` does not resolve to the same location across separate
+sandboxed tool calls, so a target created in one call is gone by the next, and the checks
+then report every target missing against an empty directory. That reads exactly like a total
+stow failure and is not one.
 
 Build the expected target list from `git ls-files` by stripping the leading package
 component, excluding the repo-root files and `neovim/.stow-local-ignore`. Then test each
@@ -740,7 +759,8 @@ does not narrate the chezmoi era or the review that reshaped this spec.
 - **Deduplicating `grill-me` and `grilling`.** `grill-me` is a deliberate user-invocable
   alias carrying `disable-model-invocation: true` that delegates to `/grilling`. Both stay.
 - **Portability to a second machine.** The repo assumes it lives at `~/.dotfiles` for a
-  single user, which is why `claude/.claude/skills` may hold an absolute path.
+  single user. Nothing in it hardcodes that path, though: `claude/.claude/skills` is a
+  relative symlink resolving inside the repo, so it survives a clone to any location.
 - **Pinning non-executable file modes.** Git cannot record them, so files that carried
   chezmoi's `private_` attribute land at whatever the umask yields.
 - **A pre-commit hook or CI for this repo.** Verification is the commands named in each
