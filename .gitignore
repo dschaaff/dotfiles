@@ -16,16 +16,19 @@ bin/bin/terraform
 bin/bin/tofu
 bin/bin/warp
 
-claude/.claude/.claude.json
-claude/.claude/.credentials.json
-claude/.claude/backups
-claude/.claude/history.jsonl
-claude/.claude/projects
-claude/.claude/sessions
-claude/.claude/settings.local.json
-claude/.claude/shell-snapshots
-claude/.claude/statsig
+# Claude Code writes ~38 state paths under ~/.claude and adds more every release, so
+# this is an allowlist rather than a denylist. It only bites if install.sh's mkdir guard
+# ever fails and stow folds ~/.claude into the repo, but a denylist cannot keep pace.
+claude/.claude/*
+!claude/.claude/CLAUDE.md
+!claude/.claude/settings.json
+!claude/.claude/commands/
+!claude/.claude/rules/
+!claude/.claude/skills
 
+# k9s 0.51 writes config.yaml; older versions wrote config.yml. ~/.config/k9s is folded
+# into the repo, so an uncovered name lands here on first run.
+k9s/.config/k9s/config.yaml
 k9s/.config/k9s/config.yml
 
 karabiner/.config/karabiner/automatic_backups

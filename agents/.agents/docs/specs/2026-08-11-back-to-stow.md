@@ -528,18 +528,29 @@ Report three categories separately: content differs, missing from `$HOME`, and �
 the derived target set against `~/.dotfiles-migration/chezmoi-managed.txt` — managed but
 absent from the repo. Print the full report before changing anything.
 
-The expected result, measured after slices 1–3: 128 derived targets, of which 119 identical,
-6 content differences to resolve, 1 file that differs by design, and 2 paths missing from
-`$HOME`. Zero managed-but-untracked paths. Those figures must sum to 128 — if they sum to
-127, the script dropped `.claude/skills` from the derived set instead of comparing it as a
-symlink.
+128 derived targets throughout, and the figures must always sum to 128 — if they sum to 127,
+the script dropped `.claude/skills` from the derived set instead of comparing it as a symlink.
+Zero managed-but-untracked paths at every point.
+
+The split moves twice, so pin which moment you are measuring:
+
+| Moment | identical | differing | missing |
+| --- | --- | --- | --- |
+| entering slice 4 | 119 | 7 | 2 |
+| six resolutions applied | 125 | 1 | 2 |
+| end state | 123 | 3 | 2 |
+
+Entering the slice, the 7 differences are the 6 drifts plus `git/.gitconfig`. Resolving the
+drifts leaves only `.gitconfig`. The end state then gains two more deliberate differences
+that arrive *after* this slice: the permission substitution below, and the change of the
+skills symlink to a relative target while the live link is still chezmoi's absolute one.
+Reading any one of those three rows as the whole story is what made two earlier drafts of
+this table contradict themselves.
 
 `git/.workGitConfig` is byte-identical to the live file, so it belongs in the identical
-group; an earlier draft of this spec wrongly counted both git configs as by-design
-differences.
+group; an earlier draft wrongly counted both git configs as by-design differences.
 
-After the six resolutions land, expect **123 identical, 3 differing, 2 missing**. The three
-that differ do so deliberately and none of them is drift:
+In the end state the three that differ do so deliberately and none of them is drift:
 
 - `git/.gitconfig` — the one `excludesfile` line, per slice 2
 - `claude/.claude/settings.json` — the permission substitution described below, which makes
@@ -636,11 +647,10 @@ expected path for arrival individually:
 ```
 
 Every expected target must arrive. Test each path directly rather than enumerating the tree
-with `find -L` and diffing: `claude/.claude/skills` is a symlink pointing at
-`~/.agents/skills`, so `find -L` would descend through it into the live home directory,
-flooding the comparison with unrelated files while never listing the symlink itself. The
-per-path test sidesteps that — `-e` resolves through folded directory symlinks, and `-L`
-catches symlinks whose own target lies outside `$TMP`.
+with `find -L` and diffing: `claude/.claude/skills` is a symlink, so `find -L` descends
+through it and lists the skill files underneath while never listing the symlink itself, which
+reports a correct migration as missing a target. The per-path test sidesteps that — `-e`
+resolves through folded directory symlinks, and `-L` catches a symlink on its own terms.
 
 The missing list must be empty. If `neovim/.config/nvim/.gitignore` appears in it,
 `neovim/.stow-local-ignore` from slice 3 is wrong or missing.
