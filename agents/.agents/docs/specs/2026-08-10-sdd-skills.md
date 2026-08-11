@@ -11,7 +11,7 @@ replaced by self-contained personal skills.
 
 ## Solution
 
-Five standalone skills in `~/.dotfiles/dot_agents/skills/`, chained by "next step" pointers:
+Five standalone skills in `~/.dotfiles/agents/.agents/skills/`, chained by "next step" pointers:
 
 1. `brainstorm` — relentless one-question-at-a-time dialogue that ends in shared understanding
 2. `to-spec` — synthesizes the conversation into a spec file with vertical slices

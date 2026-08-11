@@ -364,11 +364,17 @@ cd "$(dirname "$0")"
 # whole directory into a single symlink pointing into this repo.
 mkdir -p "$HOME/.claude"
 
-# every top-level dir is a stow package
+# Every top-level dir is a stow package. The glob must stay bare: stow consumes `--` and
+# then reports no packages, and it rejects package names containing a slash, so neither
+# `-- */` nor `./*/` works.
+# shellcheck disable=SC2035
 stow --restow --target="$HOME" --verbose "$@" */
 ```
 
-It must pass `shellcheck` and `shfmt -i 2 -d` clean.
+It must pass `shellcheck` and `shfmt -i 2 -d` clean. The inline disable is load-bearing and
+was measured, not assumed: shellcheck's SC2035 wants `-- */` or `./*/`, and stow rejects
+both — `--` leaves it with no packages, and any package name containing a slash is an
+error. A trailing slash alone is fine, which is why the bare glob works.
 
 Rewrite `.gitignore` with package-relative paths. Required entries:
 
@@ -473,19 +479,23 @@ with `"Bash(stow *)"`:
 "Bash(chezmoi source-path *)"
 ```
 
-In `agents/.agents/docs/specs/2026-08-10-sdd-skills.md`, correct all three stale
-references and nothing else — it is a completed spec:
+In `agents/.agents/docs/specs/2026-08-10-sdd-skills.md`, correct all four stale references
+and nothing else — it is a completed spec:
 
 - the skill-location path becomes `~/.dotfiles/agents/.agents/skills/<name>/SKILL.md`, and
   the `(chezmoi-managed)` parenthetical on that same line becomes `(stow-managed)`
+- the Solution section's `~/.dotfiles/dot_agents/skills/` becomes
+  `~/.dotfiles/agents/.agents/skills/`
 - the two phrases describing a file as the "chezmoi source" for `~/.claude/CLAUDE.md` name
   `claude/.claude/CLAUDE.md` as the stow source instead
 
-**Done when:** `rg -i chezmoi` over the repo returns hits only in this spec file;
+**Done when:** `git grep -il chezmoi` returns only this spec file — scope the search to
+tracked files, since a plain `rg -i chezmoi` also matches `.git/config` and the reflogs;
 `shellcheck install.sh` and `shfmt -i 2 -d install.sh` are clean; `test -x install.sh`
 succeeds; `python3 -c 'import json;json.load(open("claude/.claude/settings.json"))'`
-succeeds; `test -f neovim/.stow-local-ignore` succeeds and `rg -c 'gitignore'
-neovim/.stow-local-ignore` reports only the comment line.
+succeeds; `test -f neovim/.stow-local-ignore` succeeds and every line in it mentioning
+`gitignore` is a comment line — the two-line header comment names it twice, so a count of
+matches is not the check; what matters is that no *pattern* line contains it.
 
 ### Slice 4: Drift resolution
 
@@ -542,13 +552,32 @@ and the full report has been shown.
 
 **Goal:** Prove the full target manifest is correct before anything in `$HOME` is touched.
 
-Commit everything first. Then install the whole tree into an empty temporary directory,
-which no existing file can obstruct:
+Commit everything first. Then install the whole tree into a temporary directory that no
+existing file can obstruct. The target must not be empty, though: it has to mirror which
+directories fold in `$HOME` and which do not, or the rehearsal tests different behavior
+than the cutover will produce.
 
 ```
-TMP=$(mktemp -d)
+TMP="$TMPDIR/stow-preflight"
+mkdir -p "$TMP"
+# Pre-create every directory that will NOT fold in $HOME, so stow descends into it here
+# exactly as it will there.
+for d in .claude .config Library "Library/Application Support" \
+         "Library/Application Support/lazygit" .config/karabiner .config/nono \
+         .config/nono/profiles .config/nvim .config/nvim/spell .config/opencode \
+         .config/zed .tmux bin; do
+  mkdir -p "$TMP/$d"
+done
 stow --target="$TMP" --verbose */
 ```
+
+Skipping that setup produces a false pass on the one bug this slice exists to catch. With an
+empty target stow folds `$TMP/.config/nvim` into a single symlink aimed at the repo, so
+`$TMP/.config/nvim/.gitignore` resolves through it and appears to exist whether or not stow
+would ever have deployed that file. In `$HOME` the directory does not fold, stow links
+entry by entry, and a file its ignore list matches is simply dropped. Pre-creating the
+no-fold directories is what makes the two runs comparable. `mktemp -d` is unusable here —
+the sandbox denies writes under `/var/folders`, so the target must live under `$TMPDIR`.
 
 Build the expected target list from `git ls-files` by stripping the leading package
 component, excluding the repo-root files and `neovim/.stow-local-ignore`. Then test each
@@ -576,8 +605,10 @@ A `./install.sh -n` dry run against `$HOME` is not a substitute for this and is 
 here: before the cutover every managed path conflicts, so it reports over a hundred
 conflicts and tells you nothing, and a file stow ignores produces no conflict at all.
 
-**Done when:** `comm -23 expected.txt actual.txt` is empty; `test -L "$TMP/.agents"`
-succeeds; the untracked-extras list has been reported; `$TMP` is removed.
+**Done when:** the missing list is empty; `test -L "$TMP/.agents"` succeeds, proving the one
+directory that must fold did; `test -f "$TMP/.config/nvim/.gitignore" && test -L
+"$TMP/.config/nvim/.gitignore"` succeeds, proving that file arrived as its own link rather
+than through a folded parent; and `$TMP` is removed with `trash`.
 
 ### Slice 6: Cutover
 
