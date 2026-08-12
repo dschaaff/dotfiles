@@ -11,3 +11,18 @@ mkdir -p "$HOME/.claude"
 # `-- */` nor `./*/` works.
 # shellcheck disable=SC2035
 stow --restow --target="$HOME" --verbose "$@" */
+
+# Skills live in their own repo so Codex, pi, and opencode can read them too. Without
+# this a fresh machine gets no skills and nothing complains about it.
+SKILLS_REPO="$HOME/development/github/agent-skills"
+SKILLS_REMOTE="git@github.com:dschaaff/agent-skills.git"
+
+if [ ! -d "$SKILLS_REPO" ]; then
+  git clone "$SKILLS_REMOTE" "$SKILLS_REPO"
+elif ! git -C "$SKILLS_REPO" remote get-url origin | grep -q 'dschaaff/agent-skills'; then
+  printf 'install.sh: %s is not the agent-skills checkout. Skipping skill install.\n' \
+    "$SKILLS_REPO" >&2
+  exit 1
+fi
+
+"$SKILLS_REPO/install.sh"
