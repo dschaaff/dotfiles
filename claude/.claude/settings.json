@@ -84,7 +84,6 @@
   },
   "enabledPlugins": {
     "alert-debug@cordial-claude-code": true,
-    "code-review@schaaff-claude-code": true,
     "tofu-terraform@cordial-claude-code": true,
     "coderabbit@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": true,
