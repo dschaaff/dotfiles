@@ -87,7 +87,6 @@
     "tofu-terraform@cordial-claude-code": true,
     "coderabbit@claude-plugins-official": false,
     "skill-creator@claude-plugins-official": true,
-    "slack@claude-plugins-official": true,
     "codex@openai-codex": true,
     "laravel-boost@claude-plugins-official": false,
     "claude-md-management@claude-plugins-official": true,
