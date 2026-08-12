@@ -256,3 +256,6 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 eval "$(zsh-patina activate)"
+
+# opencode
+export PATH=/Users/danielschaaff/.opencode/bin:$PATH
