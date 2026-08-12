@@ -99,7 +99,6 @@ Full standards live in `~/.claude/rules/` and load when you touch matching files
 
 - **Python** — `uv` + `ruff` + `ty`, latest stable, tests in `tests/`
 - **Node/TS** — `bun` + `oxlint` + `oxfmt`, ESM only, strict tsconfig
-- **Rust** — invoke the `rust-standards` skill
 - **Bash** — `set -euo pipefail`, shellcheck + shfmt
 - **Terraform** — opentofu, never terraform; tflint + tfsec
 - **GitHub Actions** — SHA-pinned, zizmor-scanned
