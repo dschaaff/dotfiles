@@ -18,6 +18,7 @@
       "$HOME/development",
       "$HOME/.cache",
       "$HOME/.npm",
+      "$HOME/.dotfiles",
       "$HOME/.granted",
       "$HOME/.terraform.d",
       "$HOME/.terraform.d/plugin-cache",

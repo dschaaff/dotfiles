@@ -6,6 +6,11 @@
     "opencode",
     "common"
   ],
+  "filesystem": {
+    "allow": [
+      "$HOME/.dotfiles/opencode"
+    ]
+  },
   "meta": {
     "name": "my-opencode",
     "version": "1.0.0",
