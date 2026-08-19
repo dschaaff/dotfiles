@@ -5,6 +5,12 @@ require('fzf-lua').setup({
   files = {
     cwd_prompt = false,
     prompt = '❯ ',
+    fd_opts = [[--color=never --type f --type l --hidden --exclude .git --exclude .jj]],
+    rg_opts = [[--color=never --files --hidden -g "!.git" -g "!.jj"]],
+  },
+  grep = {
+    rg_opts = [[--column --line-number --no-heading --color=always --smart-case ]]
+      .. [[--max-columns=4096 --hidden -g "!.git/" -g "!.jj/" -e]],
   },
   winopts = {
     preview = {
