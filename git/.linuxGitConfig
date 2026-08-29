@@ -1,0 +1,8 @@
+# Loaded by .gitconfig for repositories under /home. See the note at the bottom of that file: the
+# signing key lives in 1Password on the Mac, and nothing on a Linux box can reach it.
+[commit]
+  gpgsign = false
+
+[tag]
+  gpgsign = false
+  forceSignAnnotated = false

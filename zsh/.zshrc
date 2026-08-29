@@ -1,14 +1,26 @@
 # homebrew m1 mac
-export PATH="/opt/homebrew/bin:$PATH"
+if [[ "$OSTYPE" == darwin* ]]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+fi
 ###########
 # PLUGINS #
 ###########
 # https://getantidote.github.io/
 export ZSH_AUTOSUGGEST_USE_ASYNC=true
-source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+# antidote is a homebrew formula on the Mac. Every other system puts it somewhere else -- NixOS
+# links its share directory to ~/.antidote -- so take the first one that is there.
+for _antidote in /opt/homebrew/opt/antidote/share/antidote/antidote.zsh \
+  "$HOME/.antidote/antidote.zsh" \
+  /usr/share/zsh-antidote/antidote.zsh; do
+  if [[ -r "$_antidote" ]]; then
+    source "$_antidote"
+    break
+  fi
+done
+unset _antidote
 
 # Ensure zsh-completions is in fpath before compinit
-fpath=($(antidote path zsh-users/zsh-completions)/src $fpath)
+(( $+functions[antidote] )) && fpath=($(antidote path zsh-users/zsh-completions)/src $fpath)
 
 ###############
 # COMPLETIONS #
@@ -33,7 +45,13 @@ zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 autoload -Uz compinit && compinit
 
 # Now load plugins - fzf-tab will work since compinit already ran
-antidote load
+(( $+functions[antidote] )) && antidote load
+
+# _evalcache is the mroth/evalcache plugin. Without the plugin stack every call below is a
+# "command not found", so fall back to the plain eval it caches.
+if ! (( $+functions[_evalcache] )); then
+  _evalcache() { eval "$("$@")"; }
+fi
 
 PS1="READY > "
 
@@ -94,7 +112,11 @@ alias grep='grep --color=auto'
 #   fi
 # }
 # alias cd='cdtfswitch'
-alias ls='ls -G'
+if [[ "$OSTYPE" == darwin* ]]; then
+  alias ls='ls -G'
+else
+  alias ls='ls --color=auto'
+fi
 alias ll='ls -l'
 alias vim='nvim'
 alias vi='nvim'
@@ -128,13 +150,20 @@ fi
 # ADDITIONAL COMPLETIONS #
 #########################
 autoload bashcompinit && bashcompinit
-source <(~/.rd/bin/kubectl completion zsh)
-complete -F __start_kubectl kcl
-complete -F __start_kubectl ktl
-complete -C '/opt/homebrew/bin/aws_completer' aws
-complete -o nospace -C /usr/local/bin/terraform terraform
-complete -o nospace -C /usr/local/bin/vault vault
-_evalcache logcli --completion-script-zsh
+# Rancher Desktop's kubectl by absolute path, because ~/.rd/bin joins PATH further down this file.
+if [[ -x "$HOME/.rd/bin/kubectl" ]]; then
+  source <(~/.rd/bin/kubectl completion zsh)
+elif (( $+commands[kubectl] )); then
+  source <(kubectl completion zsh)
+fi
+if (( $+functions[__start_kubectl] )); then
+  complete -F __start_kubectl kcl
+  complete -F __start_kubectl ktl
+fi
+(( $+commands[aws_completer] )) && complete -C "$commands[aws_completer]" aws
+(( $+commands[terraform] )) && complete -o nospace -C "$commands[terraform]" terraform
+(( $+commands[vault] )) && complete -o nospace -C "$commands[vault]" vault
+(( $+commands[logcli] )) && _evalcache logcli --completion-script-zsh
 #############################
 # END ADDITIONAL COMPLETIONS #
 #############################
@@ -142,7 +171,7 @@ _evalcache logcli --completion-script-zsh
 # _evalcache rbenv init -
 
 # setup zoxide https://github.com/ajeetdsouza/zoxide
-_evalcache zoxide init zsh
+(( $+commands[zoxide] )) && _evalcache zoxide init zsh
 
 ######################################
 # SET A HIGHER SOFT ULIMIT FOR SHELL #
@@ -165,8 +194,10 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 ##########################################################
 # Kubeswitch https://github.com/danielfoehrKn/kubeswitch #
 ##########################################################
-source <(switcher init zsh)
-source <(switch completion zsh)
+if (( $+commands[switcher] )); then
+  source <(switcher init zsh)
+  source <(switch completion zsh)
+fi
 #################
 # ENV VARIABLES #
 #################
@@ -176,36 +207,43 @@ export FZF_DEFAULT_COMMAND='rg --hidden --glob '!.git' -l ""'
 # .local/bin is used by pipx
 export PATH="$HOME/.local/bin:/usr/local/sbin:$PATH"
 export CLAUDE_CONFIG_DIR="$HOME/.claude"
-# go
+# go. Homebrew's go needs GOROOT aimed at its libexec. Every other go finds its own, and a GOROOT
+# naming a directory that is not there breaks the toolchain outright.
 export GOPATH=$HOME/go
-export GOROOT=/opt/homebrew/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
-export PATH=$PATH:$GOROOT/bin
+if [[ -d /opt/homebrew/opt/go/libexec ]]; then
+  export GOROOT=/opt/homebrew/opt/go/libexec
+  export PATH=$PATH:$GOROOT/bin
+fi
 # bun
 export PATH=$PATH:$HOME/.bun/bin
 
 # helm
 export HELM_EXPERIMENTAL_OCI=1
 export KUBEVAL_SCHEMA_LOCATION=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master
-# Python
-export PATH=/usr/local/opt/python@3.12/bin:$PATH
-# Sublime Text
-export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
-# Sublime Merge
-export PATH=/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin:$PATH
+# Homebrew python and the two Sublime application bundles, none of which exist off the Mac.
+if [[ "$OSTYPE" == darwin* ]]; then
+  export PATH=/usr/local/opt/python@3.12/bin:$PATH
+  export PATH=/Applications/Sublime\ Text.app/Contents/SharedSupport/bin:$PATH
+  export PATH=/Applications/Sublime\ Merge.app/Contents/SharedSupport/bin:$PATH
+fi
 # home directory bin path
 export PATH=$HOME/bin:$PATH
 # kubectl krew
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 # rancher desktop nerdctl
 export PATH="$HOME/.rd/bin:$PATH"
-export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
+[[ -d /opt/homebrew/opt/node@22/bin ]] && export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
 # tofu/terraform
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 if [[ -f "$HOME/.krew/bin" ]]; then
   export PATH="$HOME/.krew/bin:$PATH"
 fi
-export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+# The 1Password SSH agent is a Mac application. Elsewhere ssh reads the key from disk, and
+# pointing SSH_AUTH_SOCK at a socket that is not there makes every ssh connection say so.
+if [[ "$OSTYPE" == darwin* ]]; then
+  export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock
+fi
 export KUBECTL_KYAML=true
 alias assume="source assume"
 
@@ -216,7 +254,7 @@ alias assume="source assume"
 #     echo -ne "\x1b]0; $(basename "$PWD") \x1b\\"
 # }
 # precmd_functions+=(set_win_title)
-_evalcache starship init zsh
+(( $+commands[starship] )) && _evalcache starship init zsh
 
 # fzf setup - provides Ctrl+T (file search) and Alt+C (cd)
 # Note: fzf's Tab completion is disabled in favor of fzf-tab
@@ -255,7 +293,7 @@ export PATH="/Users/danielschaaff/.rd/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-eval "$(zsh-patina activate)"
+(( $+commands[zsh-patina] )) && eval "$(zsh-patina activate)"
 
 # opencode
-export PATH=/Users/danielschaaff/.opencode/bin:$PATH
+export PATH=$HOME/.opencode/bin:$PATH
