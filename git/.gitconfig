@@ -95,3 +95,10 @@
 
 [gpg "ssh"]
   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+# Commit signing above runs through 1Password's op-ssh-sign, which ships inside a Mac application
+# bundle. On Linux there is no such binary and every commit fails, so repositories under /home load
+# an override. It stays at the bottom of this file: git reads includes in order and the last value
+# wins, so it has to come after the ~/.workGitConfig include, which sets gpgsign too.
+[includeIf "gitdir:/home/"]
+  path = ~/.linuxGitConfig
