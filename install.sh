@@ -12,6 +12,26 @@ mkdir -p "$HOME/.claude"
 # shellcheck disable=SC2035
 stow --restow --target="$HOME" --verbose "$@" */
 
+# antidote is the zsh plugin manager. Homebrew ships it on the Mac; no other system has a
+# package worth relying on, so clone it into the second location .zshrc searches. Keep this
+# list in step with the search loop at the top of zsh/.zshrc.
+antidote_present() {
+  local candidate
+  for candidate in \
+    /opt/homebrew/opt/antidote/share/antidote/antidote.zsh \
+    "$HOME/.antidote/antidote.zsh" \
+    /usr/share/zsh-antidote/antidote.zsh; do
+    if [ -r "$candidate" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+if ! antidote_present; then
+  git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+fi
+
 # Skills live in their own repo so Codex, pi, and opencode can read them too. Without
 # this a fresh machine gets no skills and nothing complains about it.
 SKILLS_REPO="$HOME/development/github/agent-skills"
