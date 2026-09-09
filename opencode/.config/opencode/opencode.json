@@ -1,11 +1,163 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [],
-  "provider": {
-    "amazon-bedrock": {
-      "options": {
-        "region": "us-west-2",
-        "profile": "Cordial-Development/Developer"
+  "plugin": [
+    "/Users/danielschaaff/development/gitlab/CordialExperiences/libs/claude-code-marketplace/plugins/tofu-terraform"
+  ],
+  "providers": {
+    "openrouter": {
+      "body": {
+        "provider": {
+          "quantizations": [
+            "fp8",
+            "fp16",
+            "bf16",
+            "fp32"
+          ],
+          "sort": "price"
+        }
+      },
+      "models": {
+        "z-ai/glm-5.3": {
+          "body": {
+            "provider": {
+              "order": [
+                "novita"
+              ]
+            }
+          }
+        },
+        "z-ai/glm-5.3-flash": {
+          "body": {
+            "provider": {
+              "order": [
+                "baseten"
+              ],
+              "sort": "throughput"
+            }
+          }
+        },
+        "moonshotai/kimi-k3": {
+          "body": {
+            "provider": {
+              "quantizations": [
+                "fp4",
+                "fp8",
+                "fp16",
+                "bf16",
+                "fp32"
+              ],
+              "order": [
+                "modal"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "cloudflare-workers-ai": {
+      "package": "@opencode-ai/ai/providers/openai-compatible",
+      "settings": {
+        "baseURL": "https://api.cloudflare.com/client/v4/accounts/a2a6651ef38e5dbabfc7f77e51d0d35b/ai/v1"
+      },
+      "models": {
+        "@cf/zai-org/glm-5.3-flash": {
+          "name": "GLM 5.3 Flash",
+          "settings": {
+            "reasoningEffort": "high"
+          },
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            }
+          ]
+        },
+        "@cf/zai-org/glm-5.3": {
+          "name": "GLM 5.3",
+          "settings": {
+            "reasoningEffort": "high"
+          },
+          "variants": [
+            {
+              "id": "high",
+              "settings": {
+                "reasoningEffort": "high"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "bedrock-mantle": {
+      "name": "Bedrock Mantle",
+      "package": "aisdk:@ai-sdk/openai",
+      "settings": {
+        "baseURL": "https://bedrock-mantle.us-west-2.api.aws/openai/v1",
+        "apiKey": "{env:BEDROCK_SECRET}"
+      },
+      "models": {
+        "gpt-5.6-luna": {
+          "modelID": "openai.gpt-5.6-luna",
+          "name": "GPT-5.6 Luna",
+          "settings": {
+            "reasoningEffort": "max"
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 256000
+          },
+          "variants": [
+            {
+              "id": "low",
+              "settings": {
+                "reasoningEffort": "low"
+              }
+            },
+            {
+              "id": "medium",
+              "settings": {
+                "reasoningEffort": "medium"
+              }
+            },
+            {
+              "id": "max",
+              "settings": {
+                "reasoningEffort": "max"
+              }
+            }
+          ]
+        },
+        "gpt-5.6-terra": {
+          "modelID": "openai.gpt-5.6-terra",
+          "name": "GPT-5.6 Terra",
+          "settings": {
+            "reasoningEffort": "max"
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 256000
+          }
+        },
+        "gpt-5.6-sol": {
+          "modelID": "openai.gpt-5.6-sol",
+          "name": "GPT-5.6 Sol",
+          "settings": {
+            "baseURL": "https://bedrock-mantle.us-east-1.api.aws/openai/v1",
+            "reasoningEffort": "max"
+          },
+          "limit": {
+            "context": 1000000,
+            "output": 256000
+          }
+        }
       }
     }
   },
