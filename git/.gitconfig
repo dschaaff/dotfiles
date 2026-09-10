@@ -102,3 +102,9 @@
 # wins, so it has to come after the ~/.workGitConfig include, which sets gpgsign too.
 [includeIf "gitdir:/home/"]
   path = ~/.linuxGitConfig
+[credential "https://github.com"]
+	helper = 
+	helper = !/nix/store/wgssbsd5lnch81r5pv1fqzdja51rzbn8-gh-2.98.0/bin/.gh-wrapped auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/nix/store/wgssbsd5lnch81r5pv1fqzdja51rzbn8-gh-2.98.0/bin/.gh-wrapped auth git-credential
