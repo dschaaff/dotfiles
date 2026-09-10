@@ -1,19 +1,14 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugins": [
-    "/Users/danielschaaff/development/gitlab/CordialExperiences/libs/claude-code-marketplace/plugins/tofu-terraform"
+    "~/development/gitlab/CordialExperiences/libs/claude-code-marketplace/plugins/tofu-terraform"
   ],
   "providers": {
     "openrouter": {
       "settings": {
         "providerOptions": {
           "provider": {
-            "quantizations": [
-              "fp8",
-              "fp16",
-              "bf16",
-              "fp32"
-            ],
+            "quantizations": ["fp8", "fp16", "bf16", "fp32"],
             "sort": "price"
           }
         }
@@ -23,9 +18,7 @@
           "settings": {
             "providerOptions": {
               "provider": {
-                "order": [
-                  "novita"
-                ]
+                "order": ["novita"]
               }
             }
           }
@@ -34,9 +27,7 @@
           "settings": {
             "providerOptions": {
               "provider": {
-                "order": [
-                  "baseten"
-                ],
+                "order": ["baseten"],
                 "sort": "throughput"
               }
             }
@@ -46,16 +37,8 @@
           "settings": {
             "providerOptions": {
               "provider": {
-                "quantizations": [
-                  "fp4",
-                  "fp8",
-                  "fp16",
-                  "bf16",
-                  "fp32"
-                ],
-                "order": [
-                  "modal"
-                ]
+                "quantizations": ["fp4", "fp8", "fp16", "bf16", "fp32"],
+                "order": ["modal"]
               }
             }
           }
