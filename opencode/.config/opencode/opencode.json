@@ -1,81 +1,94 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "plugin": [
+  "plugins": [
     "/Users/danielschaaff/development/gitlab/CordialExperiences/libs/claude-code-marketplace/plugins/tofu-terraform"
   ],
   "providers": {
     "openrouter": {
-      "body": {
-        "provider": {
-          "quantizations": [
-            "fp8",
-            "fp16",
-            "bf16",
-            "fp32"
-          ],
-          "sort": "price"
+      "settings": {
+        "providerOptions": {
+          "provider": {
+            "quantizations": [
+              "fp8",
+              "fp16",
+              "bf16",
+              "fp32"
+            ],
+            "sort": "price"
+          }
         }
       },
       "models": {
         "z-ai/glm-5.3": {
-          "body": {
-            "provider": {
-              "order": [
-                "novita"
-              ]
+          "settings": {
+            "providerOptions": {
+              "provider": {
+                "order": [
+                  "novita"
+                ]
+              }
             }
           }
         },
         "z-ai/glm-5.3-flash": {
-          "body": {
-            "provider": {
-              "order": [
-                "baseten"
-              ],
-              "sort": "throughput"
+          "settings": {
+            "providerOptions": {
+              "provider": {
+                "order": [
+                  "baseten"
+                ],
+                "sort": "throughput"
+              }
             }
           }
         },
         "moonshotai/kimi-k3": {
-          "body": {
-            "provider": {
-              "quantizations": [
-                "fp4",
-                "fp8",
-                "fp16",
-                "bf16",
-                "fp32"
-              ],
-              "order": [
-                "modal"
-              ]
+          "settings": {
+            "providerOptions": {
+              "provider": {
+                "quantizations": [
+                  "fp4",
+                  "fp8",
+                  "fp16",
+                  "bf16",
+                  "fp32"
+                ],
+                "order": [
+                  "modal"
+                ]
+              }
             }
           }
         }
       }
     },
     "cloudflare-workers-ai": {
-      "package": "@opencode-ai/ai/providers/openai-compatible",
       "settings": {
-        "baseURL": "https://api.cloudflare.com/client/v4/accounts/a2a6651ef38e5dbabfc7f77e51d0d35b/ai/v1"
+        "accountId": "a2a6651ef38e5dbabfc7f77e51d0d35b"
       },
       "models": {
         "@cf/zai-org/glm-5.3-flash": {
           "name": "GLM 5.3 Flash",
           "settings": {
-            "reasoningEffort": "high"
+            "providerOptions": {
+              "reasoningEffort": "high"
+            }
           },
           "variants": [
             {
               "id": "high",
               "settings": {
-                "reasoningEffort": "high"
+                "providerOptions": {
+                  "reasoningEffort": "high"
+                }
               }
             },
             {
               "id": "medium",
               "settings": {
-                "reasoningEffort": "medium"
+                "providerOptions": {
+                  "reasoningEffort": "medium"
+                }
               }
             }
           ]
@@ -83,32 +96,44 @@
         "@cf/zai-org/glm-5.3": {
           "name": "GLM 5.3",
           "settings": {
-            "reasoningEffort": "high"
+            "providerOptions": {
+              "reasoningEffort": "high"
+            }
           },
           "variants": [
             {
               "id": "high",
               "settings": {
-                "reasoningEffort": "high"
+                "providerOptions": {
+                  "reasoningEffort": "high"
+                }
               }
             }
           ]
         }
       }
     },
+    "amazon-bedrock": {
+      "settings": {
+        "auth": "sigv4",
+        "region": "us-west-2"
+      }
+    },
     "bedrock-mantle": {
       "name": "Bedrock Mantle",
-      "package": "aisdk:@ai-sdk/openai",
+      "package": "@opencode-ai/ai/providers/amazon-bedrock/mantle",
       "settings": {
-        "baseURL": "https://bedrock-mantle.us-west-2.api.aws/openai/v1",
-        "apiKey": "{env:BEDROCK_SECRET}"
+        "auth": "sigv4",
+        "region": "us-west-2"
       },
       "models": {
         "gpt-5.6-luna": {
           "modelID": "openai.gpt-5.6-luna",
           "name": "GPT-5.6 Luna",
           "settings": {
-            "reasoningEffort": "max"
+            "providerOptions": {
+              "reasoningEffort": "max"
+            }
           },
           "limit": {
             "context": 1000000,
@@ -118,19 +143,25 @@
             {
               "id": "low",
               "settings": {
-                "reasoningEffort": "low"
+                "providerOptions": {
+                  "reasoningEffort": "low"
+                }
               }
             },
             {
               "id": "medium",
               "settings": {
-                "reasoningEffort": "medium"
+                "providerOptions": {
+                  "reasoningEffort": "medium"
+                }
               }
             },
             {
               "id": "max",
               "settings": {
-                "reasoningEffort": "max"
+                "providerOptions": {
+                  "reasoningEffort": "max"
+                }
               }
             }
           ]
@@ -139,7 +170,9 @@
           "modelID": "openai.gpt-5.6-terra",
           "name": "GPT-5.6 Terra",
           "settings": {
-            "reasoningEffort": "max"
+            "providerOptions": {
+              "reasoningEffort": "max"
+            }
           },
           "limit": {
             "context": 1000000,
@@ -150,8 +183,10 @@
           "modelID": "openai.gpt-5.6-sol",
           "name": "GPT-5.6 Sol",
           "settings": {
-            "baseURL": "https://bedrock-mantle.us-east-1.api.aws/openai/v1",
-            "reasoningEffort": "max"
+            "region": "us-east-1",
+            "providerOptions": {
+              "reasoningEffort": "max"
+            }
           },
           "limit": {
             "context": 1000000,
@@ -162,35 +197,33 @@
     }
   },
   "mcp": {
-    "context7": {
-      "type": "remote",
-      "url": "https://mcp.context7.com/mcp/oauth",
-      "enabled": true
-    },
-    "aws-mcp": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "mcp-proxy-for-aws@1.6.0",
-        "https://aws-mcp.us-east-1.api.aws/mcp",
-        "--skip-auth",
-        "--metadata",
-        "INSTALL_SOURCE=agent-toolkit"
-      ],
-      "environment": {
-        "AWS_MCP_PROXY_PROFILES": "Cordial-Development/ReadOnly Cordial-Production-East/ReadOnly Cordial-Production/ReadOnly MTA-dev/ReadOnly MTA/ReadOnly Production-Bravo/ReadOnly SRE-dev/ReadOnly SRE-prod/ReadOnly cordial-ecr/ReadOnly datalake/ReadOnly dev-datalake/ReadOnly sre-interview-sandbox/ReadOnly security-tooling/FullAccess"
+    "servers": {
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp/oauth"
       },
-      "enabled": true
-    },
-    "eng-mcp": {
-      "type": "remote",
-      "url": "https://eng-mcp.ops.cordial.io/mcp?codemode=search_and_execute",
-      "enabled": true
-    },
-    "eng-mcp-dev": {
-      "type": "remote",
-      "url": "https://eng-mcp.cordialdev.com/mcp?codemode=search_and_execute",
-      "enabled": true
+      "aws-mcp": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "mcp-proxy-for-aws@1.6.0",
+          "https://aws-mcp.us-east-1.api.aws/mcp",
+          "--skip-auth",
+          "--metadata",
+          "INSTALL_SOURCE=agent-toolkit"
+        ],
+        "environment": {
+          "AWS_MCP_PROXY_PROFILES": "Cordial-Development/ReadOnly Cordial-Production-East/ReadOnly Cordial-Production/ReadOnly MTA-dev/ReadOnly MTA/ReadOnly Production-Bravo/ReadOnly SRE-dev/ReadOnly SRE-prod/ReadOnly cordial-ecr/ReadOnly datalake/ReadOnly dev-datalake/ReadOnly sre-interview-sandbox/ReadOnly security-tooling/FullAccess"
+        }
+      },
+      "eng-mcp": {
+        "type": "remote",
+        "url": "https://eng-mcp.ops.cordial.io/mcp?codemode=search_and_execute"
+      },
+      "eng-mcp-dev": {
+        "type": "remote",
+        "url": "https://eng-mcp.cordialdev.com/mcp?codemode=search_and_execute"
+      }
     }
   }
 }
