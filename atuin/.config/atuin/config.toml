@@ -28,6 +28,9 @@ common_subcommands = [
  "kubectl",
   "k"
 ]
+
+[ai]
+enabled = true
 #
 # Set commands that should be totally stripped and ignored from stats
 #common_prefix = ["sudo"]
