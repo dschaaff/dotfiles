@@ -1,6 +1,9 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugins": [
+    "~/development/gitlab/CordialExperiences/libs/claude-code-marketplace/plugins/backstage",
+    "~/development/gitlab/CordialExperiences/libs/claude-code-marketplace/plugins/release-tools",
+    "~/development/gitlab/CordialExperiences/libs/claude-code-marketplace/plugins/renovate-triage",
     "~/development/gitlab/CordialExperiences/libs/claude-code-marketplace/plugins/tofu-terraform"
   ],
   "providers": {
@@ -47,7 +50,7 @@
     },
     "cloudflare-workers-ai": {
       "settings": {
-        "accountId": "a2a6651ef38e5dbabfc7f77e51d0d35b"
+        "baseURL": "https://api.cloudflare.com/client/v4/accounts/a2a6651ef38e5dbabfc7f77e51d0d35b/ai/v1"
       },
       "models": {
         "@cf/zai-org/glm-5.3-flash": {
@@ -189,7 +192,7 @@
         "type": "local",
         "command": [
           "uvx",
-          "mcp-proxy-for-aws@1.6.0",
+          "mcp-proxy-for-aws@1.7.0",
           "https://aws-mcp.us-east-1.api.aws/mcp",
           "--skip-auth",
           "--metadata",
