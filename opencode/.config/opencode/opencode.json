@@ -12,7 +12,7 @@
         "providerOptions": {
           "provider": {
             "quantizations": ["fp8", "fp16", "bf16", "fp32"],
-            "sort": "price"
+            "sort": "throughput"
           }
         }
       },
@@ -103,6 +103,22 @@
       "settings": {
         "auth": "sigv4",
         "region": "us-west-2"
+      },
+      "models": {
+        "kimi-k3": {
+          "modelID": "global.moonshotai.kimi-k3",
+          "name": "Kimi K3 (Global)",
+          "family": "kimi-k3",
+          "capabilities": {
+            "tools": true,
+            "input": ["text", "image"],
+            "output": ["text"]
+          },
+          "limit": {
+            "context": 1048576,
+            "output": 1048576
+          }
+        }
       }
     },
     "bedrock-mantle": {
