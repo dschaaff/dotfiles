@@ -114,6 +114,12 @@
             "input": ["text", "image"],
             "output": ["text"]
           },
+          "cost": {
+            "input": 3,
+            "output": 15,
+            "cache_read": 0.3,
+            "cache_write": 3.75
+          },
           "limit": {
             "context": 1048576,
             "output": 1048576
